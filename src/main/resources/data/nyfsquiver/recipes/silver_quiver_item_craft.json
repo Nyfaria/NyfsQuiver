@@ -1,0 +1,24 @@
+{
+    "type": "nyfsquiver:quiverrecipe",
+    "pattern": [
+        "  #",
+        " A ",
+        "L  "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:feather"
+        },
+        "L": {
+            "item": "nyfsquiver:basicquiver"
+        },
+        "A": {
+            "item": "forge:ingots/silver"
+        }
+    },
+    "result": {
+        "item": "nyfsquiver:silverquiver",
+        "count": 1
+    },
+    "group": "tools"
+}

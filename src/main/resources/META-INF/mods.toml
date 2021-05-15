@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[36,)" 
+license="All rights reserved"
+issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" 
+
+[[mods]] 
+modId="nyfsquiver"
+version="0.1"
+displayName="Nyf's Quiver"
+authors="TheNyfaria"
+description='''
+Adds a Quiver and Arrows Slot to Curios.
+Adds a Quiver Items that hold All sorts of Arrows and allow you to
+toggle which arrow stack in the quiver is the currently active arrow.
+Works with most Modded Arrows and Bows. If one doesn't work, comment which
+one on CurseForge and i'll make a point to include it in the next update.
+
+HUGE THANKS to SuperMartijn642 and his PackedUp mod for laying the ground
+code on which i built this mod!
+'''
+    
+[[dependencies.nyfsquiver]]
+    modId="curios"
+    mandatory=true
+    versionRange="[1.16.5-4.0.5.1,)"
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,24 @@
+{
+    "type": "nyfsquiver:quiverrecipe",
+    "pattern": [
+        "AA#",
+        "ALA",
+        "AAA"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:feather"
+        },
+        "L": {
+            "item": "nyfsquiver:goldquiver"
+        },
+        "A": {
+            "item": "minecraft:diamond"
+        }
+    },
+    "result": {
+        "item": "nyfsquiver:diamondquiver",
+        "count": 1
+    },
+    "group": "tools"
+}

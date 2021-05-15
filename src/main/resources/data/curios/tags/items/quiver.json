@@ -1,0 +1,13 @@
+
+{
+  "replace": false,
+  "values": [
+    "nyfsquiver:basicquiver",
+    "nyfsquiver:ironquiver",
+    "nyfsquiver:copperquiver",
+    "nyfsquiver:silverquiver",
+    "nyfsquiver:goldquiver",
+    "nyfsquiver:diamondquiver",
+    "nyfsquiver:netheritequiver"
+  ]
+}

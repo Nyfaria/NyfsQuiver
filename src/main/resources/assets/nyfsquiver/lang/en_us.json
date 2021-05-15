@@ -1,0 +1,19 @@
+{
+	"item.nyfsquiver.basicquiver": "Quiver",
+	"item.nyfsquiver.ironquiver": "Iron Quiver",
+	"item.nyfsquiver.goldquiver": "Gold Quiver",
+	"item.nyfsquiver.silverquiver": "Silver Quiver",
+	"item.nyfsquiver.diamondquiver": "Diamond Quiver",
+	"item.nyfsquiver.netheritequiver": "Netherite Quiver",
+	"item.nyfsquiver.copperquiver": "Copper Quiver",
+	"gui.nyfsquiver.title": "Quiver Name",
+	"gui.nyfsquiver.name": "Quiver Name:",
+	"keys.category.nyfsquiver": "Nyf's Quiver",
+	"keys.nyfsquiver.nextslot": "Next Slot",
+	"keys.nyfsquiver.previousslot": "Next Slot",
+	"nyfsquiver.quivers.info.one": "Can store %d item stacks",
+	"nyfsquiver.quivers.info.two": "Can be opened with '%s'",
+	"nyfsquiver.quivers.info.inventory_index": "Inventory id: %d",
+	"curios.identifier.quiver": "Quiver"
+	
+}

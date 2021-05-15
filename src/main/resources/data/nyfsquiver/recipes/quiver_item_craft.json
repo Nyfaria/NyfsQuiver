@@ -1,0 +1,21 @@
+{
+    "type": "packedup:backpackrecipe",
+    "pattern": [
+        "  #",
+        " L ",
+        "L  "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:feather"
+        },
+        "L": {
+            "item": "minecraft:leather"
+        }
+    },
+    "result": {
+        "item": "nyfsquiver:basicquiver",
+        "count": 1
+    },
+    "group": "tools"
+}

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.nyfaria.nyfsquiver.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "nyfsquiver.refmap.json",
+  "mixins": [
+    "PlayerEntityMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
