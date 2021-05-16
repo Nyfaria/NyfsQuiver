@@ -1,9 +1,9 @@
 {
     "type": "nyfsquiver:quiverrecipe",
     "pattern": [
-        "  #",
-        " A ",
-        "L  "
+        "AA#",
+        "ALA",
+        "AAA"
     ],
     "key": {
         "#": {
@@ -13,7 +13,7 @@
             "item": "nyfsquiver:basicquiver"
         },
         "A": {
-            "item": "forge:ingots/silver"
+            "tag": "forge:ingots/silver"
         }
     },
     "result": {

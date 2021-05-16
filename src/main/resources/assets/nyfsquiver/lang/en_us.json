@@ -14,6 +14,7 @@
 	"nyfsquiver.quivers.info.one": "Can store %d item stacks",
 	"nyfsquiver.quivers.info.two": "Can be opened with '%s'",
 	"nyfsquiver.quivers.info.inventory_index": "Inventory id: %d",
-	"curios.identifier.quiver": "Quiver"
+	"curios.identifier.quiver": "Quiver",
+	"curios.identifier.arrows": "Arrows"
 	
 }

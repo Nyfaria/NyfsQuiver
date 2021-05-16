@@ -1,5 +1,5 @@
 {
-    "type": "packedup:backpackrecipe",
+    "type": "minecraft:crafting_shaped",
     "pattern": [
         "  #",
         " L ",
