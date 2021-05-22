@@ -5,7 +5,6 @@ import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;

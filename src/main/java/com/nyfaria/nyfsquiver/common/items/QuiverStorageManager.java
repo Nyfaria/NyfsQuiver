@@ -186,7 +186,8 @@ public class QuiverStorageManager {
 	        }
 	    }
 
-	    @SubscribeEvent
+	    @SuppressWarnings("resource")
+		@SubscribeEvent
 	    public static void onJoin(PlayerEvent.PlayerLoggedInEvent e){
 	        if(!e.getEntity().getCommandSenderWorld().isClientSide)
 	            NyfsQuiver.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)e.getEntityLiving()), new PacketMaxLayers(maxLayers));

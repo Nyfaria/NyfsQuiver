@@ -1,17 +1,18 @@
 package com.nyfaria.nyfsquiver;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.ArrowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -21,7 +22,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -37,17 +37,16 @@ import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.spongepowered.asm.launch.MixinBootstrap;
-
+import com.google.common.collect.Lists;
 import com.nyfaria.nyfsquiver.client.ClientProxy;
 import com.nyfaria.nyfsquiver.client.curios.ArrowsCurio;
-import com.nyfaria.nyfsquiver.client.curios.QuiverCurio;
 import com.nyfaria.nyfsquiver.common.CommonProxy;
 import com.nyfaria.nyfsquiver.common.containers.QuiverContainer;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -71,7 +70,8 @@ public class NyfsQuiver
 		
 		public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation("nyfsquiver", "main"), () -> "1", "1"::equals, "1"::equals);
 
-	    public static CommonProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new CommonProxy()); 
+	    @SuppressWarnings("deprecation")
+		public static CommonProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new CommonProxy()); 
 
 	    @ObjectHolder("nyfsquiver:container")
 	    public static ContainerType<QuiverContainer> container;
@@ -93,11 +93,24 @@ public class NyfsQuiver
 
 	    public static final IRecipeSerializer<QuiverRecipe> QUIVER_RECIPE_SERIALIZER = new QuiverRecipe.Serializer();
 
-		public static ITag<Item> ARROWS_CURIO = ItemTags.bind(new ResourceLocation("curios", "arrows").toString());;
-		//public static final ITag<Item> QUIVER_CURIO = ItemTags.bind(new ResourceLocation("curios", "quiver").toString());
+		public static ITag<Item> ARROWS_CURIO = ItemTags.bind(new ResourceLocation("curios", "arrows").toString());
+		public static ITag<Item> QUIVER_CURIO = ItemTags.bind(new ResourceLocation("curios", "quiver").toString());
 
-		//public static final Predicate<ItemStack> arrow_predicate = stack -> stack.getItem().is(ARROWS_CURIO);
-		//public static final Predicate<ItemStack> quiver_predicate = stack -> stack.getItem().is(QUIVER_CURIO);
+		public static final Predicate<ItemStack> arrow_predicate = stack -> stack.getItem().is(ARROWS_CURIO);
+		
+	    public static float interpolation;
+	    static @Nullable
+		public ItemStack lastHeld;
+	    static @Nullable
+		public List<ItemStack> lastReadyArrows;
+	    public static final ResourceLocation WIDGETS;
+
+	    static {
+	        interpolation = 0;
+	        lastHeld = null;
+	        lastReadyArrows = null;
+	        WIDGETS = new ResourceLocation("nyfsquiver","textures/gui/widgets.png");
+	    }
 
 		
 	    public NyfsQuiver(){
@@ -122,8 +135,7 @@ public class NyfsQuiver
 
 	    public void interModEnqueue(InterModEnqueueEvent e){
 		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).build());
-		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("arrows").size(1).build());
-		      
+		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("arrows").size(1).hide().build());
 	    }
 
 	    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -192,8 +204,53 @@ public class NyfsQuiver
 			}
 		}
 	    
+		@SuppressWarnings("unused")
+		public static List<ItemStack> findAmmos(PlayerEntity player, ItemStack shootable) {
+			ItemStack itemstack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof ArrowItem,player)
+					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
+			ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem,player)
+					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
+			
+			
+			
+			
+			//if (!(shootable.getItem() instanceof ShootableItem)) {
+			if ((quiverStack.isEmpty())) {
+			            return Lists.newLinkedList();
+	        } else {
+	        	 List<ItemStack> list = Lists.newLinkedList();
+
+	             Predicate<ItemStack> predicate = ((ShootableItem) shootable.getItem()).getSupportedHeldProjectiles();
+	             //ItemStack itemstack = ShootableItem.getHeldProjectile(player, predicate);
+	             if (!itemstack.isEmpty()) {
+	                 list.add(itemstack);
+	             }
+	             //predicate = ((ShootableItem) shootable.getItem()).getAllSupportedProjectiles();
+
+	             //for(int i = 0; i < player.inventory.getContainerSize(); ++i) {
+	             //    ItemStack itemstack1 = player.inventory.getItem(i);
+	             //    if (predicate.test(itemstack1) && itemstack1 != itemstack) {
+	             //        list.add(itemstack1);
+	             //    }
+	             //}
+
+	             if(list.isEmpty() && player.abilities.instabuild) {
+	                 list.add(new ItemStack(Items.ARROW));
+	             }
 
 
+	            return list;
+	        }
+	    }
+
+		
+		public static float bezier(float x, float min, float max) {
+	        return MathHelper.clamp(((x * x) * (3 - 2 * x)) / (1 / (max - min)) + min, min, max);
+	    }
+		 @Mod.EventBusSubscriber
+		    public static class Events {
+		        
+		 }
 }
 
 	

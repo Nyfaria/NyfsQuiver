@@ -36,7 +36,8 @@ public class QuiverContainer extends Container{
 
             this.addSlots(this.rows, inventory, player);
 	}
-	
+
+    @SuppressWarnings("unused")
 	private void addSlots(int rows, IItemHandler inventory, PlayerInventory player){
         int startX = 8;
         int startY = rows < 9 ? 17 : 8;
@@ -59,7 +60,7 @@ public class QuiverContainer extends Container{
                 int x = startX + 18 * column, y = startY + 18 * row, index = row * 9 + column + 9;
                 if(index == this.bagSlot)
                     this.addSlot(new Slot(player, index, x, y) {
-                        public boolean canTakeStack(PlayerEntity playerIn){
+						public boolean canTakeStack(PlayerEntity playerIn){
                             return false;
                         }
                     });

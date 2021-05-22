@@ -10,7 +10,7 @@
 	"gui.nyfsquiver.name": "Quiver Name:",
 	"keys.category.nyfsquiver": "Nyf's Quiver",
 	"keys.nyfsquiver.nextslot": "Next Slot",
-	"keys.nyfsquiver.previousslot": "Next Slot",
+	"keys.nyfsquiver.previousslot": "Previous Slot",
 	"nyfsquiver.quivers.info.one": "Can store %d item stacks",
 	"nyfsquiver.quivers.info.two": "Can be opened with '%s'",
 	"nyfsquiver.quivers.info.inventory_index": "Inventory id: %d",

@@ -1,20 +1,10 @@
 {
-    "type": "nyfsquiver:quiverrecipe",
-    "pattern": [
-        "AA#",
-        "ALA",
-        "AAA"
-    ],
-    "key": {
-        "#": {
-            "item": "minecraft:feather"
-        },
-        "L": {
-            "item": "nyfsquiver:diamondquiver"
-        },
-        "A": {
-            "item": "minecraft:netherite_scrap"
-        }
+    "type": "minecraft:smithing",
+    "base": {
+        "item": "nyfsquiver:diamondquiver"
+    },
+    "addition": {
+        "item": "minecraft:netherite_ingot"
     },
     "result": {
         "item": "nyfsquiver:netheritequiver",

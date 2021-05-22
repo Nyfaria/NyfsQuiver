@@ -27,7 +27,8 @@ public class QuiverContainerScreen extends ContainerScreen<QuiverContainer> {
         this.renderTooltip(matrixStack, mouseX, mouseY);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void renderBg(MatrixStack matrixStack,float partialTicks, int mouseX, int mouseY){
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bind(this.texture);

@@ -59,7 +59,8 @@ public class QuiverRenameScreen extends Screen {
         }
     }
 
-    @Override
+    @SuppressWarnings({ "deprecation", "resource" })
+	@Override
     public void render(MatrixStack boop, int mouseX, int mouseY, float partialTicks){
         this.renderBackground(boop);
 
@@ -101,7 +102,8 @@ public class QuiverRenameScreen extends Screen {
         return false;
     }
 
-    @Override
+    @SuppressWarnings("resource")
+	@Override
     public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_){
         if(super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_))
             return true;

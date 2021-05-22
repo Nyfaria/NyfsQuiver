@@ -1,6 +1,5 @@
 package com.nyfaria.nyfsquiver.common;
 
-import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.common.items.QuiverInventory;
 import com.nyfaria.nyfsquiver.common.items.QuiverItem;
 import com.nyfaria.nyfsquiver.common.items.QuiverStorageManager;
@@ -11,9 +10,6 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fml.network.NetworkHooks;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 /**
  * Created 2/7/2020 by SuperMartijn642
