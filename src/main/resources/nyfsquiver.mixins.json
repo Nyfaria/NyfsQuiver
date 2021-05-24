@@ -5,7 +5,8 @@
   "refmap": "nyfsquiver.refmap.json",
   "mixins": [
     "PlayerEntityMixin",
-    "ArrowEntityMixin"
+    "ArrowEntityMixin",
+    "CoFHMixin"
   ],
   "client": [],
   "server": [],
