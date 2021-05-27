@@ -2,6 +2,7 @@ package com.nyfaria.nyfsquiver;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -28,6 +31,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.minecraftforge.registries.ObjectHolder;
@@ -126,6 +130,9 @@ public class NyfsQuiver
 	        CHANNEL.registerMessage(2, PacketNextSlot.class, (msg, buffer) -> {},buffer -> new PacketNextSlot(0), PacketNextSlot::handle);
 	        CHANNEL.registerMessage(3, PacketPreviousSlot.class, (msg, buffer) -> {},buffer -> new PacketPreviousSlot(0), PacketPreviousSlot::handle);
 
+			if (FMLEnvironment.dist == Dist.CLIENT) {
+				bus.addListener(this::stitchTextures);
+			}
 	    }
 
 	    public void init(FMLCommonSetupEvent e){
@@ -134,7 +141,7 @@ public class NyfsQuiver
 	    }
 
 	    public void interModEnqueue(InterModEnqueueEvent e){
-		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).build());
+		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).icon(new ResourceLocation("nyfsquiver","gui/basicquiver")).build());
 		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("arrows").size(1).hide().build());
 	    }
 
@@ -250,6 +257,15 @@ public class NyfsQuiver
 		 @Mod.EventBusSubscriber
 		    public static class Events {
 		        
+		 }
+
+			
+		 public void stitchTextures(TextureStitchEvent.Pre evt) {
+			 if (evt.getMap().location().equals(PlayerContainer.BLOCK_ATLAS)) {
+
+				 evt.addSprite(new ResourceLocation(MOD_ID, "gui/basicquiver"));
+
+			 }
 		 }
 }
 

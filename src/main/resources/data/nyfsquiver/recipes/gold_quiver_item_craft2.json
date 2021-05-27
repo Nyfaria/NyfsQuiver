@@ -10,14 +10,14 @@
             "item": "minecraft:feather"
         },
         "L": {
-            "item": "nyfsquiver:ironquiver"
+            "item": "nyfsquiver:copperquiver"
         },
         "A": {
-            "tag": "forge:ingots/silver"
+            "item": "minecraft:gold_ingot"
         }
     },
     "result": {
-        "item": "nyfsquiver:silverquiver",
+        "item": "nyfsquiver:goldquiver",
         "count": 1
     },
     "group": "tools"

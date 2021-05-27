@@ -28,11 +28,11 @@ public class CoFHMixin
 
         ItemStack offHand = shooter.getMainHandItem();
         ItemStack mainHand = shooter.getOffhandItem();
-		ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof ArrowItem,shooter)
+		ItemStack quiver = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof ArrowItem,shooter)
 				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 
-		if(!stack.isEmpty()) {
-			return stack;
+		if(!quiver.isEmpty()) {
+			return quiver;
 		}
 		
         if (offHand.getCapability(AMMO_ITEM_CAPABILITY).map(cap -> !cap.isEmpty(shooter)).orElse(false) || isArrow(offHand)) {
