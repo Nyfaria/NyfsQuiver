@@ -21,7 +21,7 @@ public class CoFHMixin
     public static boolean isArrow(ItemStack stack) {
 		return false;
 	}
-	
+	 
 	
 	@Overwrite
     public static ItemStack findAmmo(PlayerEntity shooter) {

@@ -28,7 +28,7 @@ public class QuiverRecipe extends ShapedRecipe {
 
 	    @Override
 	    public ItemStack assemble(CraftingInventory inv){
-	        for(int index = 0; index < inv.getContainerSize(); index++){
+	        for(int index = 0; index < inv.getContainerSize(); index++) {
 	            ItemStack stack = inv.getItem(index);
 	            if(!stack.isEmpty() && stack.getItem() instanceof QuiverItem){
 	                ItemStack result = this.getResultItem().copy();

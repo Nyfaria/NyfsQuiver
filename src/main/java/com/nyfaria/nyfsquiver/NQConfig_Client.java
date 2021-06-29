@@ -50,12 +50,12 @@ public class NQConfig_Client {
         public final ForgeConfigSpec.IntValue VERTICAL_OFFSET;
 
         public ClientConfig(ForgeConfigSpec.Builder builder) {
-            //builder.push("hud_quiver");
+            builder.push("QuiverHUD Settings");
             this.ANIMATE = builder.comment("Animate the HUD Quiver showing and hiding.").translation("hud_quiver.config.animate").define("ANIMATE", true);
             this.HIDE = builder.comment("Hide the HUD Quiver when not selecting a shootable item.").translation("hud_quiver.config.hide").define("HIDE", true);
-            this.HORIZONTAL_OFFSET = builder.comment("The margin on the left of the HUD Quiver.").translation("hud_quiver.config.horizontal_offset").defineInRange("HORIZONTAL_OFFSET", 16, 16, 255);
-            this.VERTICAL_OFFSET = builder.comment("The margin on the top of the HUD Quiver.").translation("hud_quiver.config.vertical_offset").defineInRange("VERTICAL_OFFSET", 16, 16, 128);
-            //builder.pop();
+            this.HORIZONTAL_OFFSET = builder.comment("The margin on the left of the HUD Quiver.").translation("hud_quiver.config.horizontal_offset").defineInRange("HORIZONTAL_OFFSET", 16, 16, 1000);
+            this.VERTICAL_OFFSET = builder.comment("The margin on the top of the HUD Quiver.").translation("hud_quiver.config.vertical_offset").defineInRange("VERTICAL_OFFSET", 16, 16, 1000);
+            builder.pop();
         }
     }
 

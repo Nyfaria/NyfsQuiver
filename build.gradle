@@ -14,7 +14,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.2.2'
+version = '0.4.1'
 group = 'com.nyfaria.nyfsquiver' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'NyfsQuiver'
 
@@ -74,11 +74,14 @@ repositories {
     maven {
         url = "https://maven.theillusivec4.top/"
     }
-        maven {
-        url "https://www.cursemaven.com"
+ 	maven {
+		url "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
+    }
+	maven {
+        url = "https://maven.theillusivec4.top/"
     }
 }
 
@@ -96,8 +99,8 @@ dependencies {
     // Mixin annotation processor - generates the refmap
     annotationProcessor "org.spongepowered:mixin:0.8.2:processor"
     
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1:api")
+    //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
+    compile fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
     compileOnly fg.deobf("curse.maven:cofh-core-69162:3249453")
 
 }

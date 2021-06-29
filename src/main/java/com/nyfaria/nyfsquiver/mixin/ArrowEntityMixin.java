@@ -3,11 +3,15 @@ package com.nyfaria.nyfsquiver.mixin;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.TridentEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity.PickupStatus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ArrowItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+
+import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.common.items.QuiverInventory;
 import com.nyfaria.nyfsquiver.common.items.QuiverItem;
 import com.nyfaria.nyfsquiver.common.items.QuiverStorageManager;
@@ -30,10 +34,10 @@ public abstract class ArrowEntityMixin
 	@Overwrite
 	public void playerTouch(PlayerEntity p_70100_1_) 
 	{
-
-	      if (!((AbstractArrowEntity)(Object)this).level.isClientSide && (this.inGround || ((AbstractArrowEntity)(Object)this).isNoPhysics()) && ((AbstractArrowEntity)(Object)this).shakeTime <= 0) {
+		
+	      if (((AbstractArrowEntity)(Object)this).pickup == AbstractArrowEntity.PickupStatus.ALLOWED && !((AbstractArrowEntity)(Object)this).level.isClientSide && (this.inGround || ((AbstractArrowEntity)(Object)this).isNoPhysics()) && ((AbstractArrowEntity)(Object)this).shakeTime <= 0) {
 	    	  boolean flag;
-	    	  ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof ArrowItem,p_70100_1_)
+	    	  ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.arrow_predicate,p_70100_1_)
 					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 	    	  ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem,p_70100_1_)
 					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
@@ -42,7 +46,7 @@ public abstract class ArrowEntityMixin
 		    	  ((AbstractArrowEntity)(Object)this).remove();
 		    	  return;
 	    	  }
-	    	  if(stack.isEmpty() && !quiverStack.isEmpty()) {
+	    	  if(!(this.getPickupItem().getItem() instanceof ArrowItem) && stack.isEmpty() && !quiverStack.isEmpty()) {
 	    		  CuriosApi.getCuriosHelper().getCuriosHandler(p_70100_1_).map(ICuriosItemHandler::getCurios)
 	    		  .map(stringICurioStacksHandlerMap -> stringICurioStacksHandlerMap.get("arrows"))
 	    		  .map(ICurioStacksHandler::getStacks)
@@ -50,7 +54,7 @@ public abstract class ArrowEntityMixin
 	    		  ((AbstractArrowEntity)(Object)this).remove();
 	    		  return;
 	    	  }
-	    	  if(!quiverStack.isEmpty()) {
+	    	  if(!(this.getPickupItem().getItem() instanceof ArrowItem) && !quiverStack.isEmpty()) {
 	    		  QuiverInventory boop = QuiverStorageManager.getInventory(quiverStack.getOrCreateTag().getInt("nyfsquiver:invIndex"));
 	    		for(int i = 0; i < boop.getSlots(); i++) {
 	    			if(i != quiverStack.getOrCreateTag().getInt("nyfsquiver:slotIndex")) {
@@ -58,14 +62,14 @@ public abstract class ArrowEntityMixin
 	    				{
 	    					boop.getStackInSlot(i).setCount(boop.getStackInSlot(i).getCount() + 1);
 	    					((AbstractArrowEntity)(Object)this).remove();
-	    					return;
+	    					break;
 	    				} 
 	    				
 	    				if(boop.getStackInSlot(i).isEmpty()) 
 	    				{
 	    					boop.setStackInSlot(i, this.getPickupItem());
 	    					((AbstractArrowEntity)(Object)this).remove();
-	    					return;
+	    					break;
 	    				}
 	    			}
 	    		}

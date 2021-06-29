@@ -20,7 +20,7 @@ public class QuiverContainerScreen extends ContainerScreen<QuiverContainer> {
         this.imageHeight = 112 + 18 * Math.min(8, container.rows);
     }
 
-    @Override
+    @Override 
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks){
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);

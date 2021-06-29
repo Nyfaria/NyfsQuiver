@@ -24,7 +24,7 @@ public class QuiverStorageManager {
 	private static File directory;
 	private static final HashMap<Integer,QuiverInventory> inventories = new HashMap<>();
 	    private static int inventoryIndex = 0;
-
+ 
 	    public static int maxLayers;
 
 	    @SubscribeEvent
@@ -38,7 +38,7 @@ public class QuiverStorageManager {
 	    public static void onWorldLoad(WorldEvent.Load event){
 	        if(event.getWorld().isClientSide() || !(event.getWorld() instanceof World) || ((World)event.getWorld()).dimension() != World.OVERWORLD)
 	            return;
-	        maxLayers = NQConfig.INSTANCE.allowBagInBag.get() ? NQConfig.INSTANCE.maxBagInBagLayer.get() : 0;
+	        maxLayers = 0;
 	        ServerWorld world = (ServerWorld)event.getWorld();
 	        directory = new File(world.getServer().getWorldPath(FolderName.ROOT).toFile(), "nyfsquiver/quivers");
 	        load();

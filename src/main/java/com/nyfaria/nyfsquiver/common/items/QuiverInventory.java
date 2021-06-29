@@ -5,6 +5,7 @@ import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.FireworkRocketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -12,14 +13,15 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
+
+import java.awt.Color;
 import java.io.File;
 import java.util.*;
-
+ 
 public class QuiverInventory implements IItemHandlerModifiable {
 
     private final boolean remote;
     private final ArrayList<ItemStack> stacks = new ArrayList<>();
-
     private final int inventoryIndex;
     public int rows;
     public Set<Integer> bagsInThisBag = new HashSet<>();
@@ -38,6 +40,8 @@ public class QuiverInventory implements IItemHandlerModifiable {
         this.bagsThisBagIsIn.addAll(bagsThisBagIsIn);
         this.layer = layer;
     }
+
+    
 
     public QuiverInventory(boolean remote, int inventoryIndex, int rows){
         this.remote = remote;
@@ -121,7 +125,7 @@ public class QuiverInventory implements IItemHandlerModifiable {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack){
-    	if(!(stack.getItem() instanceof ArrowItem)) {
+    	if(!(stack.getItem() instanceof ArrowItem) && !(stack.getItem() instanceof FireworkRocketItem)) {
     		return false;
     	}
         if(stack.getItem() instanceof QuiverItem && !isBagAllowed(stack))

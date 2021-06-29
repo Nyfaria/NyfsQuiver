@@ -1,5 +1,8 @@
 package com.nyfaria.nyfsquiver;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.PlayerContainer;
@@ -15,6 +18,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.GuiContainerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -22,6 +26,8 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
@@ -40,6 +46,7 @@ import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
+import top.theillusivec4.curios.client.gui.CuriosScreen;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,6 +60,8 @@ import com.nyfaria.nyfsquiver.client.ClientProxy;
 import com.nyfaria.nyfsquiver.client.curios.ArrowsCurio;
 import com.nyfaria.nyfsquiver.common.CommonProxy;
 import com.nyfaria.nyfsquiver.common.containers.QuiverContainer;
+
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import com.nyfaria.nyfsquiver.common.items.QuiverItem;
 import com.nyfaria.nyfsquiver.common.items.QuiverStorageManager;
@@ -62,6 +71,10 @@ import com.nyfaria.nyfsquiver.packets.PacketMaxLayers;
 import com.nyfaria.nyfsquiver.packets.PacketNextSlot;
 import com.nyfaria.nyfsquiver.packets.PacketPreviousSlot;
 import com.nyfaria.nyfsquiver.packets.PacketRename;
+import net.minecraft.item.FireworkRocketItem;
+
+
+import static net.minecraft.client.gui.screen.inventory.ContainerScreen.INVENTORY_LOCATION;
 
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
@@ -71,7 +84,7 @@ public class NyfsQuiver
 {
 		public static final String MOD_ID = "nyfsquiver";
 
-		
+		public static boolean drawn = false;
 		public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation("nyfsquiver", "main"), () -> "1", "1"::equals, "1"::equals);
 
 	    @SuppressWarnings("deprecation")
@@ -92,8 +105,8 @@ public class NyfsQuiver
 	    public static QuiverItem goldQuiver;
 	    @ObjectHolder("nyfsquiver:diamondquiver")
 	    public static QuiverItem diamondQuiver;
-	    @ObjectHolder("nyfsquiver:obsidianquiver")
-	    public static QuiverItem obsidianQuiver;
+	    @ObjectHolder("nyfsquiver:netheritequiver")
+	    public static QuiverItem netheriteQuiver;
 
 	    public static final IRecipeSerializer<QuiverRecipe> QUIVER_RECIPE_SERIALIZER = new QuiverRecipe.Serializer();
 
@@ -101,6 +114,7 @@ public class NyfsQuiver
 		public static ITag<Item> QUIVER_CURIO = ItemTags.bind(new ResourceLocation("curios", "quiver").toString());
 
 		public static final Predicate<ItemStack> arrow_predicate = stack -> stack.getItem().is(ARROWS_CURIO);
+		public static final Predicate<ItemStack> quiver_predicate = stack -> stack.getItem().is(QUIVER_CURIO);
 		
 	    public static float interpolation;
 	    static @Nullable
@@ -108,19 +122,22 @@ public class NyfsQuiver
 	    static @Nullable
 		public List<ItemStack> lastReadyArrows;
 	    public static final ResourceLocation WIDGETS;
+	    public static final ResourceLocation SLOT;
 
 	    static {
 	        interpolation = 0;
 	        lastHeld = null;
 	        lastReadyArrows = null;
-	        WIDGETS = new ResourceLocation("nyfsquiver","textures/gui/widgets.png");
+	        WIDGETS = new ResourceLocation(MOD_ID,"textures/gui/widgets.png");
+	        SLOT = new ResourceLocation(MOD_ID,"textures/gui/equipmentslot.png");
 	    }
 
 		
 	    public NyfsQuiver(){
 			IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-			
+
 	        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, NQConfig.CONFIG_SPEC);
+	        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, NQConfig_Client.CLIENT_SPEC);
 	        bus.addListener(this::init);
 	        bus.addListener(this::interModEnqueue);
 	        EVENT_BUS.register(QuiverStorageManager.class);
@@ -131,6 +148,7 @@ public class NyfsQuiver
 	        CHANNEL.registerMessage(3, PacketPreviousSlot.class, (msg, buffer) -> {},buffer -> new PacketPreviousSlot(0), PacketPreviousSlot::handle);
 
 			if (FMLEnvironment.dist == Dist.CLIENT) {
+				//EVENT_BUS.addListener(this::drawSlotBackground);
 				bus.addListener(this::stitchTextures);
 			}
 	    }
@@ -145,6 +163,17 @@ public class NyfsQuiver
 		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("arrows").size(1).hide().build());
 	    }
 
+/*		private void drawSlotBackground(GuiContainerEvent.DrawBackground e) {
+			if (e.getGuiContainer() instanceof CuriosScreen) {
+				Minecraft.getInstance().getTextureManager().getTexture(SLOT);
+				CuriosScreen curiosScreen = (CuriosScreen) e.getGuiContainer();
+				int i = curiosScreen.getGuiLeft();
+				int j = curiosScreen.getGuiTop();
+				curiosScreen.blit(e.getMatrixStack(),i + NQConfig.x.get(), j + NQConfig.y.get(), 7, 7, 18, 18);
+			}
+		} 
+	*/
+		
 	    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 	    public static class RegistryEvents {
 	        @SubscribeEvent
@@ -181,7 +210,7 @@ public class NyfsQuiver
 			ItemStack stack = e.getObject();
 			if (ItemTags.getAllTags().getTag(new ResourceLocation("curios","arrows")) != null
 					&& ARROWS_CURIO.contains(stack.getItem())) {
-				ArrowsCurio arrowCurio = new ArrowsCurio();
+				ArrowsCurio arrowCurio = new ArrowsCurio(stack);
             	e.addCapability(CuriosCapability.ID_ITEM, new ICapabilityProvider() {
                 final LazyOptional<ICurio> arrowsCurioCap = LazyOptional.of(() -> arrowCurio);
 
@@ -213,7 +242,7 @@ public class NyfsQuiver
 	    
 		@SuppressWarnings("unused")
 		public static List<ItemStack> findAmmos(PlayerEntity player, ItemStack shootable) {
-			ItemStack itemstack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof ArrowItem,player)
+			ItemStack itemstack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof ArrowItem ||item.getItem() instanceof FireworkRocketItem,player)
 					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 			ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem,player)
 					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
@@ -264,6 +293,7 @@ public class NyfsQuiver
 			 if (evt.getMap().location().equals(PlayerContainer.BLOCK_ATLAS)) {
 
 				 evt.addSprite(new ResourceLocation(MOD_ID, "gui/basicquiver"));
+				 evt.addSprite(new ResourceLocation(MOD_ID, "gui/equipmentslot"));
 
 			 }
 		 }

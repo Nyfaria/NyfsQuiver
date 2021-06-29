@@ -17,7 +17,7 @@ public class PacketRename {
 
     public PacketRename(String name){
         this.name = name;
-    }
+    } 
 
     public void encode(PacketBuffer buffer){
         buffer.writeBoolean(this.name != null);

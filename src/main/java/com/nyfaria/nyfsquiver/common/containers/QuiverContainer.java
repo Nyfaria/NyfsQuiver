@@ -24,7 +24,7 @@ public class QuiverContainer extends Container{
 
     public final int rows;
     public final int bagSlot;
-    
+     
 	public QuiverContainer(int id, PlayerInventory player, int bagSlot, int inventoryIndex, int rows, Set<Integer> bagsInThisBag, Set<Integer> bagsThisBagIsIn, int layer) {
 		super(ContainerTypeInit.container, id);
 		this.bagSlot = bagSlot;

@@ -6,7 +6,10 @@
   "mixins": [
     "PlayerEntityMixin",
     "ArrowEntityMixin",
-    "CoFHMixin"
+    "CoFHMixin",
+	"ContainerAccessor",
+    "CurioContainerMixin",
+    "CrossBowMixin"
   ],
   "client": [],
   "server": [],

@@ -33,16 +33,16 @@ import com.nyfaria.nyfsquiver.common.containers.QuiverContainer;
 
 import java.util.List;
 
-public class QuiverItem extends Item
-{
-	
+public class QuiverItem extends Item{
+
 	public QuiverType type;
 
 	public QuiverItem(QuiverType type) {
-        super(type.isEnabled() ? new Item.Properties().stacksTo(1).tab(ItemGroup.TAB_SEARCH) : new Item.Properties().stacksTo(1));
-        this.type = type;
-        this.setRegistryName(type.getRegistryName());
-		
+		super(type.isEnabled() ? new Item.Properties().stacksTo(1).tab(ItemGroup.TAB_COMBAT)
+				: new Item.Properties().stacksTo(1));
+		this.type = type;
+		this.setRegistryName(type.getRegistryName());
+
 	}
 
 	@Override
@@ -50,58 +50,61 @@ public class QuiverItem extends Item
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
-						
-			tooltip.add(new StringTextComponent("Advanced Tooltip"));
-			
-			
+
+			tooltip.add(new StringTextComponent("Advanced Tooltip coming soon(tm)"));
+
 		} else {
 			// "Hold " + "\u00A7e" + "Shift" + "\u00A77" + " for More Information"
-			tooltip.add(new TranslationTextComponent("Hold " + "\u00A7e" + "Shift" + "\u00A77" + " for More Information"));
+			tooltip.add(
+					new TranslationTextComponent("Hold " + "\u00A7e" + "Shift" + "\u00A77" + " for More Information"));
 		}
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World worldIn,PlayerEntity playerIn, Hand handIn) {
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
 
-        ItemStack stack = playerIn.getItemInHand(handIn);
-        if(!playerIn.isShiftKeyDown()){
-            if(!worldIn.isClientSide() && stack.getItem() instanceof QuiverItem){
-                int bagSlot = handIn == Hand.MAIN_HAND ? playerIn.inventory.selected : -1;
-                CommonProxy.openQuiverInventory(stack, playerIn, bagSlot);
-            }
-        }else if(worldIn.isClientSide){
-            ClientProxy.openScreen(stack.getItem().getName(stack).getContents(), stack.getDisplayName().getContents());
-        }
-        return ActionResult.success(stack);
-		
+		ItemStack stack = playerIn.getItemInHand(handIn);
+		if (!playerIn.isShiftKeyDown()) {
+			if (!worldIn.isClientSide() && stack.getItem() instanceof QuiverItem) {
+				int bagSlot = handIn == Hand.MAIN_HAND ? playerIn.inventory.selected : -1;
+				CommonProxy.openQuiverInventory(stack, playerIn, bagSlot);
+			}
+		} else if (worldIn.isClientSide) {
+			ClientProxy.openScreen(stack.getItem().getName(stack).getContents(), stack.getDisplayName().getContents());
+		}
+		return ActionResult.success(stack);
+		// playerIn.blockPosition().relative(playerIn.getDirection());
+
 	}
-		
+	
 
-    public static class ContainerProvider implements INamedContainerProvider {
-        private int inventoryIndex;
-        private ITextComponent displayName;
-        private int bagSlot;
-        private QuiverInventory inventory;
+	public static class ContainerProvider implements INamedContainerProvider {
+		private int inventoryIndex;
+		private ITextComponent displayName;
+		private int bagSlot;
+		private QuiverInventory inventory;
 
-        public ContainerProvider(ITextComponent displayName, int bagSlot, int inventoryIndex, QuiverInventory inventory){
-            this.inventoryIndex = inventoryIndex;
-            this.displayName = displayName;
-            this.bagSlot = bagSlot;
-            this.inventory = inventory;
-        }
+		public ContainerProvider(ITextComponent displayName, int bagSlot, int inventoryIndex,
+				QuiverInventory inventory) {
+			this.inventoryIndex = inventoryIndex;
+			this.displayName = displayName;
+			this.bagSlot = bagSlot;
+			this.inventory = inventory;
+		}
 
-        @Override
-        public ITextComponent getDisplayName(){
-            return this.displayName;
-        }
+		@Override
+		public ITextComponent getDisplayName() {
+			return this.displayName;
+		}
 
-        @Nullable
-        @Override
-        public Container createMenu(int id, PlayerInventory playerInv, PlayerEntity player){
-            return new QuiverContainer(id, playerInv, this.bagSlot, this.inventoryIndex, this.inventory.rows, this.inventory.bagsInThisBag, this.inventory.bagsThisBagIsIn, this.inventory.layer);
-        }
-    }
-    
+		@Nullable
+		@Override
+		public Container createMenu(int id, PlayerInventory playerInv, PlayerEntity player) {
+			return new QuiverContainer(id, playerInv, this.bagSlot, this.inventoryIndex, this.inventory.rows,
+					this.inventory.bagsInThisBag, this.inventory.bagsThisBagIsIn, this.inventory.layer);
+		}
+	}
+
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {

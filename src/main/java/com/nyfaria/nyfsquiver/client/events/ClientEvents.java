@@ -13,6 +13,7 @@ import com.nyfaria.nyfsquiver.common.items.QuiverItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -23,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.ShootableItem;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -33,7 +35,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 
 @EventBusSubscriber(modid = NyfsQuiver.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientEvents {
-	
+	 
     @SuppressWarnings("resource")
 	@SubscribeEvent
     public static void onRenderGameOverlay(final RenderGameOverlayEvent event) {
@@ -205,9 +207,10 @@ public class ClientEvents {
                             event.getMatrixStack().translate(0, 0, i + 1 + readyArrows.size());
                             AbstractGui.drawString(event.getMatrixStack(), Minecraft.getInstance().font, new StringTextComponent(displayCount), Math.round(x + 9 - (6 * length)), Math.round(y + 1), color);
                             event.getMatrixStack().scale(0.49f, 0.49f, 0);
-                            AbstractGui.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, new StringTextComponent(String.valueOf(slot + 1)),Math.round(x), Math.round(y - 4), 16777215);
+                            AbstractGui.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, new StringTextComponent(String.valueOf(slot + 1)),Math.round(((x-8)/49)*100), Math.round(((y - 10)/49)*100), 16777215);
                            
-                        } event.getMatrixStack().popPose();
+                        } 
+                        event.getMatrixStack().popPose();
 
                         ++ xMultiplier;
                     }

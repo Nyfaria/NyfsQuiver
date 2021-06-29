@@ -20,7 +20,11 @@ import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 @EventBusSubscriber(modid = NyfsQuiver.MOD_ID, bus = Bus.FORGE)
 public class EventHandler {
+	
 
+	
+	
+	
 	@SubscribeEvent
 	public static void arrowPickup(final EntityItemPickupEvent e) {
 		ItemStack toPickup = e.getItem().getItem();

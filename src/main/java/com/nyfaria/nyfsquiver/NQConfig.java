@@ -16,8 +16,8 @@ public class NQConfig {
     public static final ForgeConfigSpec CONFIG_SPEC;
     public static final NQConfig INSTANCE;
 
-    public ForgeConfigSpec.BooleanValue allowBagInBag;
-    public ForgeConfigSpec.IntValue maxBagInBagLayer;
+    //public ForgeConfigSpec.BooleanValue allowBagInBag;
+    //public ForgeConfigSpec.IntValue maxBagInBagLayer;
 
     public ForgeConfigSpec.BooleanValue basicEnable;
     public ForgeConfigSpec.IntValue basicRows;
@@ -33,10 +33,10 @@ public class NQConfig {
     public ForgeConfigSpec.IntValue diamondRows;
     public ForgeConfigSpec.BooleanValue obsidianEnable;
     public ForgeConfigSpec.IntValue obsidianRows;
+    //public static ForgeConfigSpec.IntValue x;
+    //public static ForgeConfigSpec.IntValue y;
 
     private NQConfig(ForgeConfigSpec.Builder builder){
-        this.allowBagInBag = builder.worldRestart().comment("Can quivers be put inside other quivers?").define("allowBagInBag", true);
-        this.maxBagInBagLayer = builder.worldRestart().comment("How many layers deep can you place quivers inside quivers? -1 for infinite, 0 is the same as setting 'allowBagInBag' to false.").defineInRange("maxBagInBagLayer", -1, -1, 5);
 //        this.basicEnable = builder.worldRestart().comment("Enable the basic quiver?").define("enableBasic", true);
         this.basicRows = builder.worldRestart().comment("How many rows does the basic quiver have?").defineInRange("rowsBasic", QuiverType.BASIC.getDefaultRows(), 1, 13);
 //        this.ironEnable = builder.worldRestart().comment("Enable the iron quiver?").define("enableIron", true);
@@ -51,6 +51,8 @@ public class NQConfig {
         this.diamondRows = builder.worldRestart().comment("How many rows does the diamond quiver have?").defineInRange("rowsDiamond", QuiverType.DIAMOND.getDefaultRows(), 1, 13);
 //        this.obsidianEnable = builder.worldRestart().comment("Enable the obsidian quiver?").define("enableObsidian", true);
         this.obsidianRows = builder.worldRestart().comment("How many rows does the Netherite quiver have?").defineInRange("rowsNetherite", QuiverType.NETHERITE.getDefaultRows(), 1, 13);
+        //x = builder.defineInRange("xPos",76,-1000,1000);
+        //y = builder.defineInRange("yPos",24,-1000,1000);
     }
 
 }
