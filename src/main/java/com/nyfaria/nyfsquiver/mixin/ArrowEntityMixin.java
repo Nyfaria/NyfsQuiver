@@ -6,6 +6,7 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity.PickupStatus;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.TridentItem;
 import net.minecraft.item.ArrowItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -46,7 +47,7 @@ public abstract class ArrowEntityMixin
 		    	  ((AbstractArrowEntity)(Object)this).remove();
 		    	  return;
 	    	  }
-	    	  if(!(this.getPickupItem().getItem() instanceof ArrowItem) && stack.isEmpty() && !quiverStack.isEmpty()) {
+	    	  if((this.getPickupItem().getItem() instanceof ArrowItem) && stack.isEmpty() && !quiverStack.isEmpty()) {
 	    		  CuriosApi.getCuriosHelper().getCuriosHandler(p_70100_1_).map(ICuriosItemHandler::getCurios)
 	    		  .map(stringICurioStacksHandlerMap -> stringICurioStacksHandlerMap.get("arrows"))
 	    		  .map(ICurioStacksHandler::getStacks)
@@ -54,7 +55,7 @@ public abstract class ArrowEntityMixin
 	    		  ((AbstractArrowEntity)(Object)this).remove();
 	    		  return;
 	    	  }
-	    	  if(!(this.getPickupItem().getItem() instanceof ArrowItem) && !quiverStack.isEmpty()) {
+	    	  if((this.getPickupItem().getItem() instanceof ArrowItem) && !quiverStack.isEmpty()) {
 	    		  QuiverInventory boop = QuiverStorageManager.getInventory(quiverStack.getOrCreateTag().getInt("nyfsquiver:invIndex"));
 	    		for(int i = 0; i < boop.getSlots(); i++) {
 	    			if(i != quiverStack.getOrCreateTag().getInt("nyfsquiver:slotIndex")) {

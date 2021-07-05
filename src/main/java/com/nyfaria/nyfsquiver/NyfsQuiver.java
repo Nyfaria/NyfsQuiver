@@ -107,6 +107,7 @@ public class NyfsQuiver
 	    public static QuiverItem diamondQuiver;
 	    @ObjectHolder("nyfsquiver:netheritequiver")
 	    public static QuiverItem netheriteQuiver;
+	    
 
 	    public static final IRecipeSerializer<QuiverRecipe> QUIVER_RECIPE_SERIALIZER = new QuiverRecipe.Serializer();
 

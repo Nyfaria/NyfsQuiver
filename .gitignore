@@ -1,5 +1,6 @@
 # eclipse
 bin
+*-backup
 *.launch
 .settings
 .metadata

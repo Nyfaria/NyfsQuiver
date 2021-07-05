@@ -1,0 +1,20 @@
+{
+	"item.nyfsquiver.basicquiver": "화살통",
+	"item.nyfsquiver.ironquiver": "철 화살통",
+	"item.nyfsquiver.goldquiver": "금 화살통",
+	"item.nyfsquiver.silverquiver": "은 화살통",
+	"item.nyfsquiver.diamondquiver": "다이아몬드 화살통",
+	"item.nyfsquiver.netheritequiver": "네더라이트 화살통",
+	"item.nyfsquiver.copperquiver": "구리 화살통",
+	"gui.nyfsquiver.title": "화살통 이름",
+	"gui.nyfsquiver.name": "화살통 이름:",
+	"keys.category.nyfsquiver": "Nyf의 화살통",
+	"keys.nyfsquiver.nextslot": "다음 슬롯",
+	"keys.nyfsquiver.previousslot": "이전 슬롯",
+	"nyfsquiver.quivers.info.one": "%d개를 스택 할수있다",
+	"nyfsquiver.quivers.info.two": "'%s'로 열수있다.",
+	"nyfsquiver.quivers.info.inventory_index": "인벤토리 ID: %d",
+	"curios.identifier.quiver": "화살통",
+	"curios.identifier.arrows": "화살들"
+	
+}

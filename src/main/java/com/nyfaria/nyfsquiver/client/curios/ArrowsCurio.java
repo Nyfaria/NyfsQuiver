@@ -23,7 +23,7 @@ public class ArrowsCurio implements ICurio {
 	
 	@Override
 	public boolean canRender(String identifier, int index, LivingEntity livingEntity) {
-		return true;
+		return false;
 	}
 	
 	@Override

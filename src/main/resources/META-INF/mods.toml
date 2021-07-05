@@ -5,7 +5,7 @@ issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
 
 [[mods]] 
 modId="nyfsquiver"
-version="0.4.1"
+version="0.4.2"
 displayName="Nyf's Quiver"
 authors="TheNyfaria"
 description='''
@@ -14,6 +14,8 @@ Adds a Quiver Items that hold All sorts of Arrows and allow you to
 toggle which arrow stack in the quiver is the currently active arrow.
 Works with most Modded Arrows and Bows. If one doesn't work, comment which
 one on CurseForge and i'll make a point to include it in the next update.
+
+Thanks to Soumeh for the new Models!
 
 HUGE THANKS to SuperMartijn642 and his PackedUp mod for laying the ground
 code on which i built this mod!

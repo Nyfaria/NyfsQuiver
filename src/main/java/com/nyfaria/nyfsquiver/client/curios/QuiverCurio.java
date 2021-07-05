@@ -81,10 +81,9 @@ public class QuiverCurio implements ICurio {
 				
 				//matrixStack.mulPose( Vector3f.XN.rotation((0.5f) *(float) Math.PI));
 				
-				matrixStack.translate(0, 0, translate);
+				matrixStack.translate(0, -0.1, translate);
 				
 				//matrixStack.scale(1F, 1F, 1F);
-				
 				Minecraft.getInstance().getItemRenderer().renderStatic(quiverItem, ItemCameraTransforms.TransformType.HEAD, 0xF000F0, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer);
 				
 				matrixStack.popPose();
@@ -98,6 +97,7 @@ public class QuiverCurio implements ICurio {
 				&& quiverItem.getOrCreateTag().contains("nyfsquiver:slotIndex")) {
 
 		} else {
+			quiverItem.getOrCreateTag().putBoolean("equipped", true);
 			quiverItem.getOrCreateTag().putInt("nyfsquiver:slotIndex", 0);
 			quiverItem.getOrCreateTag().putInt("nyfsquiver:invIndex",
 					QuiverStorageManager.createInventoryIndex(((QuiverItem) quiverItem.getItem()).type));
@@ -120,6 +120,7 @@ public class QuiverCurio implements ICurio {
 
 	@Override
 	public void onUnequip(SlotContext slotContext, ItemStack newStack) {
+		quiverItem.getOrCreateTag().putBoolean("equipped", false);
 		System.out.println("Quiver UnEquipped");
 		ItemStack stack = CuriosApi.getCuriosHelper()
 				.findEquippedCurio(item -> item.getItem() instanceof ArrowItem, slotContext.getWearer())

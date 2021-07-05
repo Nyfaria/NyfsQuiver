@@ -1,6 +1,12 @@
 package com.nyfaria.nyfsquiver.client;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+
 import org.lwjgl.glfw.GLFW;
 
 import com.nyfaria.nyfsquiver.NyfsQuiver;
@@ -14,11 +20,13 @@ import com.nyfaria.nyfsquiver.packets.PacketPreviousSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import top.theillusivec4.curios.api.CuriosApi;
 
 public class ClientProxy extends CommonProxy {
 
@@ -33,6 +41,42 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.registerKeyBinding(NEXT_SLOT_KEY);
         ClientRegistry.registerKeyBinding(PREVIOUS_SLOT_KEY);
         MinecraftForge.EVENT_BUS.addListener(ClientProxy::onKey);
+        
+    	IItemPropertyGetter equipped = (stack, worldIn, entity) -> {
+    		
+    		ItemStack quiver = CuriosApi.getCuriosHelper()
+			.findEquippedCurio(NyfsQuiver.quiver_predicate, Minecraft.getInstance().player)
+			.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right)
+			.orElse(ItemStack.EMPTY);
+    		
+    		
+                return stack == quiver ? 1.0f : 0.0f;
+        };
+    	IItemPropertyGetter arrows = (stack, worldIn, entity) -> {
+    		
+    		ItemStack arrowsE = CuriosApi.getCuriosHelper()
+			.findEquippedCurio(NyfsQuiver.arrow_predicate, Minecraft.getInstance().player)
+			.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right)
+			.orElse(ItemStack.EMPTY);
+    		
+    		
+                return arrowsE == ItemStack.EMPTY ? 1.0f : 0.0f;
+        };
+        
+        ItemModelsProperties.register(NyfsQuiver.basicQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
+        ItemModelsProperties.register(NyfsQuiver.basicQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
+        ItemModelsProperties.register(NyfsQuiver.ironQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
+        ItemModelsProperties.register(NyfsQuiver.ironQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
+        ItemModelsProperties.register(NyfsQuiver.copperQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
+        ItemModelsProperties.register(NyfsQuiver.copperQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
+        ItemModelsProperties.register(NyfsQuiver.goldQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
+        ItemModelsProperties.register(NyfsQuiver.goldQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
+        ItemModelsProperties.register(NyfsQuiver.silverQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
+        ItemModelsProperties.register(NyfsQuiver.silverQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
+        ItemModelsProperties.register(NyfsQuiver.diamondQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
+        ItemModelsProperties.register(NyfsQuiver.diamondQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
+        ItemModelsProperties.register(NyfsQuiver.netheriteQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
+        ItemModelsProperties.register(NyfsQuiver.netheriteQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
     }
 
     @SuppressWarnings("resource")
