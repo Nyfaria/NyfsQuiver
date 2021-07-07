@@ -61,7 +61,7 @@ public class QuiverCurio implements ICurio {
 			
 			matrixStack.scale(1F, 1F, 1F);
 			
-			Minecraft.getInstance().getItemRenderer().renderStatic(quiverItem, ItemCameraTransforms.TransformType.FIXED, 0xF000F0, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer);
+			Minecraft.getInstance().getItemRenderer().renderStatic(quiverItem, ItemCameraTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer);
 			
 			matrixStack.popPose();*/
 			
@@ -84,7 +84,7 @@ public class QuiverCurio implements ICurio {
 				matrixStack.translate(0, -0.1, translate);
 				
 				//matrixStack.scale(1F, 1F, 1F);
-				Minecraft.getInstance().getItemRenderer().renderStatic(quiverItem, ItemCameraTransforms.TransformType.HEAD, 0xF000F0, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer);
+				Minecraft.getInstance().getItemRenderer().renderStatic(quiverItem, ItemCameraTransforms.TransformType.HEAD, light, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer);
 				
 				matrixStack.popPose();
 
