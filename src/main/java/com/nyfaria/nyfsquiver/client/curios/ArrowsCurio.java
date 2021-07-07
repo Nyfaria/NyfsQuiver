@@ -63,7 +63,7 @@ public class ArrowsCurio implements ICurio {
 		matrixStack.scale(0.5F, 0.5F, 0.5F);
 		
 		
-		Minecraft.getInstance().getItemRenderer().renderStatic(quiverItem, ItemCameraTransforms.TransformType.FIXED, 0xF000F0, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer);
+		Minecraft.getInstance().getItemRenderer().renderStatic(quiverItem, ItemCameraTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer);
 		
 		matrixStack.popPose();
 	}
