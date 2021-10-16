@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-	"#nyfsquiver:quiver_items"
-    ]
+    "minecraft:firework_rocket"
+  ]
 }

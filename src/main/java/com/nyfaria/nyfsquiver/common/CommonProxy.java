@@ -36,19 +36,6 @@ public class CommonProxy {
     	}
     	System.out.println("OldSlot: " + currentSlot + " NewSlot: " + newSlot);
     	stack.getOrCreateTag().putInt("nyfsquiver:slotIndex", newSlot);
-    	/*ItemStack currentArrowStack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.arrow_predicate,player).map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
-    	QuiverStorageManager.getInventory(stack.getOrCreateTag().getInt("nyfsquiver:invIndex")).setStackInSlot(currentSlot, currentArrowStack);
-    	ItemStack newStack = QuiverStorageManager.getInventory(stack.getOrCreateTag().getInt("nyfsquiver:invIndex")).getStackInSlot(newSlot);
-    	CuriosApi.getCuriosHelper().getCuriosHandler(player).map(ICuriosItemHandler::getCurios)
-		.map(stringICurioStacksHandlerMap -> stringICurioStacksHandlerMap.get("arrows"))
-		.map(ICurioStacksHandler::getStacks)
-		.ifPresent(curioStackHandler -> curioStackHandler.setStackInSlot(0,ItemStack.EMPTY));
-    	CuriosApi.getCuriosHelper().getCuriosHandler(player).map(ICuriosItemHandler::getCurios)
-		.map(stringICurioStacksHandlerMap -> stringICurioStacksHandlerMap.get("arrows"))
-		.map(ICurioStacksHandler::getStacks)
-		.ifPresent(curioStackHandler -> curioStackHandler.setStackInSlot(0,newStack));
-		QuiverStorageManager.getInventory(stack.getOrCreateTag().getInt("nyfsquiver:invIndex")).setStackInSlot(newSlot, ItemStack.EMPTY);*/
-	
     }
 
     public static void openQuiverInventory(ItemStack stack, PlayerEntity player, int bagSlot){
@@ -60,22 +47,23 @@ public class CommonProxy {
             stack.setTag(compound);
         }else{
             QuiverInventory inventory = QuiverStorageManager.getInventory(compound.getInt("nyfsquiver:invIndex"));
-            int rows = inventory.getSlots() / 9;
+            int rows = inventory.rows;
+            int columns = inventory.columns;
             if(rows != type.getRows())
-                inventory.adjustSize(type.getRows());
+                inventory.adjustSize(type.getRows(),type.getColumns());
+            if(columns != type.getColumns())
+                inventory.adjustSize(type.getRows(),type.getColumns());
         }
         int inventoryIndex = compound.getInt("nyfsquiver:invIndex");
         QuiverInventory inventory = QuiverStorageManager.getInventory(inventoryIndex);
-        NetworkHooks.openGui((ServerPlayerEntity)player, new QuiverItem.ContainerProvider(stack.getDisplayName(), bagSlot, inventoryIndex, inventory), a -> {
-            a.writeInt(bagSlot);
-            a.writeInt(inventoryIndex);
-            a.writeInt(inventory.rows);
-            a.writeInt(inventory.bagsInThisBag.size());
-            inventory.bagsInThisBag.forEach(a::writeInt);
-            a.writeInt(inventory.bagsThisBagIsIn.size());
-            inventory.bagsThisBagIsIn.forEach(a::writeInt);
-            a.writeInt(inventory.layer);
-        });
+        if(bagSlot != -6) {
+            NetworkHooks.openGui((ServerPlayerEntity) player, new QuiverItem.ContainerProvider(stack.getDisplayName(), bagSlot, inventoryIndex, inventory), a -> {
+                a.writeInt(bagSlot);
+                a.writeInt(inventoryIndex);
+                a.writeInt(inventory.rows);
+                a.writeInt(inventory.columns);
+            });
+        }
     }
 
 }

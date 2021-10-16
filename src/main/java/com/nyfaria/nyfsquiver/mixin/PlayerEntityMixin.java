@@ -1,6 +1,7 @@
 package com.nyfaria.nyfsquiver.mixin;
 
 
+import com.nyfaria.nyfsquiver.init.TagInit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShootableItem;
@@ -25,12 +26,8 @@ public class PlayerEntityMixin
 		if (!(shootable.getItem() instanceof ShootableItem)) {
 			return;
 		}
-		ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof ArrowItem,(PlayerEntity)(Object)this)
+		ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),(PlayerEntity)(Object)this)
 				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
-		if(stack.isEmpty() && shootable.getItem() instanceof CrossbowItem) {
-			stack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof FireworkRocketItem,(PlayerEntity)(Object)this)
-					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
-		}
 		
 		if (!stack.isEmpty())cir.setReturnValue(stack);
 		

@@ -1,11 +1,12 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://sizableshrimp.me/maven' }
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '4.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
@@ -14,7 +15,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.4.2'
+version = '0.5.2'
 group = 'com.nyfaria.nyfsquiver' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'NyfsQuiver'
 
@@ -22,12 +23,13 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.16.5'
+    mappings channel: 'parchment', version: '2021.08.08-1.16.5'
     runs {
         client {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            args '--username', 'Dev###'
 
 
             args '-mixin.config=nyfsquiver.mixins.json'
@@ -71,6 +73,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    mavenLocal()
     maven {
         url = "https://maven.theillusivec4.top/"
     }
@@ -80,9 +83,7 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-	maven {
-        url = "https://maven.theillusivec4.top/"
-    }
+
 }
 
 mixin {
@@ -90,18 +91,20 @@ mixin {
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:20.1.0'
+
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
 
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.16'
-	
-    // Mixin annotation processor - generates the refmap
+
     annotationProcessor "org.spongepowered:mixin:0.8.2:processor"
     
     //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
-    compile fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
+    compile fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.3")
     compileOnly fg.deobf("curse.maven:cofh-core-69162:3249453")
+    compileOnly fg.deobf("curse.maven:spartan-weaponry-278141:3164046")
 
 }
 

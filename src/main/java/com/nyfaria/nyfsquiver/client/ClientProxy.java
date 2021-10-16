@@ -41,17 +41,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.registerKeyBinding(NEXT_SLOT_KEY);
         ClientRegistry.registerKeyBinding(PREVIOUS_SLOT_KEY);
         MinecraftForge.EVENT_BUS.addListener(ClientProxy::onKey);
-        
-    	IItemPropertyGetter equipped = (stack, worldIn, entity) -> {
-    		
-    		ItemStack quiver = CuriosApi.getCuriosHelper()
-			.findEquippedCurio(NyfsQuiver.quiver_predicate, Minecraft.getInstance().player)
-			.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right)
-			.orElse(ItemStack.EMPTY);
-    		
-    		
-                return stack == quiver ? 1.0f : 0.0f;
-        };
+
     	IItemPropertyGetter arrows = (stack, worldIn, entity) -> {
     		
     		ItemStack arrowsE = CuriosApi.getCuriosHelper()
@@ -62,21 +52,7 @@ public class ClientProxy extends CommonProxy {
     		
                 return arrowsE == ItemStack.EMPTY ? 1.0f : 0.0f;
         };
-        
-        ItemModelsProperties.register(NyfsQuiver.basicQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
-        ItemModelsProperties.register(NyfsQuiver.basicQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
-        ItemModelsProperties.register(NyfsQuiver.ironQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
-        ItemModelsProperties.register(NyfsQuiver.ironQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
-        ItemModelsProperties.register(NyfsQuiver.copperQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
-        ItemModelsProperties.register(NyfsQuiver.copperQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
-        ItemModelsProperties.register(NyfsQuiver.goldQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
-        ItemModelsProperties.register(NyfsQuiver.goldQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
-        ItemModelsProperties.register(NyfsQuiver.silverQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
-        ItemModelsProperties.register(NyfsQuiver.silverQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
-        ItemModelsProperties.register(NyfsQuiver.diamondQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
-        ItemModelsProperties.register(NyfsQuiver.diamondQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
-        ItemModelsProperties.register(NyfsQuiver.netheriteQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"equipped"), equipped);
-        ItemModelsProperties.register(NyfsQuiver.netheriteQuiver.getItem(), new ResourceLocation(NyfsQuiver.MOD_ID,"arrows"), arrows);
+
     }
 
     @SuppressWarnings("resource")

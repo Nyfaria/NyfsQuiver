@@ -4,12 +4,12 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "nyfsquiver.refmap.json",
   "mixins": [
-    "PlayerEntityMixin",
     "ArrowEntityMixin",
     "CoFHMixin",
-	"ContainerAccessor",
-    "CurioContainerMixin",
-    "CrossBowMixin"
+    "ContainerAccessor",
+    "CrossBowMixin",
+    "CuriosContainerMixin",
+    "PlayerEntityMixin"
   ],
   "client": [],
   "server": [],

@@ -15,7 +15,7 @@ import com.nyfaria.nyfsquiver.mixin.ContainerAccessor;
 public class MixinEvents {
 
     public static void onCurioContainerCreated(CuriosContainer curiosContainer, PlayerEntity player) {
-        /*curiosContainer.curiosHandler.ifPresent(iCuriosItemHandler -> {
+        curiosContainer.curiosHandler.ifPresent(iCuriosItemHandler -> {
             Map<String, ICurioStacksHandler> curioMap = iCuriosItemHandler.getCurios();
 
             for (String identifier : curioMap.keySet()) {
@@ -25,6 +25,6 @@ public class MixinEvents {
                     ((ContainerAccessor) curiosContainer).$addSlot(new CurioSlot(player, iDynamicStackHandler, 0, identifier, NQConfig.x.get() + 1, NQConfig.y.get() + 1, stackHandler.getRenders()));
                 }
             }
-        });*/
+        });
     }
 }

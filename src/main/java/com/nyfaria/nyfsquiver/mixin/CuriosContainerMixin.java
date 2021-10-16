@@ -18,17 +18,16 @@ import top.theillusivec4.curios.common.inventory.container.CuriosContainer;
 import javax.annotation.Nullable;
 
 @Mixin(CuriosContainer.class)
-abstract class CurioContainerMixin extends Container {
-	
+abstract class CuriosContainerMixin extends Container {
+
 	@Shadow @Final private PlayerEntity player;
 
-	protected CurioContainerMixin(@Nullable ContainerType<?> type, int id) {
+	protected CuriosContainerMixin(@Nullable ContainerType<?> type, int id) {
 		super(type, id);
 	}
-	/*
+
 	@Inject(at = @At("RETURN"), method = "<init>(ILnet/minecraft/entity/player/PlayerInventory;)V",remap = false)
 	private void init(int windowId, PlayerInventory playerInventory, CallbackInfo ci) {
 		MixinEvents.onCurioContainerCreated((CuriosContainer)(Object)this,player);
-	}*/
+	}
 }
- 

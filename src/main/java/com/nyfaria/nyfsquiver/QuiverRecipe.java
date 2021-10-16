@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.nyfaria.nyfsquiver.common.items.QuiverItem;
 
+import com.nyfaria.nyfsquiver.common.items.QuiverStorageManager;
+import com.nyfaria.nyfsquiver.common.items.QuiverType;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.CraftingInventory;
@@ -14,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -40,7 +43,14 @@ public class QuiverRecipe extends ShapedRecipe {
 	                return result;
 	            }
 	        }
-	        return this.getResultItem().copy();
+	        ItemStack quiverItem = this.getResultItem().copy();
+
+			CompoundNBT compound  = quiverItem.getOrCreateTag();
+			compound.putInt("nyfsquiver:invIndex", QuiverStorageManager.createInventoryIndex(QuiverType.BASIC));
+			compound.putInt("nyfsquiver:slotIndex", 0);
+			quiverItem.setTag(compound);
+
+	        return quiverItem;
 	    }
 
 	    @Override

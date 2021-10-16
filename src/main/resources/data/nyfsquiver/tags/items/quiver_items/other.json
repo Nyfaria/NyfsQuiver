@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#spartanweaponry:bolts",
+      "required": false
+    }
+  ]
+}

@@ -1,53 +1,66 @@
 package com.nyfaria.nyfsquiver.common.items;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.nyfaria.nyfsquiver.NQConfig_Client;
+import com.nyfaria.nyfsquiver.NyfsQuiver;
+import com.nyfaria.nyfsquiver.client.ClientProxy;
+import com.nyfaria.nyfsquiver.client.render.model.OldQuiverModel;
+import com.nyfaria.nyfsquiver.client.render.model.QuiverModel;
+import com.nyfaria.nyfsquiver.common.CommonProxy;
+import com.nyfaria.nyfsquiver.common.containers.QuiverContainer;
+import com.nyfaria.nyfsquiver.init.TagInit;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.lwjgl.glfw.GLFW;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurio;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import javax.annotation.Nullable;
-
-import org.lwjgl.glfw.GLFW;
-
-import com.nyfaria.nyfsquiver.NyfsQuiver;
-import com.nyfaria.nyfsquiver.client.ClientProxy;
-import com.nyfaria.nyfsquiver.client.curios.QuiverCurio;
-import com.nyfaria.nyfsquiver.common.CommonProxy;
-import com.nyfaria.nyfsquiver.common.containers.QuiverContainer;
-
 import java.util.List;
 
-public class QuiverItem extends Item{
+//import com.nyfaria.nyfsquiver.client.curios.QuiverCurio;
 
+public class QuiverItem extends Item implements ICurioItem {
+
+	private Object model;
 	public QuiverType type;
 
 	public QuiverItem(QuiverType type) {
-		super(type.isEnabled() ? new Item.Properties().stacksTo(1).tab(ItemGroup.TAB_COMBAT)
-				: new Item.Properties().stacksTo(1));
+		super(type.getFireProof() ? new Item.Properties().stacksTo(1).tab(ItemGroup.TAB_COMBAT).fireResistant() : new Item.Properties().stacksTo(1).tab(ItemGroup.TAB_COMBAT));
 		this.type = type;
 		this.setRegistryName(type.getRegistryName());
-
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(@NotNull ItemStack stack, World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
 
@@ -61,7 +74,7 @@ public class QuiverItem extends Item{
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+	public ActionResult<ItemStack> use(@NotNull World worldIn, PlayerEntity playerIn, @NotNull Hand handIn) {
 
 		ItemStack stack = playerIn.getItemInHand(handIn);
 		if (!playerIn.isShiftKeyDown()) {
@@ -79,10 +92,10 @@ public class QuiverItem extends Item{
 	
 
 	public static class ContainerProvider implements INamedContainerProvider {
-		private int inventoryIndex;
-		private ITextComponent displayName;
-		private int bagSlot;
-		private QuiverInventory inventory;
+		private final int inventoryIndex;
+		private final ITextComponent displayName;
+		private final int bagSlot;
+		private final QuiverInventory inventory;
 
 		public ContainerProvider(ITextComponent displayName, int bagSlot, int inventoryIndex,
 				QuiverInventory inventory) {
@@ -93,21 +106,134 @@ public class QuiverItem extends Item{
 		}
 
 		@Override
-		public ITextComponent getDisplayName() {
+		public @NotNull ITextComponent getDisplayName() {
 			return this.displayName;
 		}
 
 		@Nullable
 		@Override
-		public Container createMenu(int id, PlayerInventory playerInv, PlayerEntity player) {
+		public Container createMenu(int id, @NotNull PlayerInventory playerInv, @NotNull PlayerEntity player) {
 			return new QuiverContainer(id, playerInv, this.bagSlot, this.inventoryIndex, this.inventory.rows,
-					this.inventory.bagsInThisBag, this.inventory.bagsThisBagIsIn, this.inventory.layer);
+					this.inventory.columns);
 		}
 	}
 
-	@Nullable
+	//@Nullable
+	//@Override
+	//public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+	//	return NyfsQuiver.createProvider(new QuiverCurio(stack));
+	//}
+
+
+
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-		return NyfsQuiver.createProvider(new QuiverCurio(stack));
+	public void render(String identifier, int index, MatrixStack matrixStack,
+					   IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity living,
+					   float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
+					   float netHeadYaw, float headPitch, ItemStack stack) {
+		ICurio.RenderHelper.translateIfSneaking(matrixStack, living);
+		ICurio.RenderHelper.rotateIfSneaking(matrixStack, living);
+
+		ItemStack arrowsE = CuriosApi.getCuriosHelper()
+				.findEquippedCurio(NyfsQuiver.arrow_predicate, living)
+				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right)
+				.orElse(ItemStack.EMPTY);
+
+		ResourceLocation QUIVER_TEXTURE;
+		if(NQConfig_Client.CLIENT.OLD_MODEL.get())
+		{
+
+			QUIVER_TEXTURE = new ResourceLocation(NyfsQuiver.MOD_ID,
+					"textures/items/old" + type.getRegistryName() + ".png");
+			if (!(this.model instanceof OldQuiverModel)) {
+				this.model = new OldQuiverModel<>();
+			}
+			OldQuiverModel<?> quiverModel = (OldQuiverModel<?>) this.model;
+
+			quiverModel.displayArrows = arrowsE == ItemStack.EMPTY;
+			IVertexBuilder vertexBuilder = ItemRenderer
+					.getFoilBuffer(renderTypeBuffer, quiverModel.renderType(QUIVER_TEXTURE), false,
+							stack.hasFoil());
+			quiverModel
+					.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F,
+							1.0F);
+
+		}
+		else{
+
+			matrixStack.mulPose(Vector3f.YN.rotationDegrees(180));
+			QUIVER_TEXTURE = new ResourceLocation(NyfsQuiver.MOD_ID,
+					"textures/back/" + type.getRegistryName() + ".png");
+			if (!(this.model instanceof QuiverModel)) {
+				this.model = new QuiverModel<>(arrowsE == ItemStack.EMPTY);
+			}
+			QuiverModel<?> quiverModel = (QuiverModel<?>) this.model;
+
+			quiverModel.displayArrows = arrowsE == ItemStack.EMPTY;
+			IVertexBuilder vertexBuilder = ItemRenderer
+					.getFoilBuffer(renderTypeBuffer, quiverModel.renderType(QUIVER_TEXTURE), false,
+							stack.hasFoil());
+			quiverModel
+					.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F,
+							1.0F);
+		}
+	}
+
+	@Override
+	public boolean canRender(String identifier, int index, LivingEntity livingEntity, ItemStack stack) {
+		return !livingEntity.isInvisible();
+	}
+
+	@Override
+	public void onEquip(SlotContext slotContext, ItemStack newStack,ItemStack quiverItem) {
+		if (quiverItem.getOrCreateTag().contains("nyfsquiver:invIndex")
+				&& quiverItem.getOrCreateTag().contains("nyfsquiver:slotIndex")) {
+
+		} else {
+
+			CompoundNBT compound  = quiverItem.getOrCreateTag();
+			compound.putInt("nyfsquiver:invIndex", QuiverStorageManager.createInventoryIndex(this.type));
+			compound.putInt("nyfsquiver:slotIndex", 0);
+			quiverItem.setTag(compound);
+		}
+		ItemStack stack = QuiverStorageManager.getInventory(quiverItem.getOrCreateTag().getInt("nyfsquiver:invIndex"))
+				.getStackInSlot(quiverItem.getOrCreateTag().getInt("nyfsquiver:slotIndex"));
+		ItemStack checkStack = CuriosApi.getCuriosHelper()
+				.findEquippedCurio(NyfsQuiver.arrow_predicate, slotContext.getWearer())
+				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right)
+				.orElse(ItemStack.EMPTY);
+		if (checkStack == ItemStack.EMPTY) {
+			CuriosApi.getCuriosHelper().getCuriosHandler(slotContext.getWearer()).map(ICuriosItemHandler::getCurios)
+					.map(stringICurioStacksHandlerMap -> stringICurioStacksHandlerMap.get("arrows"))
+					.map(ICurioStacksHandler::getStacks)
+					.ifPresent(curioStackHandler -> curioStackHandler.setStackInSlot(0, stack));
+			QuiverStorageManager.getInventory(quiverItem.getOrCreateTag().getInt("nyfsquiver:invIndex"))
+					.setStackInSlot(quiverItem.getOrCreateTag().getInt("nyfsquiver:slotIndex"), ItemStack.EMPTY);
+		}
+	}
+
+
+	@Override
+	public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack quiverItem) {
+		quiverItem.getOrCreateTag().putBoolean("equipped", false);
+		System.out.println("Quiver UnEquipped");
+		ItemStack stack = CuriosApi.getCuriosHelper()
+				.findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS), slotContext.getWearer())
+				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right)
+				.orElse(ItemStack.EMPTY);
+/*		if(stack.isEmpty()) {
+			stack = CuriosApi.getCuriosHelper()
+					.findEquippedCurio(item -> item.getItem() instanceof FireworkRocketItem, slotContext.getWearer())
+					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right)
+					.orElse(ItemStack.EMPTY);
+		}*/
+		QuiverStorageManager.getInventory(quiverItem.getOrCreateTag().getInt("nyfsquiver:invIndex"))
+				.setStackInSlot(quiverItem.getOrCreateTag().getInt("nyfsquiver:slotIndex"), stack);
+		CuriosApi.getCuriosHelper().getCuriosHandler(slotContext.getWearer()).map(ICuriosItemHandler::getCurios)
+				.map(stringICurioStacksHandlerMap -> stringICurioStacksHandlerMap.get("arrows"))
+				.map(ICurioStacksHandler::getStacks)
+				.ifPresent(curioStackHandler -> curioStackHandler.setStackInSlot(0, ItemStack.EMPTY));
+
 	}
 }
+

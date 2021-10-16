@@ -59,7 +59,7 @@ public class QuiverStorageManager {
 
 	    public static int createInventoryIndex(QuiverType type){
 	        int index = inventoryIndex++;
-	        inventories.put(index, new QuiverInventory(false, index, type.getRows()));
+	        inventories.put(index, new QuiverInventory(false, index, type.getRows(),type.getColumns()));
 	        return index;
 	    }
 
@@ -70,121 +70,52 @@ public class QuiverStorageManager {
 	    }
 
 	    public static void load(){
-	        File[] files = directory.listFiles();
-	        inventories.clear();
-	        if(files == null)
-	            files = new File[0];
-	        int highest = -1;
-	        for(File file : files){
-	            String name = file.getName();
-	            if(!name.startsWith("inventory") || !name.endsWith(".nbt"))
-	                continue;
-	            int index;
-	            try{
-	                index = Integer.parseInt(name.substring("inventory".length(), name.length() - ".nbt".length()));
-	            }catch(NumberFormatException e){continue;}
-	            if(index > highest)
-	                highest = index;
+			File[] files = directory.listFiles();
+			inventories.clear();
+			if(files == null)
+				files = new File[0];
+			int highest = -1;
+			for(File file : files){
+				String name = file.getName();
+				if(!name.startsWith("inventory") || !name.endsWith(".nbt"))
+					continue;
+				int index;
+				try{
+					index = Integer.parseInt(name.substring("inventory".length(), name.length() - ".nbt".length()));
+				}catch(NumberFormatException e){continue;}
+				if(index > highest)
+					highest = index;
 
-	            // for validation
-	            QuiverInventory inventory = new QuiverInventory(false, index);
-	            inventory.load(file);
-	            inventory.bagsThisBagIsIn.clear();
-	            inventory.bagsThisBagIsDirectlyIn.clear();
-	            inventory.bagsInThisBag.clear();
-	            inventory.bagsDirectlyInThisBag.clear();
-	            inventory.layer = 0;
-	            inventories.put(index, inventory);
-	        }
+				// for validation
+				QuiverInventory inventory = new QuiverInventory(false, index);
+				inventory.load(file);
+				inventories.put(index, inventory);
+			}
 
-	        inventoryIndex = highest + 1;
+			inventoryIndex = highest + 1;
 
-	        // validation
-	        for(Map.Entry<Integer,QuiverInventory> entry : inventories.entrySet()){
-	            QuiverInventory inventory = entry.getValue();
-	            for(ItemStack stack : inventory.getStacks()){
-	                if(stack.getItem() instanceof QuiverItem && stack.getOrCreateTag().contains("nyfsquiver:invIndex")){
-	                    int index = stack.getTag().getInt("nyfsquiver:invIndex");
-	                    if(!inventories.containsKey(index)){
-	                        stack.getTag().remove("nyfsquiver:invIndex");
-	                        continue;
-	                    }
-	                    inventory.bagsDirectlyInThisBag.add(index);
-	                    inventories.get(index).bagsThisBagIsDirectlyIn.add(entry.getKey());
-	                }
-	            }
-	        }
+			// validation
+			for(Map.Entry<Integer,QuiverInventory> entry : inventories.entrySet()){
+				QuiverInventory inventory = entry.getValue();
+				for(ItemStack stack : inventory.getStacks()){
+					if(stack.getItem() instanceof QuiverItem && stack.getOrCreateTag().contains("invIndex")){
+						int index = stack.getTag().getInt("invIndex");
+						if(!inventories.containsKey(index)){
+							stack.getTag().remove("invIndex");
+							continue;
+						}
+					}
+				}
+			}
 
-	        for(Map.Entry<Integer,QuiverInventory> entry : inventories.entrySet()){
-	            QuiverInventory inventory = entry.getValue();
-	            inventory.layer = getBagsThisBagIsIn(entry.getKey(), inventory.bagsThisBagIsIn);
-	            getBagsInThisBag(entry.getKey(), inventory.bagsInThisBag);
-	        }
+			for(Map.Entry<Integer,QuiverInventory> entry : inventories.entrySet()){
+				QuiverInventory inventory = entry.getValue();
+			}
 
-	        save();
-	        inventories.clear();
+			save();
+			inventories.clear();
 	    }
 
-	    private static Integer getBagsThisBagIsIn(int index, Set<Integer> bags){
-	        if(getInventory(index) == null)
-	            return 0;
-
-	        int highest = 0;
-
-	        for(int id : getInventory(index).bagsThisBagIsDirectlyIn){
-	            if(!bags.contains(id)){
-	                bags.add(id);
-	                highest = Math.max(highest, getBagsThisBagIsIn(id, bags)) + 1;
-	            }
-	        }
-
-	        return highest;
-	    }
-
-	    private static void getBagsInThisBag(int index, Set<Integer> bags){
-	        if(getInventory(index) == null)
-	            return;
-
-	        for(int id : getInventory(index).bagsDirectlyInThisBag){
-	            if(!bags.contains(id)){
-	                bags.add(id);
-	                getBagsInThisBag(id, bags);
-	            }
-	        }
-	    }
-
-	    public static void onInsert(int index, int to){
-	        getInventory(index).bagsThisBagIsDirectlyIn.add(to);
-	        getInventory(to).bagsDirectlyInThisBag.add(index);
-	        updateRelativeBags(index, to);
-	    }
-
-	    public static void onExtract(int index, int from){
-	        getInventory(index).bagsThisBagIsDirectlyIn.remove(from);
-	        getInventory(from).bagsDirectlyInThisBag.remove(index);
-	        updateRelativeBags(index, from);
-	    }
-
-	    private static void updateRelativeBags(int child, int parent){
-	        QuiverInventory childInventory = getInventory(child);
-	        QuiverInventory parentInventory = getInventory(parent);
-	        Set<Integer> bagsBefore = parentInventory.bagsThisBagIsIn;
-	        bagsBefore.add(parent);
-	        Set<Integer> bagsAfter = childInventory.bagsInThisBag;
-	        bagsAfter.add(child);
-
-	        for(int id : bagsBefore){
-	            QuiverInventory inv = getInventory(id);
-	            inv.bagsInThisBag.clear();
-	            getBagsInThisBag(id, inv.bagsInThisBag);
-	        }
-
-	        for(int id : bagsAfter){
-	            QuiverInventory inv = getInventory(id);
-	            inv.bagsThisBagIsIn.clear();
-	            inv.layer = getBagsThisBagIsIn(id, inv.bagsThisBagIsIn);
-	        }
-	    }
 
 	    @SuppressWarnings("resource")
 		@SubscribeEvent

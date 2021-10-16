@@ -32,6 +32,9 @@ public abstract class ArrowEntityMixin
 	protected abstract ItemStack getPickupItem();
 
 
+	/**
+	 * @author
+	 */
 	@Overwrite
 	public void playerTouch(PlayerEntity p_70100_1_) 
 	{

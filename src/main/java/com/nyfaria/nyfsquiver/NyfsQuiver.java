@@ -1,5 +1,6 @@
 package com.nyfaria.nyfsquiver;
 
+import com.nyfaria.nyfsquiver.init.TagInit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
@@ -14,6 +15,7 @@ import net.minecraft.item.ShootableItem;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -148,9 +150,11 @@ public class NyfsQuiver
 	        CHANNEL.registerMessage(2, PacketNextSlot.class, (msg, buffer) -> {},buffer -> new PacketNextSlot(0), PacketNextSlot::handle);
 	        CHANNEL.registerMessage(3, PacketPreviousSlot.class, (msg, buffer) -> {},buffer -> new PacketPreviousSlot(0), PacketPreviousSlot::handle);
 
+			TagInit.init();
+
 			if (FMLEnvironment.dist == Dist.CLIENT) {
-				//EVENT_BUS.addListener(this::drawSlotBackground);
 				bus.addListener(this::stitchTextures);
+				//EVENT_BUS.addListener(this::drawSlotBackground);
 			}
 	    }
 
@@ -160,28 +164,29 @@ public class NyfsQuiver
 	    }
 
 	    public void interModEnqueue(InterModEnqueueEvent e){
-		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).icon(new ResourceLocation("nyfsquiver","gui/basicquiver")).build());
+		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).hide().icon(new ResourceLocation("nyfsquiver","gui/basicquiver")).build());
 		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("arrows").size(1).hide().build());
 	    }
 
-/*		private void drawSlotBackground(GuiContainerEvent.DrawBackground e) {
+		private void drawSlotBackground(GuiContainerEvent.DrawBackground e) {
 			if (e.getGuiContainer() instanceof CuriosScreen) {
-				Minecraft.getInstance().getTextureManager().getTexture(SLOT);
+				Minecraft.getInstance().getTextureManager().bind(INVENTORY_LOCATION);
 				CuriosScreen curiosScreen = (CuriosScreen) e.getGuiContainer();
 				int i = curiosScreen.getGuiLeft();
 				int j = curiosScreen.getGuiTop();
-				curiosScreen.blit(e.getMatrixStack(),i + NQConfig.x.get(), j + NQConfig.y.get(), 7, 7, 18, 18);
+				curiosScreen.blit(e.getMatrixStack(), i + NQConfig.x.get(), j + NQConfig.y.get(), 7, 7, 18, 18);
 			}
 		} 
-	*/
+
 		
 	    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 	    public static class RegistryEvents {
 	        @SubscribeEvent
-	        public static void onItemRegistry(final RegistryEvent.Register<Item> e){
-	            for(QuiverType type : QuiverType.values())
-	                e.getRegistry().register(new QuiverItem(type));
-	        }
+	        public static void onItemRegistry(final RegistryEvent.Register<Item> e) {
+				for (QuiverType type : QuiverType.values())
+					if (type.enabled)
+						e.getRegistry().register(new QuiverItem(type));
+			}
 
 	        @SubscribeEvent
 	        public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> e){
@@ -189,16 +194,9 @@ public class NyfsQuiver
 	                int bagSlot = data.readInt();
 	                int inventoryIndex = data.readInt();
 	                int rows = data.readInt();
-	                int size = data.readInt();
-	                Set<Integer> bagsInThisBag = new HashSet<>(size);
-	                for(int i = 0; i < size; i++)
-	                    bagsInThisBag.add(data.readInt());
-	                size = data.readInt();
-	                Set<Integer> bagsThisBagIsIn = new HashSet<>(size);
-	                for(int i = 0; i < size; i++)
-	                    bagsThisBagIsIn.add(data.readInt());
-	                int layer = data.readInt();
-	                return new QuiverContainer(windowId, inv, bagSlot, inventoryIndex, rows, bagsInThisBag, bagsThisBagIsIn, layer);
+	                int columns = data.readInt();
+
+	                return new QuiverContainer(windowId, inv, bagSlot, inventoryIndex, rows, columns);
 	            }).setRegistryName("container"));
 	        }
 
@@ -243,7 +241,7 @@ public class NyfsQuiver
 	    
 		@SuppressWarnings("unused")
 		public static List<ItemStack> findAmmos(PlayerEntity player, ItemStack shootable) {
-			ItemStack itemstack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof ArrowItem ||item.getItem() instanceof FireworkRocketItem,player)
+			ItemStack itemstack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),player)
 					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 			ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem,player)
 					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);

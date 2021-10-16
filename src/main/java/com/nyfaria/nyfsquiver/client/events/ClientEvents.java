@@ -52,14 +52,16 @@ public class ClientEvents {
                 if(NyfsQuiver.interpolation < 1.0f && !Minecraft.getInstance().isPaused() && NQConfig_Client.hides()) {
                     NyfsQuiver.interpolation += 0.01f;
                 }
-            } else if(player.getOffhandItem().getItem() instanceof ShootableItem) {
+            }
+            else if(player.getOffhandItem().getItem() instanceof ShootableItem) {
                 playerHand = player.getOffhandItem();
                 NyfsQuiver.lastHeld = playerHand;
 
                 if(NyfsQuiver.interpolation < 1.0f && !Minecraft.getInstance().isPaused() && NQConfig_Client.hides()) {
                 	NyfsQuiver.interpolation += 0.01f;
                 }
-            } else {
+            }
+            else {
                 if(!NQConfig_Client.animates() && NQConfig_Client.hides()) {
                     return;
                 }
@@ -149,7 +151,8 @@ public class ClientEvents {
                                 event.getMatrixStack().mulPose(Vector3f.ZP.rotationDegrees(-20));
                             } else {
                                 event.getMatrixStack().mulPose(Vector3f.ZP.rotationDegrees(-30));
-                            }                                IRenderTypeBuffer.Impl buffer2 = Minecraft.getInstance().renderBuffers().bufferSource();
+                            }
+                            IRenderTypeBuffer.Impl buffer2 = Minecraft.getInstance().renderBuffers().bufferSource();
                             RenderSystem.enableDepthTest();
                             RenderSystem.disableCull();
                             Minecraft.getInstance().getItemRenderer().renderStatic(readyArrow, ItemCameraTransforms.TransformType.FIXED, i == 0 ? 15728880 : 14540253, OverlayTexture.NO_OVERLAY, event.getMatrixStack(), buffer);

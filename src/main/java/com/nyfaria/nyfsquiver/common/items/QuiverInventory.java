@@ -1,6 +1,7 @@
 package com.nyfaria.nyfsquiver.common.items;
 
 import com.google.common.collect.Lists;
+import com.nyfaria.nyfsquiver.init.TagInit;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ArrowItem;
@@ -24,21 +25,15 @@ public class QuiverInventory implements IItemHandlerModifiable {
     private final ArrayList<ItemStack> stacks = new ArrayList<>();
     private final int inventoryIndex;
     public int rows;
-    public Set<Integer> bagsInThisBag = new HashSet<>();
-    public Set<Integer> bagsDirectlyInThisBag = new HashSet<>();
-    public Set<Integer> bagsThisBagIsIn = new HashSet<>();
-    public Set<Integer> bagsThisBagIsDirectlyIn = new HashSet<>();
-    public int layer;
+    public int columns;
 
-    public QuiverInventory(boolean remote, int inventoryIndex, int rows, Set<Integer> bagsInThisBag, Set<Integer> bagsThisBagIsIn, int layer){
+    public QuiverInventory(boolean remote, int inventoryIndex, int rows, int columns){
         this.remote = remote;
         this.inventoryIndex = inventoryIndex;
         this.rows = rows;
-        for(int a = 0; a < this.rows * 9; a++)
+        this.columns = columns;
+        for(int a = 0; a < this.rows * this.columns; a++)
             this.stacks.add(ItemStack.EMPTY);
-        this.bagsInThisBag.addAll(bagsInThisBag);
-        this.bagsThisBagIsIn.addAll(bagsThisBagIsIn);
-        this.layer = layer;
     }
 
     
@@ -47,7 +42,7 @@ public class QuiverInventory implements IItemHandlerModifiable {
         this.remote = remote;
         this.inventoryIndex = inventoryIndex;
         this.rows = rows;
-        for(int a = 0; a < this.rows * 9; a++)
+        for(int a = 0; a < this.rows * this.columns; a++)
             this.stacks.add(ItemStack.EMPTY);
     }
 
@@ -58,7 +53,7 @@ public class QuiverInventory implements IItemHandlerModifiable {
 
     @Override
     public int getSlots(){
-        return this.rows * 9;
+        return this.rows * this.columns;
     }
 
     @Nonnull
@@ -80,8 +75,6 @@ public class QuiverInventory implements IItemHandlerModifiable {
 
                 if(!this.remote && stack.getItem() instanceof QuiverItem && stack.getOrCreateTag().contains("nyfsquiver:invIndex")){
                     int index = stack.getOrCreateTag().getInt("nyfsquiver:invIndex");
-                    if(!this.bagsDirectlyInThisBag.contains(index))
-                        QuiverStorageManager.onInsert(index, this.inventoryIndex);
                 }
             }
             ItemStack result = stack.copy();
@@ -99,7 +92,6 @@ public class QuiverInventory implements IItemHandlerModifiable {
         ItemStack result = stack.copy();
         if(!simulate){
             stack.shrink(count);
-
             if(!this.remote && result.getItem() instanceof QuiverItem && result.getOrCreateTag().contains("nyfsquiver:invIndex")){
                 int index = result.getOrCreateTag().getInt("nyfsquiver:invIndex");
                 boolean contains = false;
@@ -110,8 +102,6 @@ public class QuiverInventory implements IItemHandlerModifiable {
                         break;
                     }
                 }
-                if(!contains)
-                    QuiverStorageManager.onExtract(index, this.inventoryIndex);
             }
         }
         result.setCount(count);
@@ -125,22 +115,10 @@ public class QuiverInventory implements IItemHandlerModifiable {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack){
-    	if(!(stack.getItem() instanceof ArrowItem) && !(stack.getItem() instanceof FireworkRocketItem)) {
+    	if(!stack.getItem().is(TagInit.QUIVER_ITEMS)) {
     		return false;
     	}
-        if(stack.getItem() instanceof QuiverItem && !isBagAllowed(stack))
-            return false;
 
-        if(stack.getItem() instanceof BlockItem && ((BlockItem)stack.getItem()).getBlock() instanceof ShulkerBoxBlock && stack.hasTag()){
-            CompoundNBT compound = stack.getTag().getCompound("BlockEntityTag");
-            if(compound.contains("Items", 9)){
-                NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
-                ItemStackHelper.loadAllItems(compound, items);
-                for(ItemStack stack1 : items)
-                    if(stack1.getItem() instanceof QuiverItem)
-                        return false;
-            }
-        }
         return true;
     }
 
@@ -151,12 +129,10 @@ public class QuiverInventory implements IItemHandlerModifiable {
     public void save(File file){
         CompoundNBT compound = new CompoundNBT();
         compound.putInt("rows", this.rows);
+        compound.putInt("columns", this.columns);
         compound.putInt("stacks", this.stacks.size());
         for(int slot = 0; slot < this.stacks.size(); slot++)
             compound.put("stack" + slot, this.stacks.get(slot).save(new CompoundNBT()));
-        compound.putIntArray("bagsInThisBag", Lists.newArrayList(this.bagsInThisBag));
-        compound.putIntArray("bagsThisBagIsIn", Lists.newArrayList(this.bagsThisBagIsIn));
-        compound.putInt("layer", this.layer);
         try{
             CompressedStreamTools.write(compound, file);
         }catch(Exception e){e.printStackTrace();}
@@ -171,15 +147,11 @@ public class QuiverInventory implements IItemHandlerModifiable {
             return;
         }
         this.rows = compound.contains("rows") ? compound.getInt("rows") : compound.getInt("slots") / 9; // Do this for compatibility with older versions
+        this.columns = compound.contains("columns") ? compound.getInt("columns") : compound.getInt("slots") / 9; // Do this for compatibility with older versions
         this.stacks.clear();
-        int size = compound.contains("stacks") ? compound.getInt("stacks") : this.rows * 9; // Do this for compatibility with older versions
+        int size = compound.contains("stacks") ? compound.getInt("stacks") : this.rows * this.columns; // Do this for compatibility with older versions
         for(int slot = 0; slot < size; slot++)
             this.stacks.add(ItemStack.of(compound.getCompound("stack" + slot)));
-        this.bagsInThisBag.clear();
-        Arrays.stream(compound.getIntArray("bagsInThisBag")).forEach(this.bagsInThisBag::add);
-        this.bagsThisBagIsIn.clear();
-        Arrays.stream(compound.getIntArray("bagsThisBagIsIn")).forEach(this.bagsThisBagIsIn::add);
-        this.layer = compound.getInt("layer");
     }
 
     @Override
@@ -197,24 +169,21 @@ public class QuiverInventory implements IItemHandlerModifiable {
                     break;
                 }
             }
-            if(!contains)
-                QuiverStorageManager.onExtract(index, this.inventoryIndex);
         }
 
         this.stacks.set(slot, stack);
 
         if(!this.remote && stack.getItem() instanceof QuiverItem && stack.getOrCreateTag().contains("nyfsquiver:invIndex")){
             int index = stack.getOrCreateTag().getInt("nyfsquiver:invIndex");
-            if(!this.bagsDirectlyInThisBag.contains(index))
-                QuiverStorageManager.onInsert(index, this.inventoryIndex);
         }
     }
 
-    public void adjustSize(int rows){
-        if(this.rows == rows)
+    public void adjustSize(int rows, int columns){
+        if(this.rows == rows && this.columns == columns)
             return;
         this.rows = rows;
-        while(this.stacks.size() < this.rows * 9)
+        this.columns = columns;
+        while(this.stacks.size() < this.rows * this.columns)
             this.stacks.add(ItemStack.EMPTY);
     }
 
@@ -222,12 +191,14 @@ public class QuiverInventory implements IItemHandlerModifiable {
         return this.stacks;
     }
 
-    private boolean isBagAllowed(ItemStack bag){
-        if(QuiverStorageManager.maxLayers != -1 && this.layer >= QuiverStorageManager.maxLayers)
-            return false;
-        if(!bag.getOrCreateTag().contains("nyfsquiver:invIndex"))
-            return true;
-        int index = bag.getOrCreateTag().getInt("nyfsquiver:invIndex");
-        return index != this.inventoryIndex && !this.bagsThisBagIsIn.contains(index);
+    public void setStacks(List<ItemStack> stacks){
+        for(int i = 0; i < this.rows * this.columns; i++){
+            if(i < stacks.size()) {
+                this.stacks.set(i,stacks.get(i));
+            }
+            else {
+                this.stacks.add(ItemStack.EMPTY);
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.nyfaria.nyfsquiver.mixin;
 
 
+import com.nyfaria.nyfsquiver.init.TagInit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ArrowItem;
@@ -23,12 +24,15 @@ public class CoFHMixin
 	}
 	 
 	
-	@Overwrite
+	/**
+     * @author
+     */
+    @Overwrite
     public static ItemStack findAmmo(PlayerEntity shooter) {
 
         ItemStack offHand = shooter.getMainHandItem();
         ItemStack mainHand = shooter.getOffhandItem();
-		ItemStack quiver = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof ArrowItem,shooter)
+		ItemStack quiver = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),shooter)
 				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 
 		if(!quiver.isEmpty()) {
