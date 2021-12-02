@@ -17,7 +17,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class CommonProxy {
 
     public void init(){
-
+        return;
     }
 
     public PlayerEntity getClientPlayer(){
