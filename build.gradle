@@ -97,13 +97,14 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
 
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.16'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
 
     annotationProcessor "org.spongepowered:mixin:0.8.2:processor"
     
     //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
     compile fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.3")
-    compileOnly fg.deobf("curse.maven:cofh-core-69162:3249453")
+    implementation fg.deobf("curse.maven:cofh-core-69162:3554750")
+    implementation fg.deobf("curse.maven:archers-paradox-353399:3554751")
     compileOnly fg.deobf("curse.maven:spartan-weaponry-278141:3164046")
 
 }

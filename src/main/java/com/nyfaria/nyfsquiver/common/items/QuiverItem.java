@@ -140,43 +140,21 @@ public class QuiverItem extends Item implements ICurioItem {
 				.orElse(ItemStack.EMPTY);
 
 		ResourceLocation QUIVER_TEXTURE;
-		if(NQConfig_Client.CLIENT.OLD_MODEL.get())
-		{
-
-			QUIVER_TEXTURE = new ResourceLocation(NyfsQuiver.MOD_ID,
-					"textures/items/old" + type.getRegistryName() + ".png");
-			if (!(this.model instanceof OldQuiverModel)) {
-				this.model = new OldQuiverModel<>();
-			}
-			OldQuiverModel<?> quiverModel = (OldQuiverModel<?>) this.model;
-
-			quiverModel.displayArrows = arrowsE == ItemStack.EMPTY;
-			IVertexBuilder vertexBuilder = ItemRenderer
-					.getFoilBuffer(renderTypeBuffer, quiverModel.renderType(QUIVER_TEXTURE), false,
-							stack.hasFoil());
-			quiverModel
-					.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F,
-							1.0F);
-
+		matrixStack.mulPose(Vector3f.YN.rotationDegrees(180));
+		QUIVER_TEXTURE = new ResourceLocation(NyfsQuiver.MOD_ID,
+				"textures/back/" + type.getRegistryName() + ".png");
+		if (!(this.model instanceof QuiverModel)) {
+			this.model = new QuiverModel<>(arrowsE == ItemStack.EMPTY);
 		}
-		else{
+		QuiverModel<?> quiverModel = (QuiverModel<?>) this.model;
 
-			matrixStack.mulPose(Vector3f.YN.rotationDegrees(180));
-			QUIVER_TEXTURE = new ResourceLocation(NyfsQuiver.MOD_ID,
-					"textures/back/" + type.getRegistryName() + ".png");
-			if (!(this.model instanceof QuiverModel)) {
-				this.model = new QuiverModel<>(arrowsE == ItemStack.EMPTY);
-			}
-			QuiverModel<?> quiverModel = (QuiverModel<?>) this.model;
+		quiverModel.displayArrows = arrowsE == ItemStack.EMPTY;
+		IVertexBuilder vertexBuilder = ItemRenderer
+				.getFoilBuffer(renderTypeBuffer, quiverModel.renderType(QUIVER_TEXTURE), false,
+						stack.hasFoil());
+		quiverModel.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F,
+						1.0F);
 
-			quiverModel.displayArrows = arrowsE == ItemStack.EMPTY;
-			IVertexBuilder vertexBuilder = ItemRenderer
-					.getFoilBuffer(renderTypeBuffer, quiverModel.renderType(QUIVER_TEXTURE), false,
-							stack.hasFoil());
-			quiverModel
-					.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F,
-							1.0F);
-		}
 	}
 
 	@Override

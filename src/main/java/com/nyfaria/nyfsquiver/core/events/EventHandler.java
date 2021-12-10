@@ -5,6 +5,7 @@ import com.nyfaria.nyfsquiver.common.items.QuiverInventory;
 import com.nyfaria.nyfsquiver.common.items.QuiverItem;
 import com.nyfaria.nyfsquiver.common.items.QuiverStorageManager;
 
+import com.nyfaria.nyfsquiver.init.TagInit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
@@ -32,7 +33,7 @@ public class EventHandler {
 		ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem,player)
 				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 
-		if(toPickup.getItem() instanceof ArrowItem && !quiverStack.isEmpty()) {
+		if(toPickup.getItem().is(TagInit.QUIVER_ITEMS) && !quiverStack.isEmpty()) {
 			if (!CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.arrow_predicate, player).
 					map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY).isEmpty()) {
 				CuriosApi.getCuriosHelper().getCuriosHandler(player).ifPresent(icurioitemhandler -> {

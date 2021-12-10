@@ -164,7 +164,7 @@ public class NyfsQuiver
 	    }
 
 	    public void interModEnqueue(InterModEnqueueEvent e){
-		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).hide().icon(new ResourceLocation("nyfsquiver","gui/basicquiver")).build());
+		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).icon(new ResourceLocation("nyfsquiver","gui/basicquiver")).build());
 		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("arrows").size(1).hide().build());
 	    }
 
@@ -176,7 +176,7 @@ public class NyfsQuiver
 				int j = curiosScreen.getGuiTop();
 				curiosScreen.blit(e.getMatrixStack(), i + NQConfig.x.get(), j + NQConfig.y.get(), 7, 7, 18, 18);
 			}
-		} 
+		}
 
 		
 	    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
