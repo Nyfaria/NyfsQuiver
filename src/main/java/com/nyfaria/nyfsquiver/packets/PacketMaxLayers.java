@@ -1,14 +1,11 @@
 package com.nyfaria.nyfsquiver.packets;
 
-import com.nyfaria.nyfsquiver.common.items.QuiverStorageManager;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-/**
- * Created 6/28/2020 by SuperMartijn642
- */
 public class PacketMaxLayers {
 
     private int maxLayers;
@@ -17,11 +14,11 @@ public class PacketMaxLayers {
         this.maxLayers = maxLayers;
     }
 
-    public void encode(PacketBuffer buffer){
+    public void encode(FriendlyByteBuf buffer){
         buffer.writeInt(this.maxLayers);
     }
 
-    public static PacketMaxLayers decode(PacketBuffer buffer){
+    public static PacketMaxLayers decode(FriendlyByteBuf buffer){
         return new PacketMaxLayers(buffer.readInt());
     }
 

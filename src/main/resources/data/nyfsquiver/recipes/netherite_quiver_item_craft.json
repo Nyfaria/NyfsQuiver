@@ -1,13 +1,13 @@
 {
     "type": "minecraft:smithing",
     "base": {
-        "item": "nyfsquiver:diamondquiver"
+        "item": "nyfsquiver:diamond_quiver"
     },
     "addition": {
         "item": "minecraft:netherite_ingot"
     },
     "result": {
-        "item": "nyfsquiver:netheritequiver",
+        "item": "nyfsquiver:netherite_quiver",
         "count": 1
     },
     "group": "tools"

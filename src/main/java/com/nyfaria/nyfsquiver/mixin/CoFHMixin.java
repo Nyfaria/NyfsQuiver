@@ -1,13 +1,14 @@
+/*
 package com.nyfaria.nyfsquiver.mixin;
 
 
 import cofh.core.compat.curios.CuriosProxy;
 import cofh.lib.capability.CapabilityArchery;
 import com.nyfaria.nyfsquiver.init.TagInit;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.Player;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ArrowItem;
-import net.minecraft.item.ShootableItem;
+import net.minecraft.item.ProjectileWeaponItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,7 +36,7 @@ public abstract class CoFHMixin
         return false;
     }
 
-    private static ItemStack findAmmo(PlayerEntity shooter) {
+    private static ItemStack findAmmo(Player shooter) {
 
         ItemStack offHand = shooter.getMainHandItem();
         ItemStack mainHand = shooter.getOffhandItem();
@@ -64,20 +65,22 @@ public abstract class CoFHMixin
 
 
 
-    /**
+    */
+/**
      * @author
-     */
+     *//*
+
     @Overwrite
-    public static ItemStack findAmmo(PlayerEntity shooter, ItemStack weapon) {
+    public static ItemStack findAmmo(Player shooter, ItemStack weapon) {
         ItemStack offHand = shooter.getOffhandItem();
         ItemStack mainHand = shooter.getMainHandItem();
         ItemStack quiver = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),shooter)
                 .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 
-        Predicate<ItemStack> isHeldAmmo = weapon.getItem() instanceof ShootableItem ? ((ShootableItem)weapon.getItem()).getSupportedHeldProjectiles() : (i) -> {
+        Predicate<ItemStack> isHeldAmmo = weapon.getItem() instanceof ProjectileWeaponItem ? ((ProjectileWeaponItem)weapon.getItem()).getSupportedHeldProjectiles() : (i) -> {
             return false;
         };
-        Predicate<ItemStack> isAmmo = weapon.getItem() instanceof ShootableItem ? ((ShootableItem)weapon.getItem()).getAllSupportedProjectiles() : (i) -> {
+        Predicate<ItemStack> isAmmo = weapon.getItem() instanceof ProjectileWeaponItem ? ((ProjectileWeaponItem)weapon.getItem()).getAllSupportedProjectiles() : (i) -> {
             return false;
         };
         if(!quiver.isEmpty()) {
@@ -137,11 +140,13 @@ public abstract class CoFHMixin
 
 
 
-    /**
+    */
+/**
      * @author
-     */
+     *//*
+
     @Overwrite
-    public static ItemStack findArrows(PlayerEntity shooter) {
+    public static ItemStack findArrows(Player shooter) {
         ItemStack offHand = shooter.getOffhandItem();
         ItemStack mainHand = shooter.getMainHandItem();
         ItemStack quiver = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),shooter)
@@ -164,4 +169,4 @@ public abstract class CoFHMixin
             return ItemStack.EMPTY;
         }
     }
-}
+}*/

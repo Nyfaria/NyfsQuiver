@@ -5,13 +5,14 @@
   "refmap": "nyfsquiver.refmap.json",
   "mixins": [
     "ArrowEntityMixin",
-    "CoFHMixin",
-    "ContainerAccessor",
+    //"CoFHMixin",
     "CrossBowMixin",
-    "CuriosContainerMixin",
     "PlayerEntityMixin"
   ],
-  "client": [],
+  "client": [
+    "HumanoidArmorLayerMixin",
+    "PlayerItemInHandLayerMixin"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1

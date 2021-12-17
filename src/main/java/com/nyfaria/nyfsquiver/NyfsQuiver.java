@@ -1,82 +1,40 @@
 package com.nyfaria.nyfsquiver;
 
-import com.nyfaria.nyfsquiver.init.TagInit;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.ShootableItem;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.tags.ITag;
+import com.google.common.collect.Lists;
+import com.nyfaria.nyfsquiver.init.*;
+import com.nyfaria.nyfsquiver.items.QuiverItem;
+import com.nyfaria.nyfsquiver.items.QuiverModels;
+import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
+import com.nyfaria.nyfsquiver.curios.QuiverCurios;
+import com.nyfaria.nyfsquiver.config.NQConfig;
+import com.nyfaria.nyfsquiver.config.NQConfig_Client;
+import com.nyfaria.nyfsquiver.packets.*;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.GuiContainerEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
+import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
-import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.type.capability.ICurio;
-
-import top.theillusivec4.curios.client.gui.CuriosScreen;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.google.common.collect.Lists;
-import com.nyfaria.nyfsquiver.client.ClientProxy;
-import com.nyfaria.nyfsquiver.client.curios.ArrowsCurio;
-import com.nyfaria.nyfsquiver.common.CommonProxy;
-import com.nyfaria.nyfsquiver.common.containers.QuiverContainer;
-
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import com.nyfaria.nyfsquiver.common.items.QuiverItem;
-import com.nyfaria.nyfsquiver.common.items.QuiverStorageManager;
-import com.nyfaria.nyfsquiver.common.items.QuiverType;
-import com.nyfaria.nyfsquiver.compat.Compatibility;
-import com.nyfaria.nyfsquiver.packets.PacketMaxLayers;
-import com.nyfaria.nyfsquiver.packets.PacketNextSlot;
-import com.nyfaria.nyfsquiver.packets.PacketPreviousSlot;
-import com.nyfaria.nyfsquiver.packets.PacketRename;
-import net.minecraft.item.FireworkRocketItem;
-
-
-import static net.minecraft.client.gui.screen.inventory.ContainerScreen.INVENTORY_LOCATION;
+import java.util.List;
+import java.util.function.Predicate;
 
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
@@ -87,192 +45,68 @@ public class NyfsQuiver
 		public static final String MOD_ID = "nyfsquiver";
 
 		public static boolean drawn = false;
-		public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation("nyfsquiver", "main"), () -> "1", "1"::equals, "1"::equals);
+		public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(MOD_ID, "main"), () -> "1", "1"::equals, "1"::equals);
 
-	    @SuppressWarnings("deprecation")
-		public static CommonProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new CommonProxy()); 
+		public static Tag<Item> QUIVER_CURIO = ItemTags.bind(new ResourceLocation("curios", "quiver").toString());
+		public static final Predicate<ItemStack> QUIVER_PREDICATE = stack -> stack.is(QUIVER_CURIO);
 
-	    @ObjectHolder("nyfsquiver:container")
-	    public static ContainerType<QuiverContainer> container;
-
-	    @ObjectHolder("nyfsquiver:basicquiver")
-	    public static QuiverItem basicQuiver;
-	    @ObjectHolder("nyfsquiver:ironquiver")
-	    public static QuiverItem ironQuiver;
-	    @ObjectHolder("nyfsquiver:copperquiver")
-	    public static QuiverItem copperQuiver;
-	    @ObjectHolder("nyfsquiver:silverquiver")
-	    public static QuiverItem silverQuiver;
-	    @ObjectHolder("nyfsquiver:goldquiver")
-	    public static QuiverItem goldQuiver;
-	    @ObjectHolder("nyfsquiver:diamondquiver")
-	    public static QuiverItem diamondQuiver;
-	    @ObjectHolder("nyfsquiver:netheritequiver")
-	    public static QuiverItem netheriteQuiver;
-	    
-
-	    public static final IRecipeSerializer<QuiverRecipe> QUIVER_RECIPE_SERIALIZER = new QuiverRecipe.Serializer();
-
-		public static ITag<Item> ARROWS_CURIO = ItemTags.bind(new ResourceLocation("curios", "arrows").toString());
-		public static ITag<Item> QUIVER_CURIO = ItemTags.bind(new ResourceLocation("curios", "quiver").toString());
-
-		public static final Predicate<ItemStack> arrow_predicate = stack -> stack.getItem().is(ARROWS_CURIO);
-		public static final Predicate<ItemStack> quiver_predicate = stack -> stack.getItem().is(QUIVER_CURIO);
-		
-	    public static float interpolation;
+	    public static float interpolation = 0;
 	    static @Nullable
-		public ItemStack lastHeld;
+		public ItemStack lastHeld = null;
 	    static @Nullable
-		public List<ItemStack> lastReadyArrows;
-	    public static final ResourceLocation WIDGETS;
-	    public static final ResourceLocation SLOT;
+		public List<ItemStack> lastReadyArrows = null;
+	    public static final ResourceLocation WIDGETS = new ResourceLocation(MOD_ID,"textures/gui/widgets.png");
 
-	    static {
-	        interpolation = 0;
-	        lastHeld = null;
-	        lastReadyArrows = null;
-	        WIDGETS = new ResourceLocation(MOD_ID,"textures/gui/widgets.png");
-	        SLOT = new ResourceLocation(MOD_ID,"textures/gui/equipmentslot.png");
-	    }
+		public static final CreativeModeTab ITEM_GROUP = new CreativeModeTab(MOD_ID) {
+		@Override
+		@NotNull
+		public ItemStack makeIcon() {
+			return new ItemStack(ItemInit.BASIC_QUIVER.get());
+		}
+		};
 
-		
 	    public NyfsQuiver(){
+			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, NQConfig.CONFIG_SPEC);
+			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, NQConfig_Client.CLIENT_SPEC);
 			IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-
-	        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, NQConfig.CONFIG_SPEC);
-	        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, NQConfig_Client.CLIENT_SPEC);
-	        bus.addListener(this::init);
-	        bus.addListener(this::interModEnqueue);
+			ItemInit.ITEMS.register(bus);
+			ContainerInit.CONTAINERS.register(bus);
+			RecipeInit.RECIPES.register(bus);
+			EnchantmentInit.ENCHANTMENTS.register(bus);
+			QuiverModels.init();
 	        EVENT_BUS.register(QuiverStorageManager.class);
-			EVENT_BUS.addGenericListener(ItemStack.class, this::attachCaps);
+
 	        CHANNEL.registerMessage(0, PacketRename.class, PacketRename::encode, PacketRename::decode, PacketRename::handle);
 	        CHANNEL.registerMessage(1, PacketMaxLayers.class, PacketMaxLayers::encode, PacketMaxLayers::decode, PacketMaxLayers::handle);
 	        CHANNEL.registerMessage(2, PacketNextSlot.class, (msg, buffer) -> {},buffer -> new PacketNextSlot(0), PacketNextSlot::handle);
 	        CHANNEL.registerMessage(3, PacketPreviousSlot.class, (msg, buffer) -> {},buffer -> new PacketPreviousSlot(0), PacketPreviousSlot::handle);
+	        CHANNEL.registerMessage(4, PacketOpenQuiver.class, (msg, buffer) -> {}, buffer -> new PacketOpenQuiver(), PacketOpenQuiver::handle);
 
 			TagInit.init();
 
-			if (FMLEnvironment.dist == Dist.CLIENT) {
-				bus.addListener(this::stitchTextures);
-				//EVENT_BUS.addListener(this::drawSlotBackground);
-			}
 	    }
 
-	    public void init(FMLCommonSetupEvent e){
-	        Compatibility.init();
-	        proxy.init();
-	    }
 
-	    public void interModEnqueue(InterModEnqueueEvent e){
-		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).icon(new ResourceLocation("nyfsquiver","gui/basicquiver")).build());
-		      InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("arrows").size(1).hide().build());
-	    }
+		public static List<ItemStack> findAmmos(Player player, ItemStack shootable) {
 
-		private void drawSlotBackground(GuiContainerEvent.DrawBackground e) {
-			if (e.getGuiContainer() instanceof CuriosScreen) {
-				Minecraft.getInstance().getTextureManager().bind(INVENTORY_LOCATION);
-				CuriosScreen curiosScreen = (CuriosScreen) e.getGuiContainer();
-				int i = curiosScreen.getGuiLeft();
-				int j = curiosScreen.getGuiTop();
-				curiosScreen.blit(e.getMatrixStack(), i + NQConfig.x.get(), j + NQConfig.y.get(), 7, 7, 18, 18);
-			}
-		}
-
-		
-	    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-	    public static class RegistryEvents {
-	        @SubscribeEvent
-	        public static void onItemRegistry(final RegistryEvent.Register<Item> e) {
-				for (QuiverType type : QuiverType.values())
-					if (type.enabled)
-						e.getRegistry().register(new QuiverItem(type));
-			}
-
-	        @SubscribeEvent
-	        public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> e){
-	            e.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-	                int bagSlot = data.readInt();
-	                int inventoryIndex = data.readInt();
-	                int rows = data.readInt();
-	                int columns = data.readInt();
-
-	                return new QuiverContainer(windowId, inv, bagSlot, inventoryIndex, rows, columns);
-	            }).setRegistryName("container"));
-	        }
-
-	        @SubscribeEvent
-	        public static void onRecipeRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> e){
-	            e.getRegistry().register(QUIVER_RECIPE_SERIALIZER.setRegistryName(new ResourceLocation("nyfsquiver", "quiverrecipe")));
-	        }
-	    }
-		private void attachCaps(AttachCapabilitiesEvent<ItemStack> e) {
-			ItemStack stack = e.getObject();
-			if (ItemTags.getAllTags().getTag(new ResourceLocation("curios","arrows")) != null
-					&& ARROWS_CURIO.contains(stack.getItem())) {
-				ArrowsCurio arrowCurio = new ArrowsCurio(stack);
-            	e.addCapability(CuriosCapability.ID_ITEM, new ICapabilityProvider() {
-                final LazyOptional<ICurio> arrowsCurioCap = LazyOptional.of(() -> arrowCurio);
-
-                @Nonnull
-                @Override
-                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap,
-                                                         @Nullable Direction side) {
-                    return CuriosCapability.ITEM.orEmpty(cap, arrowsCurioCap);
-                }
-
-            });
-			}
-		}
-		public static ICapabilityProvider createProvider(ICurio curio) {
-			return new Provider(curio);
-		}
-		public static class Provider implements ICapabilityProvider {
-			final LazyOptional<ICurio> capability;
-
-			Provider(ICurio curio) {
-				this.capability = LazyOptional.of(() -> curio);
-			}
-
-			@Nonnull
-			public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-				return CuriosCapability.ITEM.orEmpty(cap, this.capability);
-			}
-		}
-	    
-		@SuppressWarnings("unused")
-		public static List<ItemStack> findAmmos(PlayerEntity player, ItemStack shootable) {
-			ItemStack itemstack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),player)
-					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 			ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem,player)
 					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
-			
-			
-			
-			
-			//if (!(shootable.getItem() instanceof ShootableItem)) {
+			ItemStack itemstack = QuiverStorageManager.getCurrentSlotStack(quiverStack);
+
 			if ((quiverStack.isEmpty())) {
 			            return Lists.newLinkedList();
 	        } else {
 	        	 List<ItemStack> list = Lists.newLinkedList();
 
-	             Predicate<ItemStack> predicate = ((ShootableItem) shootable.getItem()).getSupportedHeldProjectiles();
-	             //ItemStack itemstack = ShootableItem.getHeldProjectile(player, predicate);
+	             Predicate<ItemStack> predicate = ((ProjectileWeaponItem) shootable.getItem()).getSupportedHeldProjectiles();
 	             if (!itemstack.isEmpty()) {
 	                 list.add(itemstack);
 	             }
-	             //predicate = ((ShootableItem) shootable.getItem()).getAllSupportedProjectiles();
 
-	             //for(int i = 0; i < player.inventory.getContainerSize(); ++i) {
-	             //    ItemStack itemstack1 = player.inventory.getItem(i);
-	             //    if (predicate.test(itemstack1) && itemstack1 != itemstack) {
-	             //        list.add(itemstack1);
-	             //    }
-	             //}
 
-	             if(list.isEmpty() && player.abilities.instabuild) {
+	             if(list.isEmpty() && player.getAbilities().instabuild) {
 	                 list.add(new ItemStack(Items.ARROW));
 	             }
-
 
 	            return list;
 	        }
@@ -280,22 +114,12 @@ public class NyfsQuiver
 
 		
 		public static float bezier(float x, float min, float max) {
-	        return MathHelper.clamp(((x * x) * (3 - 2 * x)) / (1 / (max - min)) + min, min, max);
+	        return Mth.clamp(((x * x) * (3 - 2 * x)) / (1 / (max - min)) + min, min, max);
 	    }
-		 @Mod.EventBusSubscriber
-		    public static class Events {
-		        
-		 }
 
-			
-		 public void stitchTextures(TextureStitchEvent.Pre evt) {
-			 if (evt.getMap().location().equals(PlayerContainer.BLOCK_ATLAS)) {
 
-				 evt.addSprite(new ResourceLocation(MOD_ID, "gui/basicquiver"));
-				 evt.addSprite(new ResourceLocation(MOD_ID, "gui/equipmentslot"));
 
-			 }
-		 }
+
 }
 
 	

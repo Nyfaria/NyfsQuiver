@@ -1,33 +1,27 @@
 package com.nyfaria.nyfsquiver.core.interfaces;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.nyfaria.nyfsquiver.common.api.Dimension;
-import com.nyfaria.nyfsquiver.common.containers.QuiverContainer;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
+import com.nyfaria.nyfsquiver.NyfsQuiver;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.ITextComponent;
+import com.nyfaria.nyfsquiver.items.QuiverContainer;
+import com.nyfaria.nyfsquiver.util.Dimension;
+import com.nyfaria.nyfsquiver.util.Rectangle;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 
-import java.awt.*;
 
-public class QuiverContainerScreen extends ContainerScreen<QuiverContainer> {
+public class QuiverContainerScreen extends AbstractContainerScreen<QuiverContainer> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation("nyfsquiver", "textures/gui/backpack_container.png");
-    private final static int TOP_OFFSET = 24;
-    private final static int SLOT_SIZE = 18;
-    private final static int WIDTH_PADDING = 14;
-    private final static int INVENTORY_LABEL_EXTRA = 8;
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(NyfsQuiver.MOD_ID, "textures/gui/backpack_container.png");
 
-    public QuiverContainerScreen(QuiverContainer handler, PlayerInventory player, ITextComponent title) {
+
+    public QuiverContainerScreen(QuiverContainer handler, Inventory player, Component title) {
         super(handler, player, title);
 
         Dimension dimension = handler.getDimension();
@@ -38,32 +32,33 @@ public class QuiverContainerScreen extends ContainerScreen<QuiverContainer> {
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
+
     @Override
-    protected void renderBg(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+    protected void renderBg(PoseStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
         renderBackgroundTexture(matrices, new Rectangle(x, y, imageWidth, imageHeight), delta, 0xFFFFFFFF);
-        Minecraft.getInstance().getTextureManager().bind(new ResourceLocation("textures/gui/container/hopper.png"));
+        RenderSystem.setShaderTexture(0,new ResourceLocation("textures/gui/container/hopper.png"));
         for (Slot slot : getMenu().slots) {
             this.blit(matrices, x + slot.x - 1, y + slot.y - 1, 43, 19, 18, 18);
         }
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         this.renderTooltip(matrices, mouseX, mouseY);
     }
 
-    public void renderBackgroundTexture(MatrixStack matrices, Rectangle bounds, float delta, int color) {
+    public void renderBackgroundTexture(PoseStack matrices, Rectangle bounds, float delta, int color) {
         float alpha = ((color >> 24) & 0xFF) / 255f;
         float red = ((color >> 16) & 0xFF) / 255f;
         float green = ((color >> 8) & 0xFF) / 255f;
         float blue = (color & 0xFF) / 255f;
-        RenderSystem.color4f(red, green, blue, alpha);
-        Minecraft.getInstance().getTextureManager().bind(GUI_TEXTURE);
+        RenderSystem.clearColor(red, green, blue, alpha);
+        RenderSystem.setShaderTexture(0,GUI_TEXTURE);
         int x = bounds.x, y = bounds.y, width = bounds.width, height = bounds.height;
         int xTextureOffset = 0;
         int yTextureOffset = 66;
@@ -88,13 +83,13 @@ public class QuiverContainerScreen extends ContainerScreen<QuiverContainer> {
     }
 
     private static void blitdQuad(Matrix4f matrices, int x0, int x1, int y0, int y1, int z, float u0, float u1, float v0, float v1) {
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuilder();
-        bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         bufferBuilder.vertex(matrices, (float)x0, (float)y1, (float)z).uv(u0, v1).endVertex();
         bufferBuilder.vertex(matrices, (float)x1, (float)y1, (float)z).uv(u1, v1).endVertex();
         bufferBuilder.vertex(matrices, (float)x1, (float)y0, (float)z).uv(u1, v0).endVertex();
         bufferBuilder.vertex(matrices, (float)x0, (float)y0, (float)z).uv(u0, v0).endVertex();
         bufferBuilder.end();
-        WorldVertexBufferUploader.end(bufferBuilder);
+        BufferUploader.end(bufferBuilder);
     }
 }

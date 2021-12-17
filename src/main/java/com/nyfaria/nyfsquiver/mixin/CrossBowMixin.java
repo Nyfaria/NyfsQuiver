@@ -1,11 +1,10 @@
 package com.nyfaria.nyfsquiver.mixin;
 
-
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.ShootableItem;
-import net.minecraft.item.ItemStack;
 import java.util.function.Predicate;
 
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -14,8 +13,11 @@ import org.spongepowered.asm.mixin.Overwrite;
 public abstract class CrossBowMixin
 {
 	
+	/**
+	 * @author
+	 */
 	@Overwrite
 	public Predicate<ItemStack> getAllSupportedProjectiles() {
-		return ShootableItem.ARROW_OR_FIREWORK;
+		return ProjectileWeaponItem.ARROW_OR_FIREWORK;
 	}
 }

@@ -5,21 +5,21 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import com.nyfaria.nyfsquiver.common.items.QuiverItem;
+import com.nyfaria.nyfsquiver.items.QuiverItem;
 
-import com.nyfaria.nyfsquiver.common.items.QuiverStorageManager;
-import com.nyfaria.nyfsquiver.common.items.QuiverType;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
+import com.nyfaria.nyfsquiver.items.QuiverType;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 
@@ -30,7 +30,7 @@ public class QuiverRecipe extends ShapedRecipe {
 	    }
 
 	    @Override
-	    public ItemStack assemble(CraftingInventory inv){
+	    public ItemStack assemble(CraftingContainer inv){
 	        for(int index = 0; index < inv.getContainerSize(); index++) {
 	            ItemStack stack = inv.getItem(index);
 	            if(!stack.isEmpty() && stack.getItem() instanceof QuiverItem){
@@ -45,36 +45,36 @@ public class QuiverRecipe extends ShapedRecipe {
 	        }
 	        ItemStack quiverItem = this.getResultItem().copy();
 
-			CompoundNBT compound  = quiverItem.getOrCreateTag();
-			compound.putInt("nyfsquiver:invIndex", QuiverStorageManager.createInventoryIndex(QuiverType.BASIC));
-			compound.putInt("nyfsquiver:slotIndex", 0);
+			CompoundTag compound  = quiverItem.getOrCreateTag();
+			compound.putInt("invIndex", QuiverStorageManager.createInventoryIndex(QuiverType.BASIC));
+			compound.putInt("slotIndex", 0);
 			quiverItem.setTag(compound);
 
 	        return quiverItem;
 	    }
 
 	    @Override
-	    public IRecipeSerializer<?> getSerializer(){
+	    public RecipeSerializer<?> getSerializer(){
 	        return super.getSerializer();
 	    }
 
-	    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<QuiverRecipe> {
+	    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<QuiverRecipe> {
 	        @Override
 	        public QuiverRecipe fromJson(ResourceLocation recipeId, JsonObject json){
-	            ShapedRecipe recipe = IRecipeSerializer.SHAPED_RECIPE.fromJson(recipeId, json);
+	            ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromJson(recipeId, json);
 	            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.getRecipeWidth(), recipe.getRecipeHeight(), recipe.getIngredients(), recipe.getResultItem());
 	        }
 
 	        @Nullable
 	        @Override
-	        public QuiverRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer){
-	            ShapedRecipe recipe = IRecipeSerializer.SHAPED_RECIPE.fromNetwork(recipeId, buffer);
+	        public QuiverRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer){
+	            ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromNetwork(recipeId, buffer);
 	            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.getRecipeWidth(), recipe.getRecipeHeight(), recipe.getIngredients(), recipe.getResultItem());
 	        }
 
 	        @Override
-	        public void toNetwork(PacketBuffer buffer, QuiverRecipe recipe){
-	            IRecipeSerializer.SHAPED_RECIPE.toNetwork(buffer, recipe);
+	        public void toNetwork(FriendlyByteBuf buffer, QuiverRecipe recipe){
+	            RecipeSerializer.SHAPED_RECIPE.toNetwork(buffer, recipe);
 	        }
 	    }
 	}

@@ -2,12 +2,11 @@
 {
   "replace": false,
   "values": [
-    "nyfsquiver:basicquiver",
-    "nyfsquiver:ironquiver",
-    "nyfsquiver:copperquiver",
-    "nyfsquiver:silverquiver",
-    "nyfsquiver:goldquiver",
-    "nyfsquiver:diamondquiver",
-    "nyfsquiver:netheritequiver"
+    "nyfsquiver:basic_quiver",
+    "nyfsquiver:iron_quiver",
+    "nyfsquiver:copper_quiver",
+    "nyfsquiver:gold_quiver",
+    "nyfsquiver:diamond_quiver",
+    "nyfsquiver:netherite_quiver"
   ]
 }
