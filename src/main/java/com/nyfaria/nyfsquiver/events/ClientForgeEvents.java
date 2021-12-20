@@ -2,56 +2,38 @@ package com.nyfaria.nyfsquiver.events;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Vector3f;
-import com.nyfaria.nyfsquiver.config.NQConfig_Client;
 import com.nyfaria.nyfsquiver.NyfsQuiver;
+import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
+import com.nyfaria.nyfsquiver.config.NQConfig_Client;
 import com.nyfaria.nyfsquiver.init.TagInit;
-import com.nyfaria.nyfsquiver.items.QuiverInventory;
 import com.nyfaria.nyfsquiver.items.QuiverItem;
-import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
-import com.nyfaria.nyfsquiver.items.QuiverType;
-import com.zephaniahnoah.shulkertooltip.ShulkerToolTip;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.lwjgl.glfw.GLFW;
 import top.theillusivec4.curios.api.CuriosApi;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = NyfsQuiver.MOD_ID, value = Dist.CLIENT)
 public class ClientForgeEvents {
@@ -64,9 +46,10 @@ public class ClientForgeEvents {
         @Nullable LocalPlayer player = Minecraft.getInstance().player;
         ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, player)
                 .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
+        if(quiverStack.isEmpty())return;
         if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER && player != null) {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-            int slot = quiverStack.getOrCreateTag().getInt("slotIndex");
+            int slot = QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot();
             ItemStack playerHand;
             if (player.getMainHandItem().getItem() instanceof ProjectileWeaponItem && !quiverStack.isEmpty()) {
                 playerHand = player.getMainHandItem();
@@ -201,7 +184,7 @@ public class ClientForgeEvents {
                         }
 
                         event.getMatrixStack().pushPose();
-                        if (player.isCreative() || readyArrow.is(TagInit.QUIVER_ITEMS) && ((ArrowItem) readyArrow.getItem()).isInfinite(readyArrow, playerHand, player)) {
+                        if (player.isCreative() || readyArrow.is(TagInit.QUIVER_ITEMS) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS,playerHand) > 0) {
                             event.getMatrixStack().translate(x + 3, y + 5, i + 1 + readyArrows.size());
                             RenderSystem.setShaderTexture(0, NyfsQuiver.WIDGETS);
                             GuiComponent.blit(event.getMatrixStack(), -6, -4, 24, i == 0 ? 0 : 8, 12, 8, 36, 24);

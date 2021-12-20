@@ -1,8 +1,10 @@
 package com.nyfaria.nyfsquiver.items;
 
+import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.config.NQConfig;
+import net.minecraftforge.common.IExtensibleEnum;
 
-public enum QuiverType {
+public enum QuiverType implements IExtensibleEnum {
 
     BASIC(1, 9, true, false),
     IRON(2,9, true, false),
@@ -49,7 +51,7 @@ public enum QuiverType {
             case NETHERITE:
                 return NQConfig.INSTANCE.obsidianRows.get();
         }
-        return 0;
+        return defaultRows;
     }
 
     public int getColumns(){
@@ -67,7 +69,9 @@ public enum QuiverType {
             case NETHERITE:
                 return NQConfig.INSTANCE.obsidianColumns.get();
         }
-        return 0;
+        return defaultColumns;
     }
-
+    public static QuiverType create(String name, int defaultRows, int defaultColumns, boolean enabled, boolean fireProof){
+        throw new IllegalStateException("Enum not extended");
+    }
 }

@@ -1,6 +1,7 @@
 package com.nyfaria.nyfsquiver.events;
 
 import com.nyfaria.nyfsquiver.NyfsQuiver;
+import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
 import com.nyfaria.nyfsquiver.curios.QuiverCurios;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -16,16 +17,11 @@ import top.theillusivec4.curios.api.SlotTypeMessage;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonModEvent {
 
-
     @SubscribeEvent
-    public static void stitchTextures(TextureStitchEvent.Pre evt) {
-        if (evt.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
-
-            evt.addSprite(new ResourceLocation(NyfsQuiver.MOD_ID, "gui/basic_quiver"));
-            evt.addSprite(new ResourceLocation(NyfsQuiver.MOD_ID, "gui/equipmentslot"));
-
-        }
+    public static void onCommonSetup(FMLCommonSetupEvent event) {
+        QuiverHolderAttacher.register();
     }
+
     @SubscribeEvent
     public static void interModEnqueue(InterModEnqueueEvent e){
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).icon(new ResourceLocation("nyfsquiver","gui/basic_quiver")).build());

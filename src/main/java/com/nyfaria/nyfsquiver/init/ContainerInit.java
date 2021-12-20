@@ -2,6 +2,7 @@ package com.nyfaria.nyfsquiver.init;
 
 import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.items.QuiverContainer;
+import com.nyfaria.nyfsquiver.items.QuiverInventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -13,10 +14,11 @@ public class ContainerInit {
 
     public static final RegistryObject<MenuType<QuiverContainer>> QUIVER_CONTAINER = CONTAINERS.register("container",()->IForgeMenuType.create((windowId, inv, data) -> {
         int bagSlot = data.readInt();
-        int inventoryIndex = data.readInt();
         int rows = data.readInt();
         int columns = data.readInt();
 
-        return new QuiverContainer(windowId, inv, bagSlot, inventoryIndex, rows, columns);
+        QuiverInventory  quiverInventory = new QuiverInventory(true,rows,columns);
+        quiverInventory.deserializeNBT(data.readNbt());
+        return new QuiverContainer(windowId, inv, bagSlot, quiverInventory, rows, columns);
     }));
 }

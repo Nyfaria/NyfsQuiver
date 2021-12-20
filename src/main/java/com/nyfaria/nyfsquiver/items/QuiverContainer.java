@@ -20,17 +20,12 @@ public class QuiverContainer extends AbstractContainerMenu {
     private final int padding = 8;
     private final int titleSpace = 10;
      
-	public QuiverContainer(int id, Inventory player, int bagSlot, int inventoryIndex, int rows, int columns) {
+	public QuiverContainer(int id, Inventory player, int bagSlot, QuiverInventory quiverInventory, int rows, int columns) {
 		super(ContainerInit.QUIVER_CONTAINER.get(), id);
 		this.bagSlot = bagSlot;
 		this.rows = rows;
         this.columns = columns;
-		
-        QuiverInventory inventory = player.player.level.isClientSide ?
-                new QuiverInventory(true, inventoryIndex, rows, columns) :
-                QuiverStorageManager.getInventory(inventoryIndex);
-
-            this.addSlots(this.rows, this.columns, inventory, player);
+        this.addSlots(this.rows, this.columns, quiverInventory, player);
 	}
     public Dimension getDimension() {
         return new Dimension(padding * 2 + Math.max(this.columns, 9) * 18, padding * 2 + titleSpace * 2 + 8 + (this.rows + 4) * 18);
@@ -134,7 +129,7 @@ public class QuiverContainer extends AbstractContainerMenu {
                 if(stack.getItem() instanceof QuiverItem){
                     if(!player.level.isClientSide){
                         int bagSlot = slotId >= (this.rows + 3) * 9 ? slotId - (this.rows + 3) * 9 : slotId >= this.rows * 9 ? slotId - (this.rows - 1) * 9 : -1;
-                        QuiverInventory.openQuiverInventory(stack, player, bagSlot);
+                        //QuiverInventory.openQuiverInventory(stack, player, bagSlot);
                     }
                     return;
                 }

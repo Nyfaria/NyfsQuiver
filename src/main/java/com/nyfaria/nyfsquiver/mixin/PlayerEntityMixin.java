@@ -2,9 +2,11 @@ package com.nyfaria.nyfsquiver.mixin;
 
 
 import com.nyfaria.nyfsquiver.NyfsQuiver;
+import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
 import com.nyfaria.nyfsquiver.init.TagInit;
 
 import com.nyfaria.nyfsquiver.items.QuiverInventory;
+import com.nyfaria.nyfsquiver.items.QuiverItem;
 import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -51,8 +53,8 @@ public class PlayerEntityMixin extends LivingEntity
 			return;
 		}
 
-		QuiverInventory quiverInventory = QuiverStorageManager.getInventory(quiverStack.getOrCreateTag().getInt("invIndex"));
-		itemStack = quiverInventory.getStackInSlot(quiverStack.getOrCreateTag().getInt("slotIndex"));
+		QuiverInventory quiverInventory = QuiverItem.getInventory(quiverStack);
+		itemStack = quiverInventory.getStackInSlot(QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot());
 //		ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.is(TagInit.QUIVER_ITEMS),(Player)(Object)this)
 //				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 

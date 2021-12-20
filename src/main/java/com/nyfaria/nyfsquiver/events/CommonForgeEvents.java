@@ -18,6 +18,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.items.ItemStackHandler;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.type.capability.ICurio;
@@ -39,33 +40,9 @@ public class CommonForgeEvents {
                 .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 
         if(toPickup.is(TagInit.QUIVER_ITEMS) && !quiverStack.isEmpty()) {
-//            if (!CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.ARROW_PREDICATE, player).
-//                    map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY).isEmpty()) {
-//                CuriosApi.getCuriosHelper().getCuriosHandler(player).ifPresent(icurioitemhandler -> {
-//                    ItemStack rem = toPickup.copy();
-//                    ICurioStacksHandler iCurioStacksHandler = icurioitemhandler.getCurios().get("arrows");
-//
-//                    IDynamicStackHandler iDynamicStackHandler = iCurioStacksHandler.getStacks();
-//
-//                    rem = iDynamicStackHandler.insertItem(0, rem, false);
-//                    toPickup.setCount(rem.getCount());
-//                });
-//            }
-//            else if (CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.ARROW_PREDICATE, player).
-//                    map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY).isEmpty()) {
-//                //ItemStack boople = toPickup.copy();
-//                System.out.println("beeple " + toPickup);
-//                CuriosApi.getCuriosHelper().getCuriosHandler(player).map(ICuriosItemHandler::getCurios)
-//                        .map(stringICurioStacksHandlerMap -> stringICurioStacksHandlerMap.get("arrows"))
-//                        .map(ICurioStacksHandler::getStacks)
-//                        .ifPresent(curioStackHandler -> curioStackHandler.setStackInSlot(0,toPickup.copy()));
-//                toPickup.setCount(0);
-//            }
-            QuiverInventory qi = QuiverStorageManager.getInventory(quiverStack.getOrCreateTag().getInt("invIndex"));
+            QuiverInventory qi = QuiverItem.getInventory(quiverStack);
             int slots = qi.getSlots();
-//            int cSlot = quiverStack.getOrCreateTag().getInt("slotIndex");
             for(int s = 0; s < slots; s++) {
-//                if(s != cSlot) {
                     ItemStack currentStack = qi.getStackInSlot(s);
                     ItemStack rem2 = toPickup.copy();
                     if(currentStack.getItem() == toPickup.getItem() || currentStack.isEmpty())
@@ -73,7 +50,6 @@ public class CommonForgeEvents {
                         rem2 = qi.insertItem(s, rem2, false);
                     }
                     toPickup.setCount(rem2.getCount());
-//                }
             }
         }
     }

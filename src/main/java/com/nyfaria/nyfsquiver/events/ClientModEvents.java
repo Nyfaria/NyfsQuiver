@@ -24,12 +24,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
@@ -105,5 +107,15 @@ public class ClientModEvents {
         ForgeModelBakery.addSpecialModel(QuiverModels.GOLD_QUIVER_NOARROWS);
         ForgeModelBakery.addSpecialModel(QuiverModels.DIAMOND_QUIVER_NOARROWS);
         ForgeModelBakery.addSpecialModel(QuiverModels.NETHERITE_QUIVER_NOARROWS);
+    }
+
+    @SubscribeEvent
+    public static void stitchTextures(TextureStitchEvent.Pre evt) {
+        if (evt.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
+
+            evt.addSprite(new ResourceLocation(NyfsQuiver.MOD_ID, "gui/basic_quiver"));
+            evt.addSprite(new ResourceLocation(NyfsQuiver.MOD_ID, "gui/equipmentslot"));
+
+        }
     }
 }

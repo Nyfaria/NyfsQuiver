@@ -1,5 +1,7 @@
 package com.nyfaria.nyfsquiver.mixin;
 
+import com.nyfaria.nyfsquiver.cap.QuiverHolder;
+import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
 import com.nyfaria.nyfsquiver.init.TagInit;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
@@ -50,52 +52,49 @@ public abstract class ArrowEntityMixin extends Projectile
 	 * @author
 	 */
 	@Overwrite
-	public void playerTouch(Player p_70100_1_)
+	public void playerTouch(Player player)
 	{
 		
 	      if (this.pickup == Pickup.ALLOWED && !level.isClientSide && (this.inGround || this.isNoPhysics()) && this.shakeTime <= 0) {
 	    	  boolean flag;
-	    	  ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem,p_70100_1_)
+	    	  ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem,player)
 					.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
-			  ItemStack stack = QuiverStorageManager.getCurrentSlotStack(quiverStack);
-			  if(stack.getItem() == this.getPickupItem().getItem() && stack.getCount() < 64 && !quiverStack.isEmpty()) {
-		    	  stack.setCount(stack.getCount()+ 1);
-		    	  this.remove(RemovalReason.DISCARDED);
-		    	  return;
-	    	  }
+			  if(!quiverStack.isEmpty()) {
+				  ItemStack stack = QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getInventory().getStackInSlot(quiverStack.getOrCreateTag().getInt(""));
+				  if (stack.getItem() == this.getPickupItem().getItem() && stack.getCount() < 64 && !quiverStack.isEmpty()) {
+					  stack.setCount(stack.getCount() + 1);
+					  this.remove(RemovalReason.DISCARDED);
+					  return;
+				  }
 
-	    	  if((this.getPickupItem().is(TagInit.QUIVER_ITEMS)) && !quiverStack.isEmpty()) {
-	    		  QuiverInventory boop = QuiverStorageManager.getInventory(quiverStack.getOrCreateTag().getInt("invIndex"));
-	    		for(int i = 0; i < boop.getSlots(); i++) {
-	    				if(boop.getStackInSlot(i).getItem() == this.getPickupItem().getItem() && boop.getStackInSlot(i).getCount() < 64) 
-	    				{
-	    					boop.getStackInSlot(i).setCount(boop.getStackInSlot(i).getCount() + 1);
-	    					this.remove(RemovalReason.DISCARDED);
-							return;
-	    				} 
-	    				
-	    				if(boop.getStackInSlot(i).isEmpty()) 
-	    				{
-	    					boop.setStackInSlot(i, this.getPickupItem());
-	    					this.remove(RemovalReason.DISCARDED);
-							return;
-	    				}
-	    			}
-//	    		}
-	    		  
-	    		  
-	    	  }
+				  if ((this.getPickupItem().is(TagInit.QUIVER_ITEMS)) && !quiverStack.isEmpty()) {
+					  QuiverInventory boop = QuiverItem.getInventory(quiverStack);
+					  for (int i = 0; i < boop.getSlots(); i++) {
+						  if (boop.getStackInSlot(i).getItem() == this.getPickupItem().getItem() && boop.getStackInSlot(i).getCount() < 64) {
+							  boop.getStackInSlot(i).setCount(boop.getStackInSlot(i).getCount() + 1);
+							  this.remove(RemovalReason.DISCARDED);
+							  return;
+						  }
+
+						  if (boop.getStackInSlot(i).isEmpty()) {
+							  boop.setStackInSlot(i, this.getPickupItem());
+							  this.remove(RemovalReason.DISCARDED);
+							  return;
+						  }
+					  }
+				  }
+			  }
 	    	  flag = (this.pickup == Pickup.ALLOWED ||
 	    			  this.pickup == Pickup.CREATIVE_ONLY
-	    			  && p_70100_1_.getAbilities().instabuild || this.isNoPhysics() &&
-	    			  this.getOwner().getUUID() == p_70100_1_.getUUID());
+	    			  && player.getAbilities().instabuild || this.isNoPhysics() &&
+	    			  this.getOwner().getUUID() == player.getUUID());
 	    	  if (this.pickup == Pickup.ALLOWED
-	    			  && !p_70100_1_.getInventory().add(this.getPickupItem())) {
+	    			  && !player.getInventory().add(this.getPickupItem())) {
 	    		  flag = false;
 	    	  }
 	    	  
 	    	  if (flag) {
-	    		  p_70100_1_.take(this, 1);
+	    		  player.take(this, 1);
 	    		  this.remove(RemovalReason.DISCARDED);
 	    	  }
 

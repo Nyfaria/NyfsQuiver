@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
+import com.nyfaria.nyfsquiver.items.QuiverInventory;
 import com.nyfaria.nyfsquiver.items.QuiverItem;
 
 import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
@@ -40,13 +42,17 @@ public class QuiverRecipe extends ShapedRecipe {
 	                    result.setHoverName(stack.getHoverName());
 	                for(Map.Entry<Enchantment,Integer> enchant : EnchantmentHelper.getEnchantments(stack).entrySet())
 	                    result.enchant(enchant.getKey(), enchant.getValue());
+					QuiverInventory oldInventory = QuiverHolderAttacher.getQuiverHolderUnwrap(stack).getInventory();
+					for (int slot = 0; slot < oldInventory.getStacks().size(); slot++) {
+						QuiverHolderAttacher.getQuiverHolderUnwrap(result).getInventory().insertItem(slot, oldInventory.getStackInSlot(slot), false);
+					}
 	                return result;
 	            }
 	        }
 	        ItemStack quiverItem = this.getResultItem().copy();
 
 			CompoundTag compound  = quiverItem.getOrCreateTag();
-			compound.putInt("invIndex", QuiverStorageManager.createInventoryIndex(QuiverType.BASIC));
+			//compound.putInt("invIndex", QuiverStorageManager.createInventoryIndex(QuiverType.BASIC));
 			compound.putInt("slotIndex", 0);
 			quiverItem.setTag(compound);
 
