@@ -156,7 +156,7 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
 		QuiverHolderAttacher.getQuiverHolderUnwrap(stack).deserializeNBT(nbt, true);
 	}
 
-	@org.jetbrains.annotations.Nullable
+	@Nullable
 	@Override
 	public CompoundTag getShareTag(ItemStack stack) {
 		return QuiverHolderAttacher.getQuiverHolderUnwrap(stack).serializeNBT(true);
