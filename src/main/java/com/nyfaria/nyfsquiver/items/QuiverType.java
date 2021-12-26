@@ -1,10 +1,9 @@
 package com.nyfaria.nyfsquiver.items;
 
-import java.util.Locale;
-
 import com.nyfaria.nyfsquiver.config.NQConfig;
+import net.minecraftforge.common.IExtensibleEnum;
 
-public enum QuiverType {
+public enum QuiverType implements IExtensibleEnum {
 
     BASIC(1, 9, true, false),
     IRON(2,9, true, false),
@@ -66,8 +65,7 @@ public enum QuiverType {
         }
         return defaultColumns;
     }
-
-    public String getRegistryName(){
-        return this.name().toLowerCase(Locale.ENGLISH) + "quiver";
+    public static QuiverType create(String name, int defaultRows, int defaultColumns, boolean enabled, boolean fireProof){
+        throw new IllegalStateException("Enum not extended");
     }
 }
