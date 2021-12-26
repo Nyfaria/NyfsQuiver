@@ -17,6 +17,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.*;
@@ -130,11 +131,6 @@ public class QuiverItem extends Item implements ICurioItem {
 					   IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity living,
 					   float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
 					   float netHeadYaw, float headPitch, ItemStack stack) {
-//		if(EnchantmentHelper.getEnchantments(stack).containsKey(EnchantmentInit.MELD_ENCHANTMENT.get()) && living.isInvisible())
-//		{
-//			return;
-//		}
-
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 		ICurio.RenderHelper.translateIfSneaking(matrixStack, living);
 		ICurio.RenderHelper.rotateIfSneaking(matrixStack, living);
@@ -144,8 +140,8 @@ public class QuiverItem extends Item implements ICurioItem {
 		//matrixStack.translate(0,0.6,-0.65 - (living.getItemBySlot(EquipmentSlot.CHEST).isEmpty() ? 0.0 : 0.05));
 		ItemStack arrowsE = QuiverStorageManager.getCurrentSlotStack(stack);
 		IBakedModel quiver = itemRenderer.getItemModelShaper().getModelManager().getModel(QuiverModels.getQuiverModel(stack,!arrowsE.isEmpty()));
-		IRenderTypeBuffer buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-		itemRenderer.render(stack, ItemCameraTransforms.TransformType.HEAD,true,matrixStack,buffer,light,light,quiver);
+		//IRenderTypeBuffer buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+		itemRenderer.render(stack, ItemCameraTransforms.TransformType.HEAD,true,matrixStack,renderTypeBuffer,light,light,quiver);
 
 	}
 
@@ -163,6 +159,10 @@ public class QuiverItem extends Item implements ICurioItem {
 	@Override
 	public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
 		QuiverHolderAttacher.getQuiverHolderUnwrap(stack).deserializeNBT(nbt, true);
+	}
+
+	public AbstractArrowEntity modifyArrow(AbstractArrowEntity abstractArrow){
+		return abstractArrow;
 	}
 }
 

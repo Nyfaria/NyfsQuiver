@@ -55,17 +55,15 @@ public abstract class CoFHMixin
             QuiverInventory quiverInventory = QuiverItem.getInventory(quiverStack);
             quiver = quiverInventory.getStackInSlot(QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot());
         }
-
-
+        if(!quiver.isEmpty()) {
+            return quiver;
+        }
         Predicate<ItemStack> isHeldAmmo = weapon.getItem() instanceof ShootableItem ? ((ShootableItem)weapon.getItem()).getSupportedHeldProjectiles() : (i) -> {
             return false;
         };
         Predicate<ItemStack> isAmmo = weapon.getItem() instanceof ShootableItem ? ((ShootableItem)weapon.getItem()).getAllSupportedProjectiles() : (i) -> {
             return false;
         };
-        if(!quiver.isEmpty()) {
-            return quiver;
-        }
         if (!(Boolean)offHand.getCapability(CapabilityArchery.AMMO_ITEM_CAPABILITY).map((cap) -> {
             return !cap.isEmpty(shooter);
         }).orElse(false) && !isHeldAmmo.test(offHand)) {

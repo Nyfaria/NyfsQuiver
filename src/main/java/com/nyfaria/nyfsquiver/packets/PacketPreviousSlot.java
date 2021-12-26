@@ -18,8 +18,6 @@ public class PacketPreviousSlot {
 
 	        PlayerEntity player = contextSupplier.get().getSender();
 	        if(player != null){
-	            //PlayerInventory inventory = player.inventory;
-	        	System.out.println(direction);
 	            if(!QuiverStorageManager.decreaseQuiverSlot(player,direction)){
 
 	            }
