@@ -14,6 +14,9 @@ import org.spongepowered.asm.mixin.Overwrite;
 public abstract class CrossBowMixin
 {
 	
+	/**
+	 * @author
+	 */
 	@Overwrite
 	public Predicate<ItemStack> getAllSupportedProjectiles() {
 		return ShootableItem.ARROW_OR_FIREWORK;

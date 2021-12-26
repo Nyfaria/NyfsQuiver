@@ -1,6 +1,6 @@
 package com.nyfaria.nyfsquiver.packets;
 
-import com.nyfaria.nyfsquiver.common.items.QuiverStorageManager;
+import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 

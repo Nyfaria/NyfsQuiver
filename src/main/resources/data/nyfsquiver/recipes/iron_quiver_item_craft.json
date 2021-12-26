@@ -10,14 +10,14 @@
             "item": "minecraft:feather"
         },
         "L": {
-            "item": "nyfsquiver:basicquiver"
+            "item": "nyfsquiver:basic_quiver"
         },
         "A": {
             "item": "minecraft:iron_ingot"
         }
     },
     "result": {
-        "item": "nyfsquiver:ironquiver",
+        "item": "nyfsquiver:iron_quiver",
         "count": 1
     },
     "group": "tools"

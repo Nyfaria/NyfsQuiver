@@ -8,7 +8,6 @@
     "CoFHMixin",
     "ContainerAccessor",
     "CrossBowMixin",
-    "CuriosContainerMixin",
     "PlayerEntityMixin"
   ],
   "client": [],

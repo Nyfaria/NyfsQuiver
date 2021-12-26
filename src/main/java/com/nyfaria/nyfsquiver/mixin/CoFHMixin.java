@@ -3,7 +3,11 @@ package com.nyfaria.nyfsquiver.mixin;
 
 import cofh.core.compat.curios.CuriosProxy;
 import cofh.lib.capability.CapabilityArchery;
+import com.nyfaria.nyfsquiver.NyfsQuiver;
+import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
 import com.nyfaria.nyfsquiver.init.TagInit;
+import com.nyfaria.nyfsquiver.items.QuiverInventory;
+import com.nyfaria.nyfsquiver.items.QuiverItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ArrowItem;
@@ -35,33 +39,6 @@ public abstract class CoFHMixin
         return false;
     }
 
-    private static ItemStack findAmmo(PlayerEntity shooter) {
-
-        ItemStack offHand = shooter.getMainHandItem();
-        ItemStack mainHand = shooter.getOffhandItem();
-		ItemStack quiver = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),shooter)
-				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
-
-		if(!quiver.isEmpty()) {
-			return quiver;
-		}
-		
-        if (offHand.getCapability(AMMO_ITEM_CAPABILITY).map(cap -> !cap.isEmpty(shooter)).orElse(false) || isArrow(offHand)) {
-            return offHand;
-        }
-        if (mainHand.getCapability(AMMO_ITEM_CAPABILITY).map(cap -> !cap.isEmpty(shooter)).orElse(false) || isArrow(mainHand)) {
-            return mainHand;
-        }
-        for (ItemStack slot : shooter.inventory.items) {
-            if (slot.getCapability(AMMO_ITEM_CAPABILITY).map(cap -> !cap.isEmpty(shooter)).orElse(false) || isArrow(slot)) {
-                return slot;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-
-
 
 
     /**
@@ -71,8 +48,14 @@ public abstract class CoFHMixin
     public static ItemStack findAmmo(PlayerEntity shooter, ItemStack weapon) {
         ItemStack offHand = shooter.getOffhandItem();
         ItemStack mainHand = shooter.getMainHandItem();
-        ItemStack quiver = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),shooter)
-                .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
+        ItemStack quiver = ItemStack.EMPTY;
+
+        ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE,shooter).get().right;
+        if(!quiverStack.isEmpty()){
+            QuiverInventory quiverInventory = QuiverItem.getInventory(quiverStack);
+            quiver = quiverInventory.getStackInSlot(QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot());
+        }
+
 
         Predicate<ItemStack> isHeldAmmo = weapon.getItem() instanceof ShootableItem ? ((ShootableItem)weapon.getItem()).getSupportedHeldProjectiles() : (i) -> {
             return false;

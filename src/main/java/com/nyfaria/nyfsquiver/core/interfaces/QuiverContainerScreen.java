@@ -2,9 +2,10 @@ package com.nyfaria.nyfsquiver.core.interfaces;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.nyfaria.nyfsquiver.common.api.Dimension;
-import com.nyfaria.nyfsquiver.common.containers.QuiverContainer;
+import com.nyfaria.nyfsquiver.items.QuiverContainer;
 
+import com.nyfaria.nyfsquiver.util.Dimension;
+import com.nyfaria.nyfsquiver.util.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -17,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 
-import java.awt.*;
 
 public class QuiverContainerScreen extends ContainerScreen<QuiverContainer> {
 

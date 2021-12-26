@@ -1,7 +1,7 @@
 package com.nyfaria.nyfsquiver.packets;
 
-import com.nyfaria.nyfsquiver.compat.Compatibility;
 
+import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -20,7 +20,7 @@ public class PacketNextSlot {
 	        if(player != null){
 	            //PlayerInventory inventory = player.inventory;
 	        	System.out.println(direction);
-	            if(!Compatibility.CURIOS.increaseQuiverSlot(player,direction)){
+	            if(!QuiverStorageManager.increaseQuiverSlot(player,direction)){
 
 	                
 	            }

@@ -1,7 +1,11 @@
 package com.nyfaria.nyfsquiver.mixin;
 
 
+import com.nyfaria.nyfsquiver.NyfsQuiver;
+import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
 import com.nyfaria.nyfsquiver.init.TagInit;
+import com.nyfaria.nyfsquiver.items.QuiverInventory;
+import com.nyfaria.nyfsquiver.items.QuiverItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShootableItem;
@@ -16,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.util.function.Predicate;
+
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin 
@@ -26,10 +32,27 @@ public class PlayerEntityMixin
 		if (!(shootable.getItem() instanceof ShootableItem)) {
 			return;
 		}
-		ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),(PlayerEntity)(Object)this)
-				.map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
-		
-		if (!stack.isEmpty())cir.setReturnValue(stack);
+		Predicate<ItemStack> predicate = ((ShootableItem)shootable.getItem()).getSupportedHeldProjectiles();
+		ItemStack itemStack;
+		if(!CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE,(PlayerEntity)(Object)this).isPresent())
+			return;
+
+		ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE,(PlayerEntity)(Object)this).get().right;
+		if(quiverStack.isEmpty()){
+			return;
+		}
+
+		QuiverInventory quiverInventory = QuiverItem.getInventory(quiverStack);
+		itemStack = quiverInventory.getStackInSlot(QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot());
+
+
+		if (predicate.test(itemStack)) {
+			if(((PlayerEntity)(Object)this).level.isClientSide()){
+				cir.setReturnValue(ItemStack.EMPTY);
+			}else {
+				cir.setReturnValue(itemStack);
+			}
+		}
 		
 	}
 }

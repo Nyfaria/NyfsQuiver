@@ -10,7 +10,7 @@
             "item": "minecraft:feather"
         },
         "L": {
-            "item": "nyfsquiver:basicquiver"
+            "item": "nyfsquiver:basic_quiver"
         },
         "A": {
             "tag": "forge:ingots/copper"

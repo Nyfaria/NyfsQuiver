@@ -9,7 +9,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-import com.nyfaria.nyfsquiver.common.items.QuiverItem;
+import com.nyfaria.nyfsquiver.items.QuiverItem;
 
 public class PacketRename {
 

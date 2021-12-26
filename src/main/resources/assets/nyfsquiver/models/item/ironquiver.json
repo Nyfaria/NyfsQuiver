@@ -1,7 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "nyfsquiver:items/ironquiver"
+		"layer0": "nyfsquiver:items/iron_quiver"
 		},
   "overrides": [
     {
@@ -9,14 +9,14 @@
         "nyfsquiver:equipped": 1,
         "nyfsquiver:arrows": 0
       },
-      "model": "nyfsquiver:back/ironquiver"
+      "model": "nyfsquiver:back/iron_quiver"
     },
     {
       "predicate": {
         "nyfsquiver:equipped": 1,
         "nyfsquiver:arrows": 1
       },
-      "model": "nyfsquiver:back/ironquiver_noarrows"
+      "model": "nyfsquiver:back/iron_quiver_noarrows"
     }
   ]
 }

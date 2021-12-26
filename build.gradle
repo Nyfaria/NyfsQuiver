@@ -1,21 +1,24 @@
 buildscript {
     repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://sizableshrimp.me/maven' }
+        maven { url = 'https://maven.parchmentmc.org' }
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.5.2'
+version = '0.6.0'
 group = 'com.nyfaria.nyfsquiver' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'NyfsQuiver'
 
@@ -23,7 +26,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'parchment', version: '2021.08.08-1.16.5'
+    mappings channel: 'parchment', version: '2021.10.17-1.16.5'
     runs {
         client {
             workingDirectory project.file('run')
@@ -97,12 +100,12 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
 
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.20'
 
-    annotationProcessor "org.spongepowered:mixin:0.8.2:processor"
+    annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
     
     //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
-    compile fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.3")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.6.7")
     implementation fg.deobf("curse.maven:cofh-core-69162:3554750")
     implementation fg.deobf("curse.maven:archers-paradox-353399:3554751")
     compileOnly fg.deobf("curse.maven:spartan-weaponry-278141:3164046")
