@@ -18,7 +18,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.5-0.6.0'
+version = '1.16.5-0.6.1'
 group = 'com.nyfaria.nyfsquiver' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'NyfsQuiver'
 
@@ -106,7 +106,7 @@ dependencies {
     
     //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.6.7")
-    implementation fg.deobf("curse.maven:cofh-core-69162:3554750")
+    implementation fg.deobf("curse.maven:cofh-core-69162:3556973")
     implementation fg.deobf("curse.maven:archers-paradox-353399:3554751")
     compileOnly fg.deobf("curse.maven:spartan-weaponry-278141:3164046")
 

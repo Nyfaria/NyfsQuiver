@@ -17,6 +17,9 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 import cofh.lib.util.helpers.ArcheryHelper;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.Iterator;
@@ -44,105 +47,38 @@ public abstract class CoFHMixin
     /**
      * @author
      */
-    @Overwrite
-    public static ItemStack findAmmo(PlayerEntity shooter, ItemStack weapon) {
-        ItemStack offHand = shooter.getOffhandItem();
-        ItemStack mainHand = shooter.getMainHandItem();
+    @Inject(method = "findAmmo", at = @At("HEAD"), remap = false, cancellable = true)
+    private static void findAmmo(PlayerEntity shooter, ItemStack weapon, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack quiver = ItemStack.EMPTY;
-
-        ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE,shooter).get().right;
-        if(!quiverStack.isEmpty()){
-            QuiverInventory quiverInventory = QuiverItem.getInventory(quiverStack);
-            quiver = quiverInventory.getStackInSlot(QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot());
-        }
-        if(!quiver.isEmpty()) {
-            return quiver;
-        }
-        Predicate<ItemStack> isHeldAmmo = weapon.getItem() instanceof ShootableItem ? ((ShootableItem)weapon.getItem()).getSupportedHeldProjectiles() : (i) -> {
-            return false;
-        };
-        Predicate<ItemStack> isAmmo = weapon.getItem() instanceof ShootableItem ? ((ShootableItem)weapon.getItem()).getAllSupportedProjectiles() : (i) -> {
-            return false;
-        };
-        if (!(Boolean)offHand.getCapability(CapabilityArchery.AMMO_ITEM_CAPABILITY).map((cap) -> {
-            return !cap.isEmpty(shooter);
-        }).orElse(false) && !isHeldAmmo.test(offHand)) {
-            if (!(Boolean)mainHand.getCapability(CapabilityArchery.AMMO_ITEM_CAPABILITY).map((cap) -> {
-                return !cap.isEmpty(shooter);
-            }).orElse(false) && !isHeldAmmo.test(mainHand)) {
-                ItemStack[] retStack = new ItemStack[]{ItemStack.EMPTY};
-                CuriosProxy.getAllWorn(shooter).ifPresent((c) -> {
-                    for(int i = 0; i < c.getSlots(); ++i) {
-                        ItemStack slot = c.getStackInSlot(i);
-                        if ((Boolean)slot.getCapability(CapabilityArchery.AMMO_ITEM_CAPABILITY).map((cap) -> {
-                            return !cap.isEmpty(shooter);
-                        }).orElse(false) || isAmmo.test(slot)) {
-                            retStack[0] = slot;
-                        }
-                    }
-
-                });
-                if (!retStack[0].isEmpty()) {
-                    return retStack[0];
-                } else {
-                    Iterator var7 = shooter.inventory.items.iterator();
-
-                    ItemStack slot;
-                    do {
-                        if (!var7.hasNext()) {
-                            return ItemStack.EMPTY;
-                        }
-
-                        slot = (ItemStack)var7.next();
-                    } while(!(Boolean)slot.getCapability(CapabilityArchery.AMMO_ITEM_CAPABILITY).map((cap) -> {
-                        return !cap.isEmpty(shooter);
-                    }).orElse(false) && !isAmmo.test(slot));
-
-                    return slot;
-                }
-            } else {
-                return mainHand;
+        if(CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE,shooter).isPresent() ) {
+            ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE,shooter).get().right;
+            if (!quiverStack.isEmpty()) {
+                QuiverInventory quiverInventory = QuiverItem.getInventory(quiverStack);
+                quiver = quiverInventory.getStackInSlot(QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot());
             }
-        } else {
-            return offHand;
+            if (!quiver.isEmpty()) {
+                cir.setReturnValue(quiver);
+            }
         }
     }
-
-
-
-
-
-
-
-
 
 
 
     /**
      * @author
      */
-    @Overwrite
-    public static ItemStack findArrows(PlayerEntity shooter) {
-        ItemStack offHand = shooter.getOffhandItem();
-        ItemStack mainHand = shooter.getMainHandItem();
-        ItemStack quiver = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem().is(TagInit.QUIVER_ITEMS),shooter)
-                .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
-        if(!quiver.isEmpty()) {
-            return quiver;
-        }
-        if (isSimpleArrow(offHand)) {
-            return offHand;
-        } else if (isSimpleArrow(mainHand)) {
-            return mainHand;
-        } else {
-            for(int i = 0; i < shooter.inventory.getContainerSize(); ++i) {
-                ItemStack stack = shooter.inventory.getItem(i);
-                if (isSimpleArrow(stack)) {
-                    return stack;
-                }
+    @Inject(method = "findArrows",at=@At("HEAD"), remap = false, cancellable = true)
+    private static void findArrows(PlayerEntity shooter, CallbackInfoReturnable<ItemStack> cir) {
+        ItemStack quiver = ItemStack.EMPTY;
+        if(CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE,shooter).isPresent() ) {
+            ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE,shooter).get().right;
+            if (!quiverStack.isEmpty()) {
+                QuiverInventory quiverInventory = QuiverItem.getInventory(quiverStack);
+                quiver = quiverInventory.getStackInSlot(QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot());
             }
-
-            return ItemStack.EMPTY;
+            if (!quiver.isEmpty()) {
+                cir.setReturnValue(quiver);
+            }
         }
     }
 }
