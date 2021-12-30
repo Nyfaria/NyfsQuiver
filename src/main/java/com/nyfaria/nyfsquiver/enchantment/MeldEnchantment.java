@@ -1,5 +1,6 @@
 package com.nyfaria.nyfsquiver.enchantment;
 
+import com.nyfaria.nyfsquiver.config.NQConfig;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -28,6 +29,6 @@ public class MeldEnchantment extends Enchantment {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        return true;
+        return NQConfig.INSTANCE.meldingEnchantTable.get();
     }
 }

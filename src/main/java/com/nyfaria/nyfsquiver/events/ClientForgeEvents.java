@@ -20,9 +20,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,7 +46,6 @@ public class ClientForgeEvents {
                 .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
         if(quiverStack.isEmpty())return;
         if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER && player != null) {
-            ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             int slot = QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot();
             ItemStack playerHand;
             if (player.getMainHandItem().getItem() instanceof ProjectileWeaponItem && !quiverStack.isEmpty()) {
@@ -108,14 +105,17 @@ public class ClientForgeEvents {
             List<Integer> skips = Lists.newLinkedList();
             int xMultiplier = 0;
 
+
             if (readyArrows != null) {
 
                 if (readyArrows.size() == 0) {
+                    float x = 24 * xMultiplier + left, y = NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top;
                     event.getMatrixStack().pushPose();
                     event.getMatrixStack().translate(0, 1, 1);
-                    GuiComponent.drawString(event.getMatrixStack(), Minecraft.getInstance().font, new TextComponent("0"), Math.round(3 + left), Math.round(NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top), 16733525);
+                    //GuiComponent.drawString(event.getMatrixStack(), Minecraft.getInstance().font, new TextComponent("0"), Math.round(3 + left), Math.round(NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top), 16733525);
+                    GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, new TextComponent("0"), Math.round(x + 3), Math.round(y + 1), 16733525);
                     event.getMatrixStack().scale(0.49f, 0.49f, 0);
-                    GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, new TextComponent(String.valueOf(slot + 1)), Math.round(left), Math.round(NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top - 6, top - 6) : top - 6), 16777215);
+                    GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, new TextComponent(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100)-2, 16777215);
 
                     event.getMatrixStack().popPose();
 
@@ -125,8 +125,8 @@ public class ClientForgeEvents {
                             continue;
                         }
 
-                        ItemStack readyArrow = readyArrows.get(i);
                         float x = 24 * xMultiplier + left, y = NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top;
+                        ItemStack readyArrow = readyArrows.get(i);
 
                         event.getMatrixStack().pushPose();
                         event.getMatrixStack().translate(x, y, i + 1);
@@ -184,17 +184,20 @@ public class ClientForgeEvents {
                         }
 
                         event.getMatrixStack().pushPose();
-                        if (player.isCreative() || readyArrow.is(TagInit.QUIVER_ITEMS) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS,playerHand) > 0) {
+                        if (player.isCreative() || readyArrow.is(TagInit.QUIVER_ITEMS) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS,playerHand) > 0 && !(readyArrow.getItem() instanceof FireworkRocketItem) && !(readyArrow.getItem() instanceof SpectralArrowItem)) {
                             event.getMatrixStack().translate(x + 3, y + 5, i + 1 + readyArrows.size());
                             RenderSystem.setShaderTexture(0, NyfsQuiver.WIDGETS);
                             GuiComponent.blit(event.getMatrixStack(), -6, -4, 24, i == 0 ? 0 : 8, 12, 8, 36, 24);
+                            event.getMatrixStack().translate(-(x + 3), -(y + 5), -(i + 1 + readyArrows.size()));
+                            event.getMatrixStack().scale(0.49f, 0.49f, 0);
+                            GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, new TextComponent(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
                         } else {
                             boolean using = player.getUseItemRemainingTicks() > 0 && readyArrow == player.getProjectile(playerHand) && player.getUseItem().getItem() instanceof ProjectileWeaponItem;
                             String displayCount = using ? String.valueOf(count - 1) : String.valueOf(count);
                             int length = displayCount.length();
                             int color = i == 0 ? (using ? (count - 1 == 0 ? 16733525 /*red*/ : 16777045 /*yellow*/) : 16777215 /*white*/) : 10066329 /*gray*/;
                             event.getMatrixStack().translate(0, 0, i + 1 + readyArrows.size());
-                            GuiComponent.drawString(event.getMatrixStack(), Minecraft.getInstance().font, new TextComponent(displayCount), Math.round(x + 9 - (6 * length)), Math.round(y + 1), color);
+                            GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, new TextComponent(displayCount), Math.round(x + 3), Math.round(y + 1), color);
                             event.getMatrixStack().scale(0.49f, 0.49f, 0);
                             GuiComponent.drawCenteredString(event.getMatrixStack(), Minecraft.getInstance().font, new TextComponent(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
 
@@ -219,8 +222,6 @@ public class ClientForgeEvents {
         RenderSystem.applyModelViewMatrix();
         Lighting.setupForFlatItems();
         Minecraft.getInstance().getItemRenderer().renderStatic(readyArrow, ItemTransforms.TransformType.GUI, i == 0 ? 15728880 : 14540253, OverlayTexture.NO_OVERLAY, poseStack, buffer, 0);
-
-
         buffer.endBatch();
         RenderSystem.enableCull();
         RenderSystem.disableDepthTest();

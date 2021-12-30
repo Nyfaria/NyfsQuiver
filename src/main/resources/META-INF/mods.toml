@@ -5,7 +5,7 @@ issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
 
 [[mods]] 
 modId="nyfsquiver"
-version="0.5.2"
+version="0.6.3"
 displayName="Nyf's Quiver"
 authors="TheNyfaria"
 description='''
@@ -24,6 +24,6 @@ code on which i built this mod!
 [[dependencies.nyfsquiver]]
     modId="curios"
     mandatory=true
-    versionRange="[1.16.5-4.0.5.1,)"
+    versionRange="[1.18.1-5.0.3.0,)"
     ordering="NONE"
     side="BOTH"

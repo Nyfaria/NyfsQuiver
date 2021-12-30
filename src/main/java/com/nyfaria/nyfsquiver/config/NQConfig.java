@@ -16,6 +16,7 @@ public class NQConfig {
     public static final ForgeConfigSpec CONFIG_SPEC;
     public static final NQConfig INSTANCE;
 
+    public ForgeConfigSpec.BooleanValue meldingEnchantTable;
     public ForgeConfigSpec.BooleanValue basicFireproof;
     public ForgeConfigSpec.BooleanValue ironFireproof;
     public ForgeConfigSpec.BooleanValue copperFireproof;
@@ -40,6 +41,7 @@ public class NQConfig {
 
     private NQConfig(ForgeConfigSpec.Builder builder){
 
+        this.meldingEnchantTable = builder.worldRestart().comment("Should Melding show up in the Enchanting Table?").define("meldingEnchantTable", true);
         this.basicFireproof = builder.worldRestart().comment("Fireproof the basic quiver?").define("fireproofBasic", true);
         this.ironFireproof = builder.worldRestart().comment("Fireproof the iron quiver?").define("fireproofIron", true);
         this.copperFireproof = builder.worldRestart().comment("Fireproof the copper quiver?").define("fireproofCopper", true);
