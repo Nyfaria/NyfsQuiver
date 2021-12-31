@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -141,7 +142,7 @@ public class QuiverItem extends Item implements ICurioItem {
 		ItemStack arrowsE = QuiverStorageManager.getCurrentSlotStack(stack);
 		IBakedModel quiver = itemRenderer.getItemModelShaper().getModelManager().getModel(QuiverModels.getQuiverModel(stack,!arrowsE.isEmpty()));
 		//IRenderTypeBuffer buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-		itemRenderer.render(stack, ItemCameraTransforms.TransformType.HEAD,true,matrixStack,renderTypeBuffer,light,light,quiver);
+		itemRenderer.render(stack, ItemCameraTransforms.TransformType.HEAD,true,matrixStack,renderTypeBuffer,light, OverlayTexture.NO_OVERLAY,quiver);
 
 	}
 
