@@ -31,6 +31,7 @@ public class QuiverRenderer implements ICurioRenderer {
 		if(EnchantmentHelper.getEnchantments(stack).containsKey(EnchantmentInit.MELD_ENCHANTMENT.get()) && slotContext.getWearer().isInvisible()){
 			return;
 		}
+		matrixStack.pushPose();
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 		LivingEntity living = slotContext.getWearer();
         ICurioRenderer.translateIfSneaking(matrixStack, living);
@@ -43,6 +44,6 @@ public class QuiverRenderer implements ICurioRenderer {
 		BakedModel quiver = itemRenderer.getItemModelShaper().getModelManager().getModel(QuiverModels.getQuiverModel(stack,!arrowsE.isEmpty()));
 		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 		itemRenderer.render(stack, ItemTransforms.TransformType.HEAD,true,matrixStack,buffer,light,light,quiver);
-
+		matrixStack.popPose();
     }
 }
