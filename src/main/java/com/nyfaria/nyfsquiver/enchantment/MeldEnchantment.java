@@ -1,10 +1,13 @@
 package com.nyfaria.nyfsquiver.enchantment;
 
 import com.nyfaria.nyfsquiver.config.NQConfig;
+import com.nyfaria.nyfsquiver.init.EnchantmentInit;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 public class MeldEnchantment extends Enchantment {
 
@@ -30,5 +33,12 @@ public class MeldEnchantment extends Enchantment {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
         return NQConfig.INSTANCE.meldingEnchantTable.get();
+    }
+
+    public static boolean shouldRender(ItemStack stack, LivingEntity living){
+        if(living.isInvisible()){
+            return !EnchantmentHelper.getEnchantments(stack).containsKey(EnchantmentInit.MELD_ENCHANTMENT.get());
+        }
+        return true;
     }
 }

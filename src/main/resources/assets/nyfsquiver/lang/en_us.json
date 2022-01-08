@@ -16,5 +16,6 @@
 	"nyfsquiver.quivers.info.inventory_index": "Inventory id: %d",
 	"curios.identifier.quiver": "Quiver",
 	"enchantment.nyfsquiver.meld_enchant": "Melding",
+	"enchantment.nyfsquiver.meld_enchant.desc": "Items are also affected by Player Invisibility",
 	"itemGroup.nyfsquiver": "Nyf's Quivers"
 }

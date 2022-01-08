@@ -104,6 +104,7 @@ dependencies {
     //compileOnly fg.deobf("curse.maven:spartan-weaponry-278141:3164046")
     implementation fg.deobf("curse.maven:artifacts-312353:3584325")
     implementation fg.deobf("curse.maven:expandability-465066:3580591")
+    implementation fg.deobf("curse.maven:enchantment-descriptions-250419:3586040")
 
 }
 

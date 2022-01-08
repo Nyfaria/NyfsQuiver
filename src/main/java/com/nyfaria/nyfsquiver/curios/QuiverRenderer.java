@@ -1,9 +1,11 @@
 package com.nyfaria.nyfsquiver.curios;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.nyfaria.nyfsquiver.NyfsQuiver;
+import com.nyfaria.nyfsquiver.enchantment.MeldEnchantment;
 import com.nyfaria.nyfsquiver.init.EnchantmentInit;
 import com.nyfaria.nyfsquiver.items.QuiverModels;
 import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
@@ -28,12 +30,12 @@ import top.theillusivec4.curios.api.type.capability.ICurio;
 public class QuiverRenderer implements ICurioRenderer {
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if(EnchantmentHelper.getEnchantments(stack).containsKey(EnchantmentInit.MELD_ENCHANTMENT.get()) && slotContext.getWearer().isInvisible()){
+		if(!MeldEnchantment.shouldRender(stack,slotContext.entity())){
 			return;
 		}
 		matrixStack.pushPose();
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-		LivingEntity living = slotContext.getWearer();
+		LivingEntity living = slotContext.entity();
         ICurioRenderer.translateIfSneaking(matrixStack, living);
 		ICurioRenderer.rotateIfSneaking(matrixStack, living);
 		//matrixStack.mulPose(Vector3f.XN.rotationDegrees(180));
@@ -45,5 +47,6 @@ public class QuiverRenderer implements ICurioRenderer {
 		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 		itemRenderer.render(stack, ItemTransforms.TransformType.HEAD,true,matrixStack,buffer,light,light,quiver);
 		matrixStack.popPose();
+
     }
 }

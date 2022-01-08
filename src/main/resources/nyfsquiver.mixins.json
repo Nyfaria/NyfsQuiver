@@ -10,6 +10,7 @@
     "PlayerEntityMixin"
   ],
   "client": [
+    "CuriosLayerMixin",
     "HumanoidArmorLayerMixin",
     "PlayerItemInHandLayerMixin"
   ],
