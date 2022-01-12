@@ -5,11 +5,11 @@ issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
 
 [[mods]] 
 modId="nyfsquiver"
-version="1.16.5-0.6.2"
+version="1.16.5-0.6.3"
 displayName="Nyf's Quiver"
 authors="TheNyfaria"
 description='''
-Adds a Quiver and Arrows Slot to Curios.
+Adds a Quiver Slot to Curios.
 Adds a Quiver Items that hold All sorts of Arrows and allow you to
 toggle which arrow stack in the quiver is the currently active arrow.
 Works with most Modded Arrows and Bows. If one doesn't work, comment which
@@ -26,4 +26,11 @@ code on which i built this mod!
     mandatory=true
     versionRange="[1.16.5-4.0.5.1,)"
     ordering="NONE"
+    side="BOTH"
+
+[[dependencies.nyfsquiver]]
+    modId="epicfight"
+    mandatory=false
+    versionRange="[16.5.13]"
+    ordering="AFTER"
     side="BOTH"

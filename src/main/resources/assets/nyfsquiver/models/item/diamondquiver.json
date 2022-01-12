@@ -1,7 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "nyfsquiver:items/diamondquiver"
+		"layer0": "nyfsquiver:items/diamond_quiver"
 		},
   "overrides": [
     {
@@ -9,7 +9,7 @@
         "nyfsquiver:equipped": 1,
         "nyfsquiver:arrows": 0
       },
-      "model": "nyfsquiver:back/diamondquiver"
+      "model": "nyfsquiver:back/diamond_quiver"
     },
     {
       "predicate": {

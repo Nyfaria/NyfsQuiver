@@ -52,6 +52,5 @@ public class QuiverHolder implements INBTSavable<CompoundNBT> {
         else{
             this.currentSlot+=direction;
         }
-
     }
 }

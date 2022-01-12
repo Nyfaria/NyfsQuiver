@@ -1,7 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "nyfsquiver:items/netheritequiver"
+		"layer0": "nyfsquiver:items/netherite_quiver"
 		},
   "overrides": [
     {
@@ -9,7 +9,7 @@
         "nyfsquiver:equipped": 1,
         "nyfsquiver:arrows": 0
       },
-      "model": "nyfsquiver:back/netheritequiver"
+      "model": "nyfsquiver:back/netherite_quiver"
     },
     {
       "predicate": {

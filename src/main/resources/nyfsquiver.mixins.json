@@ -9,7 +9,8 @@
     "CoFHMixin",
     "ContainerAccessor",
     "CrossBowMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "EpicFightModMixin"
   ],
   "client": [],
   "server": [],

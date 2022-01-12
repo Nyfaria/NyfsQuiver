@@ -154,12 +154,14 @@ public class QuiverItem extends Item implements ICurioItem {
 	@Nullable
 	@Override
 	public CompoundNBT getShareTag(ItemStack stack) {
+		super.getShareTag(stack);
 		return QuiverHolderAttacher.getQuiverHolderUnwrap(stack).serializeNBT(true);
 	}
 
 	@Override
 	public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
 		QuiverHolderAttacher.getQuiverHolderUnwrap(stack).deserializeNBT(nbt, true);
+		super.readShareTag(stack,nbt);
 	}
 
 	public AbstractArrowEntity modifyArrow(AbstractArrowEntity abstractArrow){
