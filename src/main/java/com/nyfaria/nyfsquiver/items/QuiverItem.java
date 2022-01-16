@@ -123,16 +123,6 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
 
 
 
-	@Override
-	public void onEquip(SlotContext slotContext, ItemStack newStack,ItemStack quiverItem) {
-
-	}
-
-
-	@Override
-	public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack quiverItem) {
-
-	}
 	public AbstractArrow modifyArrow(AbstractArrow abstractArrow){
 		return abstractArrow;
 	}
@@ -153,13 +143,16 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
 
 	@Override
 	public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
-		QuiverHolderAttacher.getQuiverHolderUnwrap(stack).deserializeNBT(nbt, true);
+		QuiverHolderAttacher.getQuiverHolderUnwrap(stack).deserializeNBT(nbt.getCompound("inventory"), true);
+		super.readShareTag(stack,nbt);
 	}
 
 	@Nullable
 	@Override
 	public CompoundTag getShareTag(ItemStack stack) {
-		return QuiverHolderAttacher.getQuiverHolderUnwrap(stack).serializeNBT(true);
+		CompoundTag tag = super.getShareTag(stack);
+		tag.put("inventory", QuiverHolderAttacher.getQuiverHolderUnwrap(stack).serializeNBT(true));
+		return tag;
 	}
 
 

@@ -19,6 +19,13 @@ public class QuiverHolder implements INBTSavable<CompoundTag>{
     }
 
 
+    //@Override
+    public CompoundTag serializeNBT(CompoundTag tag, boolean savingToDisk) {
+        tag.put("inventory", inventory.serializeNBT());
+        tag.putInt("currentslot",currentSlot);
+        return tag;
+    }
+
     @Override
     public CompoundTag serializeNBT(boolean savingToDisk) {
         CompoundTag tag = new CompoundTag();
