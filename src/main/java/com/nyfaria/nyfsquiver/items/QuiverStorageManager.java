@@ -184,7 +184,7 @@ public class QuiverStorageManager {
                 return true;
             }
         } else if (worldIn.isClientSide) {
-            ClientModEvents.openScreen(stack.getItem().getName(stack).getContents(), stack.getDisplayName().getContents());
+            ClientModEvents.openScreen(stack.getItem().getName(stack).getContents().toString(), stack.getDisplayName().getContents().toString());
             return true;
         }
         return false;

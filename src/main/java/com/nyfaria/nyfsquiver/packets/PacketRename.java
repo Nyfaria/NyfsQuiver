@@ -2,7 +2,7 @@ package com.nyfaria.nyfsquiver.packets;
 
 import com.nyfaria.nyfsquiver.items.QuiverItem;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,7 +40,7 @@ public class PacketRename {
             if (stack.isEmpty() || !(stack.getItem() instanceof QuiverItem))
                 return;
 
-            stack.setHoverName(new TextComponent(this.name));
+            stack.setHoverName(Component.literal(this.name));
         }
     }
 

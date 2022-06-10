@@ -3,7 +3,6 @@ package com.nyfaria.nyfsquiver.init;
 import com.nyfaria.nyfsquiver.NyfsQuiver;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 

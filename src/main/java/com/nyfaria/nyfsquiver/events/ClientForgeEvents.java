@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -42,7 +42,7 @@ public class ClientForgeEvents {
     public static void onRenderGameOverlay(RenderGameOverlayEvent.Pre event) {
         @Nullable LocalPlayer player = Minecraft.getInstance().player;
         float scale = (float)NQConfig_Client.getGUIScale();
-        PoseStack poseStack = event.getMatrixStack();
+        PoseStack poseStack = event.getPoseStack();
         ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, player)
                 .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
         if (quiverStack.isEmpty()) return;
@@ -115,10 +115,10 @@ public class ClientForgeEvents {
                     poseStack.pushPose();
             poseStack.scale(scale,scale,scale);
                     poseStack.translate(0, 1, 1);
-                    //GuiComponent.drawString(poseStack, Minecraft.getInstance().font, new TextComponent("0"), Math.round(3 + left), Math.round(NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top), 16733525);
-                    GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, new TextComponent("0"), Math.round(x + 3), Math.round(y + 1), 16733525);
+                    //GuiComponent.drawString(poseStack, Minecraft.getInstance().font, Component.literal("0"), Math.round(3 + left), Math.round(NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top), 16733525);
+                    GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal("0"), Math.round(x + 3), Math.round(y + 1), 16733525);
                     poseStack.scale(0.49f, 0.49f, 0);
-                    GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, new TextComponent(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100) - 2, 16777215);
+                    GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100) - 2, 16777215);
 
                     poseStack.popPose();
 
@@ -197,15 +197,15 @@ public class ClientForgeEvents {
                 GuiComponent.blit(poseStack, -6, -4, 24, i == 0 ? 0 : 8, 12, 8, 36, 24);
                 poseStack.translate(-(x + 3), -(y + 5), -(i + 1 + readyArrows.size()));
                 poseStack.scale(0.49f, 0.49f, 0);
-                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, new TextComponent(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
+                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
             } else {
                 boolean using = player.getUseItemRemainingTicks() > 0 && readyArrow == player.getProjectile(playerHand) && player.getUseItem().getItem() instanceof ProjectileWeaponItem;
                 String displayCount = using ? String.valueOf(count - 1) : String.valueOf(count);
                 int color = i == 0 ? (using ? (count - 1 == 0 ? 16733525 /*red*/ : 16777045 /*yellow*/) : 16777215 /*white*/) : 10066329 /*gray*/;
                 poseStack.translate(0, 0, i + 1 + readyArrows.size());
-                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, new TextComponent(displayCount), Math.round(x + 3), Math.round(y + 1), color);
+                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(displayCount), Math.round(x + 3), Math.round(y + 1), color);
                 poseStack.scale(0.49f, 0.49f, 0);
-                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, new TextComponent(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
+                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
 
             }
             poseStack.popPose();

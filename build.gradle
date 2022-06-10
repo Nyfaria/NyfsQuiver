@@ -15,7 +15,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.18.2-0.7.1'
+version = '1.19-0.7.1'
 group = 'com.nyfaria.nyfsquiver' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'NyfsQuiver'
 
@@ -23,7 +23,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.18.2'
+    mappings channel: 'official', version: '1.19'
     runs {
         client {
             workingDirectory project.file('run')
@@ -93,14 +93,14 @@ mixin {
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
 
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.36'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.16'
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.6.3")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19-5.1.0.1")
 
-    implementation fg.deobf("curse.maven:enchantment-descriptions-250419:3694487")
-    implementation fg.deobf("curse.maven:bookshelf-228525:3732237")
+    implementation fg.deobf("curse.maven:enchantment-descriptions-250419:3823905")
+    implementation fg.deobf("curse.maven:bookshelf-228525:3823528")
 
 }
 

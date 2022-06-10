@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -98,7 +97,7 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
         if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
 
         } else {
-            tooltip.add(new TranslatableComponent("Hold " + "\u00A7e" + "Shift" + "\u00A77" + " for More Information"));
+            tooltip.add(Component.translatable("Hold " + "\u00A7e" + "Shift" + "\u00A77" + " for More Information"));
         }
     }
 
@@ -123,7 +122,7 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
                 });
             }
         } else if (worldIn.isClientSide) {
-            ClientModEvents.openScreen(stack.getItem().getName(stack).getContents(), stack.getDisplayName().getContents());
+            ClientModEvents.openScreen(stack.getItem().getName(stack).getContents().toString(), stack.getDisplayName().getContents().toString());
         }
         return InteractionResultHolder.sidedSuccess(stack, worldIn.isClientSide);
 

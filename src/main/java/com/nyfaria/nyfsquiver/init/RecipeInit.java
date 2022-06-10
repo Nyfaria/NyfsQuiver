@@ -10,5 +10,5 @@ import net.minecraftforge.registries.RegistryObject;
 public class RecipeInit {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPES = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, NyfsQuiver.MODID);
 
-    public static final RegistryObject<RecipeSerializer<QuiverRecipe>> QUIVER_RECIPE = RECIPES.register("quiverrecipe", () -> new QuiverRecipe.Serializer());
+    public static final RegistryObject<RecipeSerializer<QuiverRecipe>> QUIVER_RECIPE = RECIPES.register("quiverrecipe", QuiverRecipe.Serializer::new);
 }

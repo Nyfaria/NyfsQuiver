@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class QuiverRenameScreen extends Screen {
@@ -25,7 +25,7 @@ public class QuiverRenameScreen extends Screen {
     private int left, top;
 
     public QuiverRenameScreen(String defaultName, String name) {
-        super(new TranslatableComponent("gui.nyfsquiver.title"));
+        super(Component.translatable("gui.nyfsquiver.title"));
         this.defaultName = defaultName;
         this.lastTickName = name;
     }
