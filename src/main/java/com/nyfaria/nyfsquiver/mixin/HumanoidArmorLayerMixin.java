@@ -18,10 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class HumanoidArmorLayerMixin {
 
 
-    @Inject(method = "renderArmorPiece", at=@At("HEAD"), cancellable = true)
-    private void melding(PoseStack poseStack, MultiBufferSource bufferSource, LivingEntity livingEntity, EquipmentSlot equipmentSlot, int flag1, HumanoidModel<LivingEntity> model, CallbackInfo ci){
+    @Inject(method = "renderArmorPiece", at = @At("HEAD"), cancellable = true)
+    private void melding(PoseStack poseStack, MultiBufferSource bufferSource, LivingEntity livingEntity, EquipmentSlot equipmentSlot, int flag1, HumanoidModel<LivingEntity> model, CallbackInfo ci) {
         ItemStack itemstack = livingEntity.getItemBySlot(equipmentSlot);
-        if(EnchantmentHelper.getEnchantments(itemstack).containsKey(EnchantmentInit.MELD_ENCHANTMENT.get()) && livingEntity.isInvisible()){
+        if (EnchantmentHelper.getEnchantments(itemstack).containsKey(EnchantmentInit.MELD.get()) && livingEntity.isInvisible()) {
             ci.cancel();
         }
     }

@@ -67,8 +67,9 @@ public abstract class CoFHMixin
 
     */
 /**
-     * @author
-     *//*
+ * @author
+ * @author
+ *//*
 
     @Overwrite
     public static ItemStack findAmmo(Player shooter, ItemStack weapon) {
@@ -142,8 +143,8 @@ public abstract class CoFHMixin
 
     */
 /**
-     * @author
-     *//*
+ * @author
+ *//*
 
     @Overwrite
     public static ItemStack findArrows(Player shooter) {

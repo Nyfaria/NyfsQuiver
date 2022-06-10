@@ -4,17 +4,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -25,6 +20,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public abstract class CapabilityAttacher {
+    private static final List<BiConsumer<AttachCapabilitiesEvent<ItemStack>, ItemStack>> capAttachers = new ArrayList<>();
+    private static final List<Function<ItemStack, LazyOptional<? extends INBTSavable<CompoundTag>>>> capRetrievers = new ArrayList<>();
+
     static {
         MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, CapabilityAttacher::onAttachCapability);
     }
@@ -33,12 +31,6 @@ public abstract class CapabilityAttacher {
     protected static <T> Capability<T> getCapability(CapabilityToken<T> type) {
         return CapabilityManager.get(type);
     }
-
-    private static final List<BiConsumer<AttachCapabilitiesEvent<ItemStack>, ItemStack>> capAttachers = new ArrayList<>();
-    private static final List<Function<ItemStack, LazyOptional<? extends INBTSavable<CompoundTag>>>> capRetrievers = new ArrayList<>();
-
-
-
 
     @SuppressWarnings("unchecked")
     protected static <E extends ItemStack, C extends INBTSavable<CompoundTag>> void registerAttacher(Class<E> entityClass, BiConsumer<AttachCapabilitiesEvent<ItemStack>, E> attacher,
@@ -55,7 +47,7 @@ public abstract class CapabilityAttacher {
     }
 
     protected static <I extends INBTSerializable<T>, T extends Tag> void genericAttachCapability(AttachCapabilitiesEvent<?> event, I impl, Capability<I> capability, ResourceLocation location,
-            boolean save) {
+                                                                                                 boolean save) {
         LazyOptional<I> storage = LazyOptional.of(() -> impl);
         ICapabilityProvider provider = getProvider(impl, storage, capability, save);
         event.addCapability(location, provider);

@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ClientQuiverTooltip implements ClientTooltipComponent {
-    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(NyfsQuiver.MOD_ID, "textures/gui/tooltip.png");
+    public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(NyfsQuiver.MODID, "textures/gui/tooltip.png");
     private static final int MARGIN_Y = 4;
     private static final int BORDER_WIDTH = 1;
     private static final int TEX_SIZE = 128;
@@ -46,8 +46,8 @@ public class ClientQuiverTooltip implements ClientTooltipComponent {
         boolean flag = this.weight >= 64;
         int k = 0;
 
-        for(int l = 0; l < j; ++l) {
-            for(int i1 = 0; i1 < i; ++i1) {
+        for (int l = 0; l < j; ++l) {
+            for (int i1 = 0; i1 < i; ++i1) {
                 int j1 = p_194043_ + i1 * 18 + 1;
                 int k1 = p_194044_ + l * 20 + 1;
                 this.renderSlot(j1, k1, k++, flag, p_194042_, p_194045_, p_194046_, p_194047_);
@@ -76,12 +76,12 @@ public class ClientQuiverTooltip implements ClientTooltipComponent {
         this.blit(p_194024_, p_194020_, p_194021_, p_194025_, ClientQuiverTooltip.Texture.BORDER_CORNER_TOP);
         this.blit(p_194024_, p_194020_ + p_194022_ * 18 + 1, p_194021_, p_194025_, ClientQuiverTooltip.Texture.BORDER_CORNER_TOP);
 
-        for(int i = 0; i < p_194022_; ++i) {
+        for (int i = 0; i < p_194022_; ++i) {
             this.blit(p_194024_, p_194020_ + 1 + i * 18, p_194021_, p_194025_, ClientQuiverTooltip.Texture.BORDER_HORIZONTAL_TOP);
             this.blit(p_194024_, p_194020_ + 1 + i * 18, p_194021_ + p_194023_ * 20, p_194025_, ClientQuiverTooltip.Texture.BORDER_HORIZONTAL_BOTTOM);
         }
 
-        for(int j = 0; j < p_194023_; ++j) {
+        for (int j = 0; j < p_194023_; ++j) {
             this.blit(p_194024_, p_194020_, p_194021_ + j * 20 + 1, p_194025_, ClientQuiverTooltip.Texture.BORDER_VERTICAL);
             this.blit(p_194024_, p_194020_ + p_194022_ * 18 + 1, p_194021_ + j * 20 + 1, p_194025_, ClientQuiverTooltip.Texture.BORDER_VERTICAL);
         }
@@ -93,7 +93,7 @@ public class ClientQuiverTooltip implements ClientTooltipComponent {
     private void blit(PoseStack p_194036_, int p_194037_, int p_194038_, int p_194039_, ClientQuiverTooltip.Texture p_194040_) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
-        GuiComponent.blit(p_194036_, p_194037_, p_194038_, p_194039_, (float)p_194040_.x, (float)p_194040_.y, p_194040_.w, p_194040_.h, 128, 128);
+        GuiComponent.blit(p_194036_, p_194037_, p_194038_, p_194039_, (float) p_194040_.x, (float) p_194040_.y, p_194040_.w, p_194040_.h, 128, 128);
     }
 
     private int gridSizeX() {
@@ -105,7 +105,7 @@ public class ClientQuiverTooltip implements ClientTooltipComponent {
     }
 
     @OnlyIn(Dist.CLIENT)
-    static enum Texture {
+    enum Texture {
         SLOT(0, 0, 18, 20),
         BLOCKED_SLOT(0, 40, 18, 20),
         BORDER_VERTICAL(0, 18, 1, 20),
@@ -119,7 +119,7 @@ public class ClientQuiverTooltip implements ClientTooltipComponent {
         public final int w;
         public final int h;
 
-        private Texture(int p_169928_, int p_169929_, int p_169930_, int p_169931_) {
+        Texture(int p_169928_, int p_169929_, int p_169930_, int p_169931_) {
             this.x = p_169928_;
             this.y = p_169929_;
             this.w = p_169930_;

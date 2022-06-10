@@ -1,29 +1,35 @@
 package com.nyfaria.nyfsquiver.config;
 
+import com.nyfaria.nyfsquiver.items.QuiverType;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.nyfaria.nyfsquiver.items.QuiverType;
-
 public class NQConfig {
 
-    static{
-        Pair<NQConfig,ForgeConfigSpec> pair = new ForgeConfigSpec.Builder().configure(NQConfig::new);
+    public static final ForgeConfigSpec CONFIG_SPEC;
+    public static final NQConfig INSTANCE;
+    //    public ForgeConfigSpec.IntValue basicDurability;
+//    public ForgeConfigSpec.IntValue ironDurability;
+//    public ForgeConfigSpec.IntValue copperDurability;
+//    public ForgeConfigSpec.IntValue goldDurability;
+//    public ForgeConfigSpec.IntValue diamondDurability;
+//    public ForgeConfigSpec.IntValue obsidianDurability;
+    public static ForgeConfigSpec.IntValue x;
+    public static ForgeConfigSpec.IntValue y;
+
+    static {
+        Pair<NQConfig, ForgeConfigSpec> pair = new ForgeConfigSpec.Builder().configure(NQConfig::new);
         CONFIG_SPEC = pair.getRight();
         INSTANCE = pair.getLeft();
     }
 
-    public static final ForgeConfigSpec CONFIG_SPEC;
-    public static final NQConfig INSTANCE;
-
+    public ForgeConfigSpec.BooleanValue requireQuiver;
     public ForgeConfigSpec.BooleanValue meldingEnchantTable;
-    public ForgeConfigSpec.BooleanValue basicFireproof;
-    public ForgeConfigSpec.BooleanValue ironFireproof;
-    public ForgeConfigSpec.BooleanValue copperFireproof;
-    public ForgeConfigSpec.BooleanValue silverFireproof;
-    public ForgeConfigSpec.BooleanValue goldFireproof;
-    public ForgeConfigSpec.BooleanValue diamondFireproof;
-    public ForgeConfigSpec.BooleanValue obsidianFireproof;
+    public ForgeConfigSpec.BooleanValue meldingBooks;
+    public ForgeConfigSpec.BooleanValue cyclingEnchantTable;
+    public ForgeConfigSpec.BooleanValue cyclingBooks;
+    public ForgeConfigSpec.BooleanValue quinfinityEnchantTable;
+    public ForgeConfigSpec.BooleanValue quinfinityBooks;
     public ForgeConfigSpec.IntValue basicRows;
     public ForgeConfigSpec.IntValue ironRows;
     public ForgeConfigSpec.IntValue copperRows;
@@ -36,19 +42,16 @@ public class NQConfig {
     public ForgeConfigSpec.IntValue goldColumns;
     public ForgeConfigSpec.IntValue diamondColumns;
     public ForgeConfigSpec.IntValue obsidianColumns;
-    public static ForgeConfigSpec.IntValue x;
-    public static ForgeConfigSpec.IntValue y;
 
-    private NQConfig(ForgeConfigSpec.Builder builder){
+    private NQConfig(ForgeConfigSpec.Builder builder) {
 
+        this.requireQuiver = builder.worldRestart().comment("Should Quivers be Required for Bow Usage?").define("requireQuiver", false);
         this.meldingEnchantTable = builder.worldRestart().comment("Should Melding show up in the Enchanting Table?").define("meldingEnchantTable", true);
-        this.basicFireproof = builder.worldRestart().comment("Fireproof the basic quiver?").define("fireproofBasic", true);
-        this.ironFireproof = builder.worldRestart().comment("Fireproof the iron quiver?").define("fireproofIron", true);
-        this.copperFireproof = builder.worldRestart().comment("Fireproof the copper quiver?").define("fireproofCopper", true);
-        this.silverFireproof = builder.worldRestart().comment("Fireproof the silver quiver?").define("fireproofSilver", true);
-        this.goldFireproof = builder.worldRestart().comment("Fireproof the gold quiver?").define("fireproofGold", true);
-        this.diamondFireproof = builder.worldRestart().comment("Fireproof the diamond quiver?").define("fireproofDiamond", true);
-        this.obsidianFireproof = builder.worldRestart().comment("Fireproof the obsidian quiver?").define("fireproofObsidian", true);
+        this.meldingBooks = builder.worldRestart().comment("Should Melding show up on Books?").define("meldingBooks", true);
+        this.cyclingEnchantTable = builder.worldRestart().comment("Should Cycling show up in the Enchanting Table?").define("cyclingEnchantTable", true);
+        this.cyclingBooks = builder.worldRestart().comment("Should Cycling show up on Books?").define("cyclingBooks", true);
+        this.quinfinityEnchantTable = builder.worldRestart().comment("Should Quinfinity show up in the Enchanting Table?").define("quinfinityEnchantTable", true);
+        this.quinfinityBooks = builder.worldRestart().comment("Should Quinfinity show up on Books?").define("quinfinityBooks", true);
 
         this.basicRows = builder.worldRestart().comment("How many rows does the basic quiver have?").defineInRange("rowsBasic", QuiverType.BASIC.getDefaultRows(), 1, 13);
         this.ironRows = builder.worldRestart().comment("How many rows does the iron quiver have?").defineInRange("rowsIron", QuiverType.IRON.getDefaultRows(), 1, 13);
@@ -64,10 +67,17 @@ public class NQConfig {
         this.goldColumns = builder.worldRestart().comment("How many columns does the gold quiver have?").defineInRange("columnsGold", QuiverType.GOLD.getDefaultColumns(), 1, 13);
         this.diamondColumns = builder.worldRestart().comment("How many columns does the diamond quiver have?").defineInRange("columnsDiamond", QuiverType.DIAMOND.getDefaultColumns(), 1, 13);
         this.obsidianColumns = builder.worldRestart().comment("How many columns does the Netherite quiver have?").defineInRange("columnsNetherite", QuiverType.NETHERITE.getDefaultColumns(), 1, 13);
-        
-        
-        x = builder.defineInRange("xPos",76,-1000,1000);
-        y = builder.defineInRange("yPos",24,-1000,1000);
+
+//        this.basicDurability = builder.worldRestart().comment("How many durability does the basic quiver have?").defineInRange("durabilityBasic", QuiverType.BASIC.getDefaultDurability(), 1, 10000);
+//        this.ironDurability = builder.worldRestart().comment("How many durability does the iron quiver have?").defineInRange("durabilityIron", QuiverType.IRON.getDefaultDurability(), 1, 10000);
+//        this.copperDurability = builder.worldRestart().comment("How many durability does the copper quiver have?").defineInRange("durabilityCopper", QuiverType.COPPER.getDefaultDurability(), 1, 10000);
+//        this.goldDurability = builder.worldRestart().comment("How many durability does the gold quiver have?").defineInRange("durabilityGold", QuiverType.GOLD.getDefaultDurability(), 1, 10000);
+//        this.diamondDurability = builder.worldRestart().comment("How many durability does the diamond quiver have?").defineInRange("durabilityDiamond", QuiverType.DIAMOND.getDefaultDurability(), 1, 10000);
+//        this.obsidianDurability = builder.worldRestart().comment("How many durability does the Netherite quiver have?").defineInRange("durabilityNetherite", QuiverType.NETHERITE.getDefaultDurability(), 1, 10000);
+//
+
+        x = builder.defineInRange("xPos", 76, -1000, 1000);
+        y = builder.defineInRange("yPos", 24, -1000, 1000);
     }
 
 }

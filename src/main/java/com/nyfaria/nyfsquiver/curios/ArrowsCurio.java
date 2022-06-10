@@ -6,41 +6,41 @@ import top.theillusivec4.curios.api.type.capability.ICurio;
 
 public class ArrowsCurio implements ICurio {
 
-	ItemStack quiverItem;
+    ItemStack quiverItem;
 
-	public ArrowsCurio(ItemStack stack) {
-		quiverItem = stack;
-	}
-	
+    public ArrowsCurio(ItemStack stack) {
+        quiverItem = stack;
+    }
+
 //	@Override
 //	public boolean canRender(String identifier, int index, LivingEntity livingEntity) {
 //		return false;
 //	}
-	
-	@Override
-	public DropRule getDropRule(LivingEntity livingEntity) {
-	    return DropRule.ALWAYS_KEEP;
-	}
 
-	@Override
-	public ItemStack getStack() {
-		return quiverItem;
-	}
+    @Override
+    public DropRule getDropRule(LivingEntity livingEntity) {
+        return DropRule.ALWAYS_KEEP;
+    }
 
-	@Override
-	public boolean canEquip(String identifier, LivingEntity livingEntity) {
-		return false;
-	}
+    @Override
+    public ItemStack getStack() {
+        return quiverItem;
+    }
 
-	@Override
-	public boolean canUnequip(String identifier, LivingEntity livingEntity) {
-		return false;
-	}
+    @Override
+    public boolean canEquip(String identifier, LivingEntity livingEntity) {
+        return false;
+    }
 
-	@Override
-	public boolean canRightClickEquip() {
-		return false;
-	}
+    @Override
+    public boolean canUnequip(String identifier, LivingEntity livingEntity) {
+        return false;
+    }
+
+    @Override
+    public boolean canRightClickEquip() {
+        return false;
+    }
 
 //	@Override
 //	public void render(String identifier, int index, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int light, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {

@@ -1,15 +1,13 @@
 package com.nyfaria.nyfsquiver.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.nyfaria.nyfsquiver.enchantment.MeldEnchantment;
-import com.nyfaria.nyfsquiver.init.EnchantmentInit;
+import com.nyfaria.nyfsquiver.enchantment.Meld;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -23,9 +21,11 @@ import top.theillusivec4.curios.client.render.CuriosLayer;
 import javax.annotation.Nonnull;
 
 @Mixin(CuriosLayer.class)
-public class CuriosLayerMixin <T extends LivingEntity, M extends EntityModel<T>> extends
+public class CuriosLayerMixin<T extends LivingEntity, M extends EntityModel<T>> extends
         RenderLayer<T, M> {
-    @Shadow @Final private RenderLayerParent<T, M> renderLayerParent;
+    @Shadow
+    @Final
+    private RenderLayerParent<T, M> renderLayerParent;
 
     public CuriosLayerMixin(RenderLayerParent<T, M> p_117346_) {
         super(p_117346_);
@@ -54,7 +54,7 @@ public class CuriosLayerMixin <T extends LivingEntity, M extends EntityModel<T>>
                             cosmetic = false;
                         }
 
-                        if (!stack.isEmpty() && MeldEnchantment.shouldRender(stack,livingEntity)) {
+                        if (!stack.isEmpty() && Meld.shouldRender(stack, livingEntity)) {
                             SlotContext slotContext =
                                     new SlotContext(id, livingEntity, i, cosmetic, stacksHandler.getRenders().get(i));
                             ItemStack finalStack = stack;

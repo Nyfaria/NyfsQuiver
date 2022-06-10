@@ -9,20 +9,27 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
-public class MeldEnchantment extends Enchantment {
+public class Meld extends Enchantment {
 
-    public MeldEnchantment(Rarity p_44676_, EquipmentSlot... p_44678_) {
+    public Meld(Rarity p_44676_, EquipmentSlot... p_44678_) {
         super(p_44676_, EnchantmentCategory.WEARABLE, p_44678_);
     }
 
-    @Override
-    public int getMinCost(int p_44616_) {
-        return 25;
+    public static boolean shouldRender(ItemStack stack, LivingEntity living) {
+        if (living.isInvisible()) {
+            return !EnchantmentHelper.getEnchantments(stack).containsKey(EnchantmentInit.MELD.get());
+        }
+        return true;
     }
 
     @Override
-    public int getMaxCost(int p_44619_) {
-        return 50;
+    public int getMinCost(int eLevel) {
+        return 10 * eLevel;
+    }
+
+    @Override
+    public int getMaxCost(int eLevel) {
+        return getMinCost(eLevel) + 30;
     }
 
     @Override
@@ -35,10 +42,8 @@ public class MeldEnchantment extends Enchantment {
         return NQConfig.INSTANCE.meldingEnchantTable.get();
     }
 
-    public static boolean shouldRender(ItemStack stack, LivingEntity living){
-        if(living.isInvisible()){
-            return !EnchantmentHelper.getEnchantments(stack).containsKey(EnchantmentInit.MELD_ENCHANTMENT.get());
-        }
-        return true;
+    @Override
+    public boolean isAllowedOnBooks() {
+        return NQConfig.INSTANCE.meldingEnchantTable.get();
     }
 }

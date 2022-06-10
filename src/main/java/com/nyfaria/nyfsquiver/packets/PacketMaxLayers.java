@@ -8,21 +8,21 @@ import java.util.function.Supplier;
 
 public class PacketMaxLayers {
 
-    private int maxLayers;
+    private final int maxLayers;
 
-    public PacketMaxLayers(int maxLayers){
+    public PacketMaxLayers(int maxLayers) {
         this.maxLayers = maxLayers;
     }
 
-    public void encode(FriendlyByteBuf buffer){
-        buffer.writeInt(this.maxLayers);
-    }
-
-    public static PacketMaxLayers decode(FriendlyByteBuf buffer){
+    public static PacketMaxLayers decode(FriendlyByteBuf buffer) {
         return new PacketMaxLayers(buffer.readInt());
     }
 
-    public void handle(Supplier<NetworkEvent.Context> contextSupplier){
+    public void encode(FriendlyByteBuf buffer) {
+        buffer.writeInt(this.maxLayers);
+    }
+
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         contextSupplier.get().setPacketHandled(true);
 
         QuiverStorageManager.maxLayers = this.maxLayers;

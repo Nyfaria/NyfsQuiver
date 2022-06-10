@@ -17,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerItemInHandLayer.class)
 public class PlayerItemInHandLayerMixin {
 
-    @Inject(method = "renderArmWithItem", at=@At("HEAD"), cancellable = true)
-    private void melding(LivingEntity livingEntity, ItemStack itemstack, ItemTransforms.TransformType p_174527_, HumanoidArm p_174528_, PoseStack p_174529_, MultiBufferSource p_174530_, int p_174531_, CallbackInfo ci){
-        if(EnchantmentHelper.getEnchantments(itemstack).containsKey(EnchantmentInit.MELD_ENCHANTMENT.get()) && livingEntity.isInvisible()){
+    @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
+    private void melding(LivingEntity livingEntity, ItemStack itemstack, ItemTransforms.TransformType p_174527_, HumanoidArm p_174528_, PoseStack p_174529_, MultiBufferSource p_174530_, int p_174531_, CallbackInfo ci) {
+        if (EnchantmentHelper.getEnchantments(itemstack).containsKey(EnchantmentInit.MELD.get()) && livingEntity.isInvisible()) {
             ci.cancel();
         }
     }

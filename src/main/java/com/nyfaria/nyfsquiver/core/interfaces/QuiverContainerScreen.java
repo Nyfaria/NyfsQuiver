@@ -4,13 +4,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.nyfaria.nyfsquiver.NyfsQuiver;
-
 import com.nyfaria.nyfsquiver.items.QuiverContainer;
 import com.nyfaria.nyfsquiver.util.Dimension;
 import com.nyfaria.nyfsquiver.util.Rectangle;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -18,7 +16,7 @@ import net.minecraft.world.inventory.Slot;
 
 public class QuiverContainerScreen extends AbstractContainerScreen<QuiverContainer> {
 
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(NyfsQuiver.MOD_ID, "textures/gui/backpack_container.png");
+    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(NyfsQuiver.MODID, "textures/gui/backpack_container.png");
 
 
     public QuiverContainerScreen(QuiverContainer handler, Inventory player, Component title) {
@@ -32,6 +30,16 @@ public class QuiverContainerScreen extends AbstractContainerScreen<QuiverContain
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
+    private static void blitdQuad(Matrix4f matrices, int x0, int x1, int y0, int y1, int z, float u0, float u1, float v0, float v1) {
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferBuilder.vertex(matrices, (float) x0, (float) y1, (float) z).uv(u0, v1).endVertex();
+        bufferBuilder.vertex(matrices, (float) x1, (float) y1, (float) z).uv(u1, v1).endVertex();
+        bufferBuilder.vertex(matrices, (float) x1, (float) y0, (float) z).uv(u1, v0).endVertex();
+        bufferBuilder.vertex(matrices, (float) x0, (float) y0, (float) z).uv(u0, v0).endVertex();
+        bufferBuilder.end();
+        BufferUploader.end(bufferBuilder);
+    }
 
     @Override
     protected void renderBg(PoseStack matrices, float delta, int mouseX, int mouseY) {
@@ -39,7 +47,7 @@ public class QuiverContainerScreen extends AbstractContainerScreen<QuiverContain
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
         renderBackgroundTexture(matrices, new Rectangle(x, y, imageWidth, imageHeight), delta, 0xFFFFFFFF);
-        RenderSystem.setShaderTexture(0,new ResourceLocation("textures/gui/container/hopper.png"));
+        RenderSystem.setShaderTexture(0, new ResourceLocation("textures/gui/container/hopper.png"));
         for (Slot slot : getMenu().slots) {
             this.blit(matrices, x + slot.x - 1, y + slot.y - 1, 43, 19, 18, 18);
         }
@@ -58,7 +66,7 @@ public class QuiverContainerScreen extends AbstractContainerScreen<QuiverContain
         float green = ((color >> 8) & 0xFF) / 255f;
         float blue = (color & 0xFF) / 255f;
         RenderSystem.clearColor(red, green, blue, alpha);
-        RenderSystem.setShaderTexture(0,GUI_TEXTURE);
+        RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         int x = bounds.x, y = bounds.y, width = bounds.width, height = bounds.height;
         int xTextureOffset = 0;
         int yTextureOffset = 66;
@@ -80,16 +88,5 @@ public class QuiverContainerScreen extends AbstractContainerScreen<QuiverContain
 
         // Center
         blitdQuad(matrix, x + 8, x + width - 8, y + 8, y + height - 8, getBlitOffset(), (114 + xTextureOffset) / 256f, (248 + xTextureOffset) / 256f, (132 + yTextureOffset) / 256f, (182 + yTextureOffset) / 256f);
-    }
-
-    private static void blitdQuad(Matrix4f matrices, int x0, int x1, int y0, int y1, int z, float u0, float u1, float v0, float v1) {
-        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.vertex(matrices, (float)x0, (float)y1, (float)z).uv(u0, v1).endVertex();
-        bufferBuilder.vertex(matrices, (float)x1, (float)y1, (float)z).uv(u1, v1).endVertex();
-        bufferBuilder.vertex(matrices, (float)x1, (float)y0, (float)z).uv(u1, v0).endVertex();
-        bufferBuilder.vertex(matrices, (float)x0, (float)y0, (float)z).uv(u0, v0).endVertex();
-        bufferBuilder.end();
-        BufferUploader.end(bufferBuilder);
     }
 }

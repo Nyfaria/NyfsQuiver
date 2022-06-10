@@ -1,11 +1,7 @@
 package com.nyfaria.nyfsquiver.events;
 
-import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
-import com.nyfaria.nyfsquiver.curios.QuiverCurios;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -23,8 +19,8 @@ public class CommonModEvent {
     }
 
     @SubscribeEvent
-    public static void interModEnqueue(InterModEnqueueEvent e){
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).icon(new ResourceLocation("nyfsquiver","gui/basic_quiver")).build());
+    public static void interModEnqueue(InterModEnqueueEvent e) {
+        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("quiver").size(1).icon(new ResourceLocation("nyfsquiver", "gui/basic_quiver")).build());
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("arrows").size(1).hide().build());
     }
 

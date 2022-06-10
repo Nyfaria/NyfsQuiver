@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
     }
 }
 
@@ -15,7 +15,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.18.1-0.6.4'
+version = '1.18.2-0.7.1'
 group = 'com.nyfaria.nyfsquiver' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'NyfsQuiver'
 
@@ -23,7 +23,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.18'
+    mappings channel: 'official', version: '1.18.2'
     runs {
         client {
             workingDirectory project.file('run')
@@ -93,18 +93,14 @@ mixin {
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
 
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.5'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.0.36'
 
-    annotationProcessor "org.spongepowered:mixin:0.8.3:processor"
+    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.1-5.0.3.0")
-    //implementation fg.deobf("curse.maven:shulker-tooltip-292899:3545878")
-    //implementation fg.deobf("curse.maven:cofh-core-69162:3554750")
-    //implementation fg.deobf("curse.maven:archers-paradox-353399:3554751")
-    //compileOnly fg.deobf("curse.maven:spartan-weaponry-278141:3164046")
-    implementation fg.deobf("curse.maven:artifacts-312353:3584325")
-    implementation fg.deobf("curse.maven:expandability-465066:3580591")
-    implementation fg.deobf("curse.maven:enchantment-descriptions-250419:3586040")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.6.3")
+
+    implementation fg.deobf("curse.maven:enchantment-descriptions-250419:3694487")
+    implementation fg.deobf("curse.maven:bookshelf-228525:3732237")
 
 }
 
