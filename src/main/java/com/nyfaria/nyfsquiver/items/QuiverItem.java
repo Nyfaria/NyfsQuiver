@@ -52,10 +52,11 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
 //	}
 
     public QuiverItem(QuiverType type) {
-        super(new Item.Properties().stacksTo(1).tab(NyfsQuiver.ITEM_GROUP).durability(type.getColumns() * type.getRows()));
+        super(new Item.Properties().stacksTo(1).tab(NyfsQuiver.ITEM_GROUP).durability(type.getDefaultColumns() * type.getDefaultRows()));
         this.type = type;
 
     }
+
 
     public static QuiverInventory getInventory(ItemStack itemStack) {
         return QuiverHolderAttacher.getQuiverHolderUnwrap(itemStack).getInventory();
@@ -114,7 +115,7 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
             if (!worldIn.isClientSide() && stack.getItem() instanceof QuiverItem) {
                 int bagSlot = handIn == InteractionHand.MAIN_HAND ? playerIn.getInventory().selected : -1;
                 //QuiverInventory.openQuiverInventory(stack, playerIn, bagSlot);
-                NetworkHooks.openGui((ServerPlayer) playerIn, new QuiverItem.ContainerProvider(stack.getDisplayName(), bagSlot, getInventory(stack)), a -> {
+                NetworkHooks.openScreen((ServerPlayer) playerIn, new QuiverItem.ContainerProvider(stack.getDisplayName(), bagSlot, getInventory(stack)), a -> {
                     a.writeInt(bagSlot);
                     a.writeInt(getInventory(stack).rows);
                     a.writeInt(getInventory(stack).columns);

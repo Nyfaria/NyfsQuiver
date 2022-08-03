@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ContainerInit {
-    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, NyfsQuiver.MODID);
+    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, NyfsQuiver.MODID);
 
     public static final RegistryObject<MenuType<QuiverContainer>> QUIVER_CONTAINER = CONTAINERS.register("container", () -> IForgeMenuType.create((windowId, inv, data) -> {
         int bagSlot = data.readInt();

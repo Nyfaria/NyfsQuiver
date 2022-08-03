@@ -33,6 +33,7 @@ public class CuriosLayerMixin<T extends LivingEntity, M extends EntityModel<T>> 
 
     /**
      * @author theNyfaria
+     * @reason duh
      */
     @Overwrite(remap = false)
     public void render(@Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource renderTypeBuffer,

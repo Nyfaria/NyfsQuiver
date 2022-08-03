@@ -28,7 +28,7 @@ public class CommonForgeEvents {
     @SubscribeEvent
     public static void arrowPickup(final EntityItemPickupEvent e) {
         ItemStack toPickup = e.getItem().getItem();
-        Player player = e.getPlayer();
+        Player player = e.getEntity();
         ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, player)
                 .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
 
@@ -55,16 +55,16 @@ public class CommonForgeEvents {
         }
         Predicate<ItemStack> predicate = ((ProjectileWeaponItem) e.getProjectileWeaponItemStack().getItem()).getSupportedHeldProjectiles();
         ItemStack itemStack;
-        if(!CuriosApi.getCuriosHelper().findFirstCurio(e.getEntityLiving(), NyfsQuiver.QUIVER_PREDICATE).isPresent()) {
+        if(!CuriosApi.getCuriosHelper().findFirstCurio(e.getEntity(), NyfsQuiver.QUIVER_PREDICATE).isPresent()) {
             if(NQConfig.INSTANCE.requireQuiver.get()) {
                 e.setProjectileItemStack(ItemStack.EMPTY);
             }
         }
-        if (!CuriosApi.getCuriosHelper().findFirstCurio(e.getEntityLiving(),NyfsQuiver.QUIVER_PREDICATE).isPresent()){
+        if (!CuriosApi.getCuriosHelper().findFirstCurio(e.getEntity(),NyfsQuiver.QUIVER_PREDICATE).isPresent()){
             return;
         }
 
-        ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE, e.getEntityLiving()).get().right;
+        ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE, e.getEntity()).get().right;
         if (quiverStack.isEmpty()) {
             return;
         }
@@ -76,11 +76,11 @@ public class CommonForgeEvents {
 
 
         if (predicate.test(itemStack)) {
-            if (e.getEntityLiving().level.isClientSide()) {
+            if (e.getEntity().level.isClientSide()) {
                 e.setProjectileItemStack(itemStack);
             } else {
 
-                QuiverItem.useQuiver(quiverStack, (ServerPlayer) e.getEntityLiving(), itemStack);
+                QuiverItem.useQuiver(quiverStack, (ServerPlayer) e.getEntity(), itemStack);
                 e.setProjectileItemStack(itemStack);
 
             }

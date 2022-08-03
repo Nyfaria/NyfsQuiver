@@ -9,6 +9,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
+import net.minecraft.world.item.enchantment.Enchantment.Rarity;
+
 public class Meld extends Enchantment {
 
     public Meld(Rarity p_44676_, EquipmentSlot... p_44678_) {
@@ -44,6 +46,9 @@ public class Meld extends Enchantment {
 
     @Override
     public boolean isAllowedOnBooks() {
-        return NQConfig.INSTANCE.meldingEnchantTable.get();
+        if(NQConfig.CONFIG_SPEC.isLoaded()) {
+            return NQConfig.INSTANCE.meldingEnchantTable.get();
+        }
+        return false;
     }
 }

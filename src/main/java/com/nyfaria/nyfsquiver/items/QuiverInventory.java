@@ -40,7 +40,7 @@ public class QuiverInventory extends ItemStackHandler {
     @Nonnull
     public ItemStack insertItem(@Nonnull ItemStack stack, boolean simulate) {
         for(int x = 0; x < getSlots(); x++){
-            if(getStackInSlot(x).is(stack.getItem()) && getStackInSlot(x).getCount() < 64){
+            if(getStackInSlot(x).is(stack.getItem()) && getStackInSlot(x).getCount() < 64 || getStackInSlot(x).isEmpty()){
                 return insertItem(x, stack, simulate);
             }
         }

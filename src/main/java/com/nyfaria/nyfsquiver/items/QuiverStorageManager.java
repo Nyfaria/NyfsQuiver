@@ -124,7 +124,7 @@ public class QuiverStorageManager {
     @SubscribeEvent
     public static void onJoin(PlayerEvent.PlayerLoggedInEvent e) {
         if (!e.getEntity().getCommandSenderWorld().isClientSide)
-            NyfsQuiver.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) e.getEntityLiving()), new PacketMaxLayers(maxLayers));
+            NyfsQuiver.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) e.getEntity()), new PacketMaxLayers(maxLayers));
     }
 
     public static ItemStack getCurrentSlotStack(ItemStack itemStack) {
@@ -175,7 +175,7 @@ public class QuiverStorageManager {
             if (!worldIn.isClientSide() && stack.getItem() instanceof QuiverItem) {
                 int bagSlot = 0;
                 QuiverInventory inventory = QuiverItem.getInventory(stack);
-                NetworkHooks.openGui((ServerPlayer) playerIn, new QuiverItem.ContainerProvider(stack.getDisplayName(), bagSlot, inventory), a -> {
+                NetworkHooks.openScreen((ServerPlayer) playerIn, new QuiverItem.ContainerProvider(stack.getDisplayName(), bagSlot, inventory), a -> {
                     a.writeInt(bagSlot);
                     a.writeInt(inventory.rows);
                     a.writeInt(inventory.columns);

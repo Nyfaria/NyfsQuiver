@@ -8,6 +8,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 
+import net.minecraft.world.item.enchantment.Enchantment.Rarity;
+
 public class Quinfinity extends Enchantment {
 
     public Quinfinity(Rarity rarity, EquipmentSlot... applicableSlots) {
@@ -43,6 +45,8 @@ public class Quinfinity extends Enchantment {
 
     @Override
     public boolean isAllowedOnBooks() {
+        if(NQConfig.CONFIG_SPEC.isLoaded())
         return NQConfig.INSTANCE.cyclingEnchantTable.get();
+        return false;
     }
 }

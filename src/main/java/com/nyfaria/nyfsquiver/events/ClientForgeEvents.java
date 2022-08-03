@@ -23,8 +23,9 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -39,14 +40,14 @@ public class ClientForgeEvents {
     static int offsetY = 0;
 
     @SubscribeEvent
-    public static void onRenderGameOverlay(RenderGameOverlayEvent.Pre event) {
+    public static void onRenderGameOverlay(RenderGuiOverlayEvent.Pre event) {
         @Nullable LocalPlayer player = Minecraft.getInstance().player;
         float scale = (float)NQConfig_Client.getGUIScale();
         PoseStack poseStack = event.getPoseStack();
         ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, player)
                 .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
         if (quiverStack.isEmpty()) return;
-        if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER && player != null) {
+        if (event.getOverlay() == VanillaGuiOverlay.HOTBAR.type() && player != null) {
             int slot = QuiverHolderAttacher.getQuiverHolderUnwrap(quiverStack).getCurrentSlot();
             ItemStack playerHand;
             if (player.getMainHandItem().getItem() instanceof ProjectileWeaponItem && !quiverStack.isEmpty()) {
@@ -271,7 +272,7 @@ public class ClientForgeEvents {
 //    }
 
     @SubscribeEvent
-    public static void post(ScreenEvent.DrawScreenEvent.Post event) {
+    public static void post(ScreenEvent.Render.Post event) {
 //        if (Minecraft.getInstance().level == null) return;
 //        if (event.getScreen() instanceof AbstractContainerScreen) {
 //            if (((AbstractContainerScreen) event.getScreen()).getSlotUnderMouse() != null) {
