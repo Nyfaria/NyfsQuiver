@@ -3,28 +3,22 @@ package com.nyfaria.nyfsquiver.cap;
 import com.nyfaria.nyfsquiver.items.QuiverInventory;
 import com.nyfaria.nyfsquiver.items.QuiverItem;
 import com.nyfaria.nyfsquiver.items.QuiverType;
+import dev._100media.capabilitysyncer.core.ItemStackCapability;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-public class QuiverHolder implements INBTSavable<CompoundTag> {
+public class QuiverHolder extends ItemStackCapability {
 
-    protected final ItemStack itemStack;
     private final QuiverInventory inventory;
     private int currentSlot = 0;
 
     public QuiverHolder(ItemStack itemStack) {
-        this.itemStack = itemStack;
+        super(itemStack);
         QuiverType type = ((QuiverItem) itemStack.getItem()).type;
         this.inventory = new QuiverInventory(false, type.getRows(), type.getColumns());
     }
 
 
-    //@Override
-    public CompoundTag serializeNBT(CompoundTag tag, boolean savingToDisk) {
-        tag.put("inventory", inventory.serializeNBT());
-        tag.putInt("currentslot", currentSlot);
-        return tag;
-    }
 
     @Override
     public CompoundTag serializeNBT(boolean savingToDisk) {

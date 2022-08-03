@@ -1,3 +1,4 @@
+/*
 package com.nyfaria.nyfsquiver.cap;
 
 import net.minecraft.core.Direction;
@@ -93,3 +94,4 @@ public abstract class CapabilityAttacher {
         capAttachers.forEach(attacher -> attacher.accept(event, event.getObject()));
     }
 }
+*/

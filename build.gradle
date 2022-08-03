@@ -83,17 +83,30 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        name = "100Media"
+        url = 'https://maven.100media.dev/'
+        credentials {
+            username = project.getProperty('hm_maven_username')
+            password = project.getProperty('hm_maven_password')
+        }
+        authentication {
+            basic(BasicAuthentication)
+        }
+    }
 
 }
 
 mixin {
     add sourceSets.main, "nyfsquiver.refmap.json"
 }
-
+configurations {
+    implementation.extendsFrom shadow
+}
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
 
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.36'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.68'
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
@@ -101,7 +114,8 @@ dependencies {
 
     implementation fg.deobf("curse.maven:enchantment-descriptions-250419:3694487")
     implementation fg.deobf("curse.maven:bookshelf-228525:3732237")
-
+//    implementation fg.deobf("curse.maven:cofh-core-69162:3838025")
+    shadow fg.deobf("dev._100media.capabilitysyncer:capabilitysyncer:${capabilitysyncer_version}")
 }
 
 jar {

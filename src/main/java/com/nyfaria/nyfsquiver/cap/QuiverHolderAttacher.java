@@ -2,6 +2,7 @@ package com.nyfaria.nyfsquiver.cap;
 
 import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.items.QuiverItem;
+import dev._100media.capabilitysyncer.core.CapabilityAttacher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
@@ -31,7 +32,7 @@ public class QuiverHolderAttacher extends CapabilityAttacher {
     }
 
     public static void register() {
-        CapabilityAttacher.registerAttacher(ItemStack.class, QuiverHolderAttacher::attach, QuiverHolderAttacher::getQuiverHolder);
+        CapabilityAttacher.registerItemStackAttacher(QuiverHolderAttacher::attach, QuiverHolderAttacher::getQuiverHolder);
     }
 
 }
