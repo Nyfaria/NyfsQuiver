@@ -87,8 +87,8 @@ public class ClientForgeEvents {
                 NyfsQuiver.interpolation = 1.0f;
             }
 
-            float left = NQConfig_Client.getHorizontalOffset() * (1f/scale);
-            float top = NQConfig_Client.getVerticalOffset() * (1f/scale);
+            float left = (float)NQConfig_Client.getAnchor().getX() + NQConfig_Client.getHorizontalOffset() * (1f/scale);
+            float top = (float)NQConfig_Client.getAnchor().getY() + NQConfig_Client.getVerticalOffset() * (1f/scale);
 
             poseStack.pushPose();
             poseStack.scale(scale,scale,scale);

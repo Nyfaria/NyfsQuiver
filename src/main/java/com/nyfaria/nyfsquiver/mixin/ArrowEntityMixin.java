@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -56,13 +57,24 @@ public abstract class ArrowEntityMixin extends Projectile {
 //    }
 
 
+    @Shadow protected abstract boolean tryPickup(Player p_150121_);
+
     /**
      * @author Nyfaria
      * @reason pick up arrows
      */
     @Overwrite
     public void playerTouch(Player player) {
+        if((Object)this instanceof ThrownTrident){
+            if (!this.level.isClientSide && (this.inGround || this.isNoPhysics()) && this.shakeTime <= 0) {
+                if (this.tryPickup(player)) {
+                    player.take(this, 1);
+                    this.discard();
+                    return;
+                }
 
+            }
+        }
         if (this.pickup == AbstractArrow.Pickup.ALLOWED && !level.isClientSide && (this.inGround || this.isNoPhysics()) && this.shakeTime <= 0) {
             boolean flag;
             ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, player)

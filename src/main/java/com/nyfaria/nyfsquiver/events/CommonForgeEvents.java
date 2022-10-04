@@ -3,18 +3,23 @@ package com.nyfaria.nyfsquiver.events;
 import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
 import com.nyfaria.nyfsquiver.config.NQConfig;
+import com.nyfaria.nyfsquiver.init.EnchantmentInit;
 import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.items.QuiverInventory;
 import com.nyfaria.nyfsquiver.items.QuiverItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingGetProjectileEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.core.jmx.Server;
@@ -56,7 +61,7 @@ public class CommonForgeEvents {
         Predicate<ItemStack> predicate = ((ProjectileWeaponItem) e.getProjectileWeaponItemStack().getItem()).getSupportedHeldProjectiles();
         ItemStack itemStack;
         if(!CuriosApi.getCuriosHelper().findFirstCurio(e.getEntityLiving(), NyfsQuiver.QUIVER_PREDICATE).isPresent()) {
-            if(NQConfig.INSTANCE.requireQuiver.get()) {
+            if(NQConfig.INSTANCE.requireQuiver.get() && e.getEntityLiving() instanceof Player) {
                 e.setProjectileItemStack(ItemStack.EMPTY);
             }
         }
@@ -91,6 +96,18 @@ public class CommonForgeEvents {
 
     }
 
+//    @SubscribeEvent
+//    public static void onClone(PlayerEvent.Clone event){
+//        if(event.isWasDeath()){
+//            event.getOriginal().revive();
+//            Inventory oldInventory = event.getOriginal().getInventory();
+//            oldInventory.items.removeAll(event.getOriginal().getInventory().items.stream().filter(
+//                    itemStack -> EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.SOULBOUND.get(),itemStack) == 0).toList());
+//            oldInventory.armor.removeAll(event.getOriginal().getInventory().items.stream().filter(
+//                    itemStack -> EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.SOULBOUND.get(),itemStack) == 0).toList());
+//            event.getPlayer().getInventory().replaceWith(oldInventory);
+//        }
+//    }
 
     @SubscribeEvent
     public static void attachCaps(AttachCapabilitiesEvent<ItemStack> e) {
