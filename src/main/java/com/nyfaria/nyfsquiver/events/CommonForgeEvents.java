@@ -56,7 +56,7 @@ public class CommonForgeEvents {
         Predicate<ItemStack> predicate = ((ProjectileWeaponItem) e.getProjectileWeaponItemStack().getItem()).getSupportedHeldProjectiles();
         ItemStack itemStack;
         if(!CuriosApi.getCuriosHelper().findFirstCurio(e.getEntity(), NyfsQuiver.QUIVER_PREDICATE).isPresent()) {
-            if(NQConfig.INSTANCE.requireQuiver.get()) {
+            if(NQConfig.INSTANCE.requireQuiver.get() && e.getEntity() instanceof Player) {
                 e.setProjectileItemStack(ItemStack.EMPTY);
             }
         }

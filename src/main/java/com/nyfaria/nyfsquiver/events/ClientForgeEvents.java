@@ -19,7 +19,11 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.FireworkRocketItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.SpectralArrowItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,7 +46,7 @@ public class ClientForgeEvents {
     @SubscribeEvent
     public static void onRenderGameOverlay(RenderGuiOverlayEvent.Pre event) {
         @Nullable LocalPlayer player = Minecraft.getInstance().player;
-        float scale = (float)NQConfig_Client.getGUIScale();
+        float scale = (float) NQConfig_Client.getGUIScale();
         PoseStack poseStack = event.getPoseStack();
         ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, player)
                 .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
@@ -75,9 +79,9 @@ public class ClientForgeEvents {
 
                 if (NQConfig_Client.hides()) {
                     if (NyfsQuiver.lastHeld == null) {
-            return;
+                        return;
                     } else {
-            playerHand = NyfsQuiver.lastHeld;
+                        playerHand = NyfsQuiver.lastHeld;
                     }
                 } else {
                     playerHand = NyfsQuiver.lastHeld = new ItemStack(Items.BOW);
@@ -88,11 +92,11 @@ public class ClientForgeEvents {
                 NyfsQuiver.interpolation = 1.0f;
             }
 
-            float left = NQConfig_Client.getHorizontalOffset() * (1f/scale);
-            float top = NQConfig_Client.getVerticalOffset() * (1f/scale);
+            float left = (float) NQConfig_Client.getAnchor().getX() + NQConfig_Client.getHorizontalOffset() * (1f / scale);
+            float top = (float) NQConfig_Client.getAnchor().getY() + NQConfig_Client.getVerticalOffset() * (1f / scale);
 
             poseStack.pushPose();
-            poseStack.scale(scale,scale,scale);
+            poseStack.scale(scale, scale, scale);
             poseStack.translate(left, NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top, 0);
             RenderSystem.setShaderTexture(0, NyfsQuiver.WIDGETS);
             GuiComponent.blit(poseStack, -12, -12, 0, 0, 24, 24, 36, 24);
@@ -114,7 +118,7 @@ public class ClientForgeEvents {
                 if (readyArrows.size() == 0) {
                     float x = 24 * xMultiplier + left, y = NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top;
                     poseStack.pushPose();
-            poseStack.scale(scale,scale,scale);
+                    poseStack.scale(scale, scale, scale);
                     poseStack.translate(0, 1, 1);
                     //GuiComponent.drawString(poseStack, Minecraft.getInstance().font, Component.literal("0"), Math.round(3 + left), Math.round(NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top), 16733525);
                     GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal("0"), Math.round(x + 3), Math.round(y + 1), 16733525);
@@ -125,93 +129,93 @@ public class ClientForgeEvents {
 
                 } else {
                     for (int i = 0; i < readyArrows.size(); ++i) {
-            if (skips.contains(i)) {
-                continue;
-            }
+                        if (skips.contains(i)) {
+                            continue;
+                        }
 
-            float x = 24 * xMultiplier + left, y = NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top;
-            ItemStack readyArrow = readyArrows.get(i);
+                        float x = 24 * xMultiplier + left, y = NQConfig_Client.animates() ? NyfsQuiver.bezier(NyfsQuiver.interpolation, -top, top) : top;
+                        ItemStack readyArrow = readyArrows.get(i);
 
-            poseStack.pushPose();
-            poseStack.scale(scale,scale,scale);
-            poseStack.translate(x, y, i + 1);
-            poseStack.scale(16, 16, 1);
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
-            renderItem(poseStack, i, readyArrow);
-            poseStack.popPose();
-            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, playerHand) > 0) {
-                poseStack.pushPose();
-            poseStack.scale(scale,scale,scale);
-                if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
-                    poseStack.translate(x - 5, y + 3, i + 1);
-                } else {
-                    poseStack.translate(x - 4, y - 1, i + 1);
-                }
-                poseStack.scale(10, 10, 1);
-                poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-                poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
-                if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
-                    poseStack.mulPose(Vector3f.ZN.rotationDegrees(-20));
-                } else {
-                    poseStack.mulPose(Vector3f.ZN.rotationDegrees(-30));
-                }
-                renderItem(poseStack, i, readyArrow);
-                poseStack.popPose();
+                        poseStack.pushPose();
+                        poseStack.scale(scale, scale, scale);
+                        poseStack.translate(x, y, i + 1);
+                        poseStack.scale(16, 16, 1);
+                        poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
+                        poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
+                        renderItem(poseStack, i, readyArrow);
+                        poseStack.popPose();
+                        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, playerHand) > 0) {
+                            poseStack.pushPose();
+                            poseStack.scale(scale, scale, scale);
+                            if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
+                                poseStack.translate(x - 5, y + 3, i + 1);
+                            } else {
+                                poseStack.translate(x - 4, y - 1, i + 1);
+                            }
+                            poseStack.scale(10, 10, 1);
+                            poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
+                            poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
+                            if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
+                                poseStack.mulPose(Vector3f.ZN.rotationDegrees(-20));
+                            } else {
+                                poseStack.mulPose(Vector3f.ZN.rotationDegrees(-30));
+                            }
+                            renderItem(poseStack, i, readyArrow);
+                            poseStack.popPose();
 
-                poseStack.pushPose();
-            poseStack.scale(scale,scale,scale);
-                if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
-                    poseStack.translate(x + 5, y + 3, i + 1);
-                } else {
-                    poseStack.translate(x + 1, y + 4, i + 1);
-                }
-                poseStack.scale(10, 10, 1);
-                poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-                poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
-                if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
-                    poseStack.mulPose(Vector3f.ZN.rotationDegrees(20));
-                } else {
-                    poseStack.mulPose(Vector3f.ZN.rotationDegrees(30));
-                }
-                renderItem(poseStack, i, readyArrow);
-                poseStack.popPose();
-            }
+                            poseStack.pushPose();
+                            poseStack.scale(scale, scale, scale);
+                            if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
+                                poseStack.translate(x + 5, y + 3, i + 1);
+                            } else {
+                                poseStack.translate(x + 1, y + 4, i + 1);
+                            }
+                            poseStack.scale(10, 10, 1);
+                            poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
+                            poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
+                            if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
+                                poseStack.mulPose(Vector3f.ZN.rotationDegrees(20));
+                            } else {
+                                poseStack.mulPose(Vector3f.ZN.rotationDegrees(30));
+                            }
+                            renderItem(poseStack, i, readyArrow);
+                            poseStack.popPose();
+                        }
 
-            int count = readyArrow.getCount();
+                        int count = readyArrow.getCount();
 
-            for (int j = i + 1; j < readyArrows.size(); ++j) {
-                ItemStack nextArrow = readyArrows.get(j);
-                if (nextArrow.sameItem(readyArrow) && ItemStack.tagMatches(nextArrow, readyArrow)) {
-                    count += nextArrow.getCount();
-                    skips.add(j);
-                } else {
-                    break;
-                }
-            }
+                        for (int j = i + 1; j < readyArrows.size(); ++j) {
+                            ItemStack nextArrow = readyArrows.get(j);
+                            if (nextArrow.sameItem(readyArrow) && ItemStack.tagMatches(nextArrow, readyArrow)) {
+                                count += nextArrow.getCount();
+                                skips.add(j);
+                            } else {
+                                break;
+                            }
+                        }
 
-            poseStack.pushPose();
-            poseStack.scale(scale,scale,scale);
-            if (player.isCreative() || readyArrow.is(TagInit.QUIVER_ITEMS) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, playerHand) > 0 && !(readyArrow.getItem() instanceof FireworkRocketItem) && !(readyArrow.getItem() instanceof SpectralArrowItem)) {
-                poseStack.translate(x + 3, y + 5, i + 1 + readyArrows.size());
-                RenderSystem.setShaderTexture(0, NyfsQuiver.WIDGETS);
-                GuiComponent.blit(poseStack, -6, -4, 24, i == 0 ? 0 : 8, 12, 8, 36, 24);
-                poseStack.translate(-(x + 3), -(y + 5), -(i + 1 + readyArrows.size()));
-                poseStack.scale(0.49f, 0.49f, 0);
-                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
-            } else {
-                boolean using = player.getUseItemRemainingTicks() > 0 && readyArrow == player.getProjectile(playerHand) && player.getUseItem().getItem() instanceof ProjectileWeaponItem;
-                String displayCount = using ? String.valueOf(count - 1) : String.valueOf(count);
-                int color = i == 0 ? (using ? (count - 1 == 0 ? 16733525 /*red*/ : 16777045 /*yellow*/) : 16777215 /*white*/) : 10066329 /*gray*/;
-                poseStack.translate(0, 0, i + 1 + readyArrows.size());
-                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(displayCount), Math.round(x + 3), Math.round(y + 1), color);
-                poseStack.scale(0.49f, 0.49f, 0);
-                GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
+                        poseStack.pushPose();
+                        poseStack.scale(scale, scale, scale);
+                        if (player.isCreative() || readyArrow.is(TagInit.QUIVER_ITEMS) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, playerHand) > 0 && !(readyArrow.getItem() instanceof FireworkRocketItem) && !(readyArrow.getItem() instanceof SpectralArrowItem)) {
+                            poseStack.translate(x + 3, y + 5, i + 1 + readyArrows.size());
+                            RenderSystem.setShaderTexture(0, NyfsQuiver.WIDGETS);
+                            GuiComponent.blit(poseStack, -6, -4, 24, i == 0 ? 0 : 8, 12, 8, 36, 24);
+                            poseStack.translate(-(x + 3), -(y + 5), -(i + 1 + readyArrows.size()));
+                            poseStack.scale(0.49f, 0.49f, 0);
+                            GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
+                        } else {
+                            boolean using = player.getUseItemRemainingTicks() > 0 && readyArrow == player.getProjectile(playerHand) && player.getUseItem().getItem() instanceof ProjectileWeaponItem;
+                            String displayCount = using ? String.valueOf(count - 1) : String.valueOf(count);
+                            int color = i == 0 ? (using ? (count - 1 == 0 ? 16733525 /*red*/ : 16777045 /*yellow*/) : 16777215 /*white*/) : 10066329 /*gray*/;
+                            poseStack.translate(0, 0, i + 1 + readyArrows.size());
+                            GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(displayCount), Math.round(x + 3), Math.round(y + 1), color);
+                            poseStack.scale(0.49f, 0.49f, 0);
+                            GuiComponent.drawCenteredString(poseStack, Minecraft.getInstance().font, Component.literal(String.valueOf(slot + 1)), Math.round(((x - 8) / 49) * 100), Math.round(((y - 10) / 49) * 100), 16777215);
 
-            }
-            poseStack.popPose();
+                        }
+                        poseStack.popPose();
 
-            ++xMultiplier;
+                        ++xMultiplier;
                     }
                 }
             }

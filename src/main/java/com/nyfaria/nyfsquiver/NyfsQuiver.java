@@ -3,17 +3,29 @@ package com.nyfaria.nyfsquiver;
 import com.google.common.collect.Lists;
 import com.nyfaria.nyfsquiver.config.NQConfig;
 import com.nyfaria.nyfsquiver.config.NQConfig_Client;
-import com.nyfaria.nyfsquiver.init.*;
+import com.nyfaria.nyfsquiver.init.ContainerInit;
+import com.nyfaria.nyfsquiver.init.EnchantmentInit;
+import com.nyfaria.nyfsquiver.init.ItemInit;
+import com.nyfaria.nyfsquiver.init.RecipeInit;
+import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.items.QuiverItem;
 import com.nyfaria.nyfsquiver.items.QuiverModels;
 import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
-import com.nyfaria.nyfsquiver.packets.*;
+import com.nyfaria.nyfsquiver.packets.PacketMaxLayers;
+import com.nyfaria.nyfsquiver.packets.PacketNextSlot;
+import com.nyfaria.nyfsquiver.packets.PacketOpenQuiver;
+import com.nyfaria.nyfsquiver.packets.PacketPreviousSlot;
+import com.nyfaria.nyfsquiver.packets.PacketRename;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -30,7 +42,7 @@ import java.util.function.Predicate;
 
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
-// The value here should match an entry in the META-INF/mods.toml file
+
 @Mod(NyfsQuiver.MODID)
 public class NyfsQuiver {
     public static final String MODID = "nyfsquiver";
