@@ -8,6 +8,7 @@ import com.nyfaria.nyfsquiver.events.ClientModEvents;
 import com.nyfaria.nyfsquiver.init.EnchantmentInit;
 import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.tooltip.QuiverTooltip;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -98,7 +99,7 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
         if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)) {
 
         } else {
-            tooltip.add(Component.translatable("Hold " + "\u00A7e" + "Shift" + "\u00A77" + " for More Information"));
+            tooltip.add(Component.translatable("tooltip.nyfsquiver",Component.translatable("tooltip.nyfsquiver.shift").withStyle(ChatFormatting.YELLOW)));
         }
     }
 

@@ -21,5 +21,7 @@
 	"enchantment.nyfsquiver.cycling_enchant.desc": "Quivers Cycle to the next Slot if Current Slot is empty",
 	"enchantment.nyfsquiver.quinfinity_enchant": "Quinfinity",
 	"enchantment.nyfsquiver.quinfinity_enchant.desc": "Quivers use Durability to make Arrows not Deplete",
-	"itemGroup.nyfsquiver": "Nyf's Quivers"
+	"itemGroup.nyfsquiver": "Nyf's Quivers",
+	"tooltip.nyfsquiver": "Hold '%s' to open",
+	"tooltip.nyfsquiver.shift": "SHIFT"
 }
