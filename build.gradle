@@ -151,7 +151,7 @@ configurations {
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
 
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.68'
+    minecraft "net.minecraftforge:forge:1.18.2-${forge_version}"
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
@@ -159,6 +159,7 @@ dependencies {
 
     implementation fg.deobf("curse.maven:enchantment-descriptions-250419:3694487")
     implementation fg.deobf("curse.maven:bookshelf-228525:3732237")
+    implementation fg.deobf("com.teamcofh:cofh_core:1.18.2-9.0.2-SNAPSHOT.1")
 //    implementation fg.deobf("curse.maven:cofh-core-69162:3838025")
 
     // Capability Syncer

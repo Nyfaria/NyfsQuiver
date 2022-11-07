@@ -93,6 +93,19 @@ public class ClientModEvents {
         ForgeModelBakery.addSpecialModel(QuiverModels.GOLD_QUIVER_NOARROWS);
         ForgeModelBakery.addSpecialModel(QuiverModels.DIAMOND_QUIVER_NOARROWS);
         ForgeModelBakery.addSpecialModel(QuiverModels.NETHERITE_QUIVER_NOARROWS);
+        ForgeModelBakery.addSpecialModel(QuiverModels.BASIC_QUIVER_HIP);
+        ForgeModelBakery.addSpecialModel(QuiverModels.IRON_QUIVER_HIP);
+        ForgeModelBakery.addSpecialModel(QuiverModels.COPPER_QUIVER_HIP);
+        ForgeModelBakery.addSpecialModel(QuiverModels.GOLD_QUIVER_HIP);
+        ForgeModelBakery.addSpecialModel(QuiverModels.DIAMOND_QUIVER_HIP);
+        ForgeModelBakery.addSpecialModel(QuiverModels.NETHERITE_QUIVER_HIP);
+        ForgeModelBakery.addSpecialModel(QuiverModels.BASIC_QUIVER_HIP_NOARROWS);
+        ForgeModelBakery.addSpecialModel(QuiverModels.IRON_QUIVER_HIP_NOARROWS);
+        ForgeModelBakery.addSpecialModel(QuiverModels.COPPER_QUIVER_HIP_NOARROWS);
+        ForgeModelBakery.addSpecialModel(QuiverModels.GOLD_QUIVER_HIP_NOARROWS);
+        ForgeModelBakery.addSpecialModel(QuiverModels.DIAMOND_QUIVER_HIP_NOARROWS);
+        ForgeModelBakery.addSpecialModel(QuiverModels.NETHERITE_QUIVER_HIP_NOARROWS);
+        
     }
 
     @SubscribeEvent

@@ -30,6 +30,7 @@ public class NQConfig {
     public ForgeConfigSpec.BooleanValue cyclingBooks;
     public ForgeConfigSpec.BooleanValue quinfinityEnchantTable;
     public ForgeConfigSpec.BooleanValue quinfinityBooks;
+    public ForgeConfigSpec.BooleanValue quiverOnHip;
     public ForgeConfigSpec.IntValue basicRows;
     public ForgeConfigSpec.IntValue ironRows;
     public ForgeConfigSpec.IntValue copperRows;
@@ -52,6 +53,7 @@ public class NQConfig {
         this.cyclingBooks = builder.worldRestart().comment("Should Cycling show up on Books?").define("cyclingBooks", true);
         this.quinfinityEnchantTable = builder.worldRestart().comment("Should Quinfinity show up in the Enchanting Table?").define("quinfinityEnchantTable", true);
         this.quinfinityBooks = builder.worldRestart().comment("Should Quinfinity show up on Books?").define("quinfinityBooks", true);
+        this.quiverOnHip = builder.worldRestart().comment("Should the Quiver be Rendered at the Hip?").define("quiverOnHip", true);
 
         this.basicRows = builder.worldRestart().comment("How many rows does the basic quiver have?").defineInRange("rowsBasic", QuiverType.BASIC.getDefaultRows(), 1, 13);
         this.ironRows = builder.worldRestart().comment("How many rows does the iron quiver have?").defineInRange("rowsIron", QuiverType.IRON.getDefaultRows(), 1, 13);

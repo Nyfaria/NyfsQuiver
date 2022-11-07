@@ -1,0 +1,6 @@
+{
+	"parent": "nyfsquiver:hip/quiver",
+	"textures": {
+		"texture": "nyfsquiver:hip/basic_quiver"
+	}
+}
