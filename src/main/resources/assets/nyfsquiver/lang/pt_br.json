@@ -1,0 +1,19 @@
+{
+	"item.nyfsquiver.basic_quiver": "Aljava",
+	"item.nyfsquiver.iron_quiver": "Aljava de Ferro",
+	"item.nyfsquiver.gold_quiver": "Aljava Dourada",
+	"item.nyfsquiver.diamond_quiver": "Aljava de Diamante",
+	"item.nyfsquiver.netherite_quiver": "Aljava de Netherita",
+	"gui.nyfsquiver.title": "Nome da aljava",
+	"gui.nyfsquiver.name": "Nome da aljava:",
+	"keys.category.nyfsquiver": "Aljava de Nyf",
+	"keys.nyfsquiver.nextslot": "Próximo Slot",
+	"keys.nyfsquiver.previousslot": "Slot Anterior",
+	"keys.nyfsquiver.openquiver": "Aljava Aberta",
+	"nyfsquiver.quivers.info.one": "Pode armazenar %d pilhas de itens",
+	"nyfsquiver.quivers.info.two": "Pode ser aberto com '%s'",
+	"nyfsquiver.quivers.info.inventory_index": "ID do inventário: %d",
+	"curios.identifier.quiver": "Aljava",
+	"curios.identifier.arrows": "Flechas",
+	"itemgroup.nyfsquiver": "Aljavas de Nyf"
+}
