@@ -70,7 +70,7 @@ public class CommonForgeEvents {
         }
 
         ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(NyfsQuiver.QUIVER_PREDICATE, e.getEntityLiving()).get().right;
-        if (quiverStack.isEmpty()) {
+        if (quiverStack.isEmpty() || !(quiverStack.getItem() instanceof QuiverItem)) {
             return;
         }
 
