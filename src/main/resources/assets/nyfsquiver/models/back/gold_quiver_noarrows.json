@@ -1,6 +1,0 @@
-{
-	"parent": "nyfsquiver:back/quiver_noarrows",
-	"textures": {
-		"texture": "nyfsquiver:back/gold_quiver"
-	}
-}

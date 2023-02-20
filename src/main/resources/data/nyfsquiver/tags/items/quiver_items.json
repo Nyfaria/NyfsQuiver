@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#nyfsquiver:quiver_items/arrows",
-    "#nyfsquiver:quiver_items/fireworks",
-    "#nyfsquiver:quiver_items/other"
-    ]
-}
