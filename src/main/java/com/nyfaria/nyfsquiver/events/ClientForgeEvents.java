@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
 import com.nyfaria.nyfsquiver.config.NQConfig_Client;
@@ -140,8 +140,8 @@ public class ClientForgeEvents {
                         poseStack.scale(scale, scale, scale);
                         poseStack.translate(x, y, i + 1);
                         poseStack.scale(16, 16, 1);
-                        poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-                        poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
+                        poseStack.mulPose(Axis.YP.rotationDegrees(180));
+                        poseStack.mulPose(Axis.ZP.rotationDegrees(180));
                         renderItem(poseStack, i, readyArrow);
                         poseStack.popPose();
                         if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, playerHand) > 0) {
@@ -153,12 +153,12 @@ public class ClientForgeEvents {
                                 poseStack.translate(x - 4, y - 1, i + 1);
                             }
                             poseStack.scale(10, 10, 1);
-                            poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-                            poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
+                            poseStack.mulPose(Axis.YP.rotationDegrees(180));
+                            poseStack.mulPose(Axis.ZP.rotationDegrees(180));
                             if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
-                                poseStack.mulPose(Vector3f.ZN.rotationDegrees(-20));
+                                poseStack.mulPose(Axis.ZN.rotationDegrees(-20));
                             } else {
-                                poseStack.mulPose(Vector3f.ZN.rotationDegrees(-30));
+                                poseStack.mulPose(Axis.ZN.rotationDegrees(-30));
                             }
                             renderItem(poseStack, i, readyArrow);
                             poseStack.popPose();
@@ -171,12 +171,12 @@ public class ClientForgeEvents {
                                 poseStack.translate(x + 1, y + 4, i + 1);
                             }
                             poseStack.scale(10, 10, 1);
-                            poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-                            poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
+                            poseStack.mulPose(Axis.YP.rotationDegrees(180));
+                            poseStack.mulPose(Axis.ZP.rotationDegrees(180));
                             if (readyArrow.getItem() == Items.FIREWORK_ROCKET) {
-                                poseStack.mulPose(Vector3f.ZN.rotationDegrees(20));
+                                poseStack.mulPose(Axis.ZN.rotationDegrees(20));
                             } else {
-                                poseStack.mulPose(Vector3f.ZN.rotationDegrees(30));
+                                poseStack.mulPose(Axis.ZN.rotationDegrees(30));
                             }
                             renderItem(poseStack, i, readyArrow);
                             poseStack.popPose();

@@ -36,7 +36,7 @@ public class Quinfinity extends Enchantment {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        if(NQConfig.INSTANCE.cyclingEnchantTable.get()){
+        if(NQConfig.INSTANCE.quinfinityEnchantTable.get()){
             return stack.getItem() instanceof QuiverItem;
         }else {
             return false;
@@ -46,7 +46,7 @@ public class Quinfinity extends Enchantment {
     @Override
     public boolean isAllowedOnBooks() {
         if(NQConfig.CONFIG_SPEC.isLoaded())
-        return NQConfig.INSTANCE.cyclingEnchantTable.get();
+        return NQConfig.INSTANCE.quinfinityBooks.get();
         return false;
     }
 }

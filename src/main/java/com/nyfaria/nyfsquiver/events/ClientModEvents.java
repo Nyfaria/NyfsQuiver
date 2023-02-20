@@ -51,11 +51,12 @@ public class ClientModEvents {
         event.register(OPEN_QUIVER);
         MinecraftForge.EVENT_BUS.addListener(ClientModEvents::onKey);
     }
+
     @SubscribeEvent
-    public static void onTooltip(RegisterClientTooltipComponentFactoriesEvent event)
-    {
+    public static void onTooltip(RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(QuiverTooltip.class, ClientQuiverTooltip::new);
     }
+
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent event) {
 
@@ -96,15 +97,5 @@ public class ClientModEvents {
         event.register(QuiverModels.GOLD_QUIVER_NOARROWS);
         event.register(QuiverModels.DIAMOND_QUIVER_NOARROWS);
         event.register(QuiverModels.NETHERITE_QUIVER_NOARROWS);
-    }
-
-    @SubscribeEvent
-    public static void stitchTextures(TextureStitchEvent.Pre evt) {
-        if (evt.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
-
-            evt.addSprite(new ResourceLocation(NyfsQuiver.MODID, "gui/basic_quiver"));
-            evt.addSprite(new ResourceLocation(NyfsQuiver.MODID, "gui/equipmentslot"));
-
-        }
     }
 }

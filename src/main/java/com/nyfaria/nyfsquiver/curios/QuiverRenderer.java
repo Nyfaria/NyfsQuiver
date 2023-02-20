@@ -1,7 +1,7 @@
 package com.nyfaria.nyfsquiver.curios;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.nyfaria.nyfsquiver.enchantment.Meld;
 import com.nyfaria.nyfsquiver.items.QuiverModels;
 import com.nyfaria.nyfsquiver.items.QuiverStorageManager;
@@ -31,7 +31,7 @@ public class QuiverRenderer implements ICurioRenderer {
         ICurioRenderer.rotateIfSneaking(matrixStack, living);
         //matrixStack.mulPose(Vector3f.XN.rotationDegrees(180));
         matrixStack.translate(-.75, 0.35, -0.145);
-        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(90));
+        matrixStack.mulPose(Axis.ZP.rotationDegrees(90));
         //matrixStack.translate(0,0.6,-0.65 - (living.getItemBySlot(EquipmentSlot.CHEST).isEmpty() ? 0.0 : 0.05));
         ItemStack arrowsE = QuiverStorageManager.getCurrentSlotStack(stack);
         BakedModel quiver = itemRenderer.getItemModelShaper().getModelManager().getModel(QuiverModels.getQuiverModel(stack, !arrowsE.isEmpty()));

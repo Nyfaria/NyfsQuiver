@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "nyfsquiver:items/diamond_quiver"
+    "layer0": "nyfsquiver:item/diamond_quiver"
   }
 }

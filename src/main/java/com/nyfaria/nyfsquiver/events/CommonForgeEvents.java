@@ -3,15 +3,18 @@ package com.nyfaria.nyfsquiver.events;
 import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
 import com.nyfaria.nyfsquiver.config.NQConfig;
+import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.items.QuiverInventory;
 import com.nyfaria.nyfsquiver.items.QuiverItem;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.entity.living.LivingGetProjectileEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -91,24 +94,4 @@ public class CommonForgeEvents {
 
     }
 
-
-    @SubscribeEvent
-    public static void attachCaps(AttachCapabilitiesEvent<ItemStack> e) {
-//        ItemStack stack = e.getObject();
-//        if (ItemTags.getAllTags().getTag(new ResourceLocation("curios","arrows")) != null
-//                && NyfsQuiver.ARROWS_CURIO.contains(stack.getItem())) {
-//            ArrowsCurio arrowCurio = new ArrowsCurio(stack);
-//            e.addCapability(CuriosCapability.ID_ITEM, new ICapabilityProvider() {
-//                final LazyOptional<ICurio> arrowsCurioCap = LazyOptional.of(() -> arrowCurio);
-//
-//                @Nonnull
-//                @Override
-//                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap,
-//                                                         @Nullable Direction side) {
-//                    return CuriosCapability.ITEM.orEmpty(cap, arrowsCurioCap);
-//                }
-//
-//            });
-//        }
-    }
 }

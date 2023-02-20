@@ -48,13 +48,6 @@ public class NyfsQuiver {
     public static final String MODID = "nyfsquiver";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, "main"), () -> "1", "1"::equals, "1"::equals);
     public static final ResourceLocation WIDGETS = new ResourceLocation(MODID, "textures/gui/widgets.png");
-    public static final CreativeModeTab ITEM_GROUP = new CreativeModeTab(MODID) {
-        @Override
-        @NotNull
-        public ItemStack makeIcon() {
-            return new ItemStack(ItemInit.BASIC_QUIVER.get());
-        }
-    };
     public static boolean drawn = false;
     public static TagKey<Item> QUIVER_CURIO = ItemTags.create(new ResourceLocation("curios", "quiver"));
     public static final Predicate<ItemStack> QUIVER_PREDICATE = stack -> stack.is(QUIVER_CURIO);

@@ -10,6 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -22,8 +23,8 @@ import java.util.Map;
 
 public class QuiverRecipe extends ShapedRecipe {
 
-    public QuiverRecipe(ResourceLocation idIn, String groupIn, int recipeWidthIn, int recipeHeightIn, NonNullList<Ingredient> recipeItemsIn, ItemStack recipeOutputIn) {
-        super(idIn, groupIn, recipeWidthIn, recipeHeightIn, recipeItemsIn, recipeOutputIn);
+    public QuiverRecipe(ResourceLocation p_250963_, String p_250221_, CraftingBookCategory p_250716_, int p_251480_, int p_251980_, NonNullList<Ingredient> p_252150_, ItemStack p_248581_) {
+        super(p_250963_, p_250221_, p_250716_, p_251480_, p_251980_, p_252150_, p_248581_);
     }
 
     @Override
@@ -63,14 +64,14 @@ public class QuiverRecipe extends ShapedRecipe {
         @Override
         public QuiverRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromJson(recipeId, json);
-            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.getRecipeWidth(), recipe.getRecipeHeight(), recipe.getIngredients(), recipe.getResultItem());
+            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.category(), recipe.getRecipeHeight(), recipe.getWidth(), recipe.getIngredients() ,recipe.getResultItem());
         }
 
         @Nullable
         @Override
         public QuiverRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromNetwork(recipeId, buffer);
-            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.getRecipeWidth(), recipe.getRecipeHeight(), recipe.getIngredients(), recipe.getResultItem());
+            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.category(), recipe.getRecipeHeight(), recipe.getWidth(), recipe.getIngredients() ,recipe.getResultItem());
         }
 
         @Override

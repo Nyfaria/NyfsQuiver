@@ -69,7 +69,7 @@ public class QuiverRenameScreen extends Screen {
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack);
         super.render(poseStack, mouseX, mouseY, partialTicks);
-        this.font.draw(poseStack, I18n.get("gui.nyfsquiver.name"), this.nameField.x + 2, this.top + 8, 4210752);
+        this.font.draw(poseStack, I18n.get("gui.nyfsquiver.name"), this.nameField.getX() + 2, this.top + 8, 4210752);
         this.nameField.render(poseStack, mouseX, mouseY, partialTicks);
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }
@@ -82,8 +82,8 @@ public class QuiverRenameScreen extends Screen {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (mouseButton == 1) { // text field
-            if (mouseX >= this.nameField.x && mouseX < this.nameField.x + this.nameField.getWidth()
-                    && mouseY >= this.nameField.y && mouseY < this.nameField.y + this.nameField.getHeight())
+            if (mouseX >= this.nameField.getX() && mouseX < this.nameField.getX() + this.nameField.getWidth()
+                    && mouseY >= this.nameField.getY() && mouseY < this.nameField.getY() + this.nameField.getHeight())
                 this.nameField.setValue("");
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);

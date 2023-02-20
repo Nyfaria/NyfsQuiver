@@ -1,7 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "nyfsquiver:items/basic_quiver"
+		"layer0": "nyfsquiver:item/basic_quiver"
 		},
   "overrides": [
     {

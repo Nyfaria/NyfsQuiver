@@ -53,7 +53,7 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
 //	}
 
     public QuiverItem(QuiverType type) {
-        super(new Item.Properties().stacksTo(1).tab(NyfsQuiver.ITEM_GROUP).durability(type.getDefaultColumns() * type.getDefaultRows()));
+        super(new Item.Properties().stacksTo(1).durability(type.getDefaultColumns() * type.getDefaultRows()));
         this.type = type;
 
     }
