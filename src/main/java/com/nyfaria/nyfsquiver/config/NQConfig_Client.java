@@ -31,7 +31,7 @@ public class NQConfig_Client {
         return CLIENT.ANCHOR.get();
     }
     public static int getVerticalOffset() {
-        return CLIENT.HORIZONTAL_OFFSET.get();
+        return CLIENT.VERTICAL_OFFSET.get();
     }
 
     public static double getGUIScale() {

@@ -7,6 +7,7 @@ import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,9 +36,9 @@ public abstract class CrossBowMixin {
     }
 
     @Inject(method = "loadProjectile", at=@At(value = "HEAD"), cancellable = true)
-    private static void split(LivingEntity p_40863_, ItemStack p_40864_, ItemStack p_40865_, boolean p_40866_, boolean p_40867_, CallbackInfoReturnable<Boolean> cir) {
-        ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, p_40863_)
-                .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);
+    private static void split(LivingEntity entity, ItemStack p_40864_, ItemStack p_40865_, boolean p_40866_, boolean p_40867_, CallbackInfoReturnable<Boolean> cir) {
+        ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, entity)
+                .map(ImmutableTriple::getRight).orElse(ItemStack.EMPTY);
         if (!quiverStack.isEmpty()) {
             if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentInit.QUINFINITY.get(),quiverStack)>0) {
                 addChargedProjectile(p_40864_, p_40865_.copy());
