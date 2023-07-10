@@ -5,6 +5,7 @@ import com.nyfaria.nyfsquiver.cap.QuiverHolderAttacher;
 import com.nyfaria.nyfsquiver.items.QuiverInventory;
 import com.nyfaria.nyfsquiver.items.QuiverItem;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -27,12 +28,14 @@ public class QuiverRecipe extends ShapedRecipe {
         super(p_250963_, p_250221_, p_250716_, p_251480_, p_251980_, p_252150_, p_248581_);
     }
 
+
+
     @Override
-    public ItemStack assemble(CraftingContainer inv) {
+    public ItemStack assemble(CraftingContainer inv, RegistryAccess p_266725_) {
         for (int index = 0; index < inv.getContainerSize(); index++) {
             ItemStack stack = inv.getItem(index);
             if (!stack.isEmpty() && stack.getItem() instanceof QuiverItem) {
-                ItemStack result = this.getResultItem().copy();
+                ItemStack result = this.getResultItem(p_266725_).copy();
                 result.setTag(stack.getTag());
                 if (stack.hasCustomHoverName())
                     result.setHoverName(stack.getHoverName());
@@ -45,7 +48,7 @@ public class QuiverRecipe extends ShapedRecipe {
                 return result;
             }
         }
-        ItemStack quiverItem = this.getResultItem().copy();
+        ItemStack quiverItem = this.getResultItem(p_266725_).copy();
 
         CompoundTag compound = quiverItem.getOrCreateTag();
         //compound.putInt("invIndex", QuiverStorageManager.createInventoryIndex(QuiverType.BASIC));
@@ -64,14 +67,14 @@ public class QuiverRecipe extends ShapedRecipe {
         @Override
         public QuiverRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromJson(recipeId, json);
-            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.category(), recipe.getRecipeHeight(), recipe.getWidth(), recipe.getIngredients() ,recipe.getResultItem());
+            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.category(), recipe.getRecipeHeight(), recipe.getWidth(), recipe.getIngredients() ,recipe.getResultItem(RegistryAccess.EMPTY));
         }
 
         @Nullable
         @Override
         public QuiverRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             ShapedRecipe recipe = RecipeSerializer.SHAPED_RECIPE.fromNetwork(recipeId, buffer);
-            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.category(), recipe.getRecipeHeight(), recipe.getWidth(), recipe.getIngredients() ,recipe.getResultItem());
+            return new QuiverRecipe(recipeId, recipe.getGroup(), recipe.category(), recipe.getRecipeHeight(), recipe.getWidth(), recipe.getIngredients() ,recipe.getResultItem(RegistryAccess.EMPTY));
         }
 
         @Override

@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.nyfaria.nyfsquiver.NyfsQuiver;
 import com.nyfaria.nyfsquiver.packets.PacketRename;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
@@ -42,7 +43,7 @@ public class QuiverRenameScreen extends Screen {
         this.addWidget(nameField);
         this.nameField.insertText(this.lastTickName);
         this.nameField.setCanLoseFocus(true);
-        this.nameField.setFocus(focused);
+        this.nameField.setFocused(focused);
         this.nameField.setMaxLength(MAX_NAME_CHARACTER_COUNT);
     }
 
@@ -57,19 +58,19 @@ public class QuiverRenameScreen extends Screen {
 
 
     @Override
-    public void renderBackground(PoseStack poseStack) {
+    public void renderBackground(GuiGraphics poseStack) {
         RenderSystem.clearColor(1, 1, 1, 1);
 
         RenderSystem.setShaderTexture(0, BACKGROUND);
-        this.blit(poseStack, this.left, this.top, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        poseStack.blit(BACKGROUND, this.left, this.top, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
     }
 
     @SuppressWarnings({"deprecation", "resource"})
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack);
         super.render(poseStack, mouseX, mouseY, partialTicks);
-        this.font.draw(poseStack, I18n.get("gui.nyfsquiver.name"), this.nameField.getX() + 2, this.top + 8, 4210752);
+        poseStack.drawString(font, I18n.get("gui.nyfsquiver.name"), this.nameField.getX() + 2, this.top + 8, 4210752);
         this.nameField.render(poseStack, mouseX, mouseY, partialTicks);
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }

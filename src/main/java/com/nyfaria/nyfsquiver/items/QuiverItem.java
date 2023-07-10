@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class QuiverItem extends Item implements ICurioItem, Wearable {
+public class QuiverItem extends Item implements ICurioItem {
 
     public QuiverType type;
 
@@ -67,7 +67,7 @@ public class QuiverItem extends Item implements ICurioItem, Wearable {
         if (EnchantmentHelper.getEnchantments(quiverStack).containsKey(EnchantmentInit.QUINFINITY.get())) {
             int damage = checkQuinfinityValue(arrowStack);
             if (quiverStack.getDamageValue() + damage <= quiverStack.getMaxDamage()) {
-                quiverStack.hurt(damage, player.level.random, player);
+                quiverStack.hurt(damage, player.level().random, player);
             }
         }
     }

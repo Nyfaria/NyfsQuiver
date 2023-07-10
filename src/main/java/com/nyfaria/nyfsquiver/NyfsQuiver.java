@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.nyfaria.nyfsquiver.config.NQConfig;
 import com.nyfaria.nyfsquiver.config.NQConfig_Client;
 import com.nyfaria.nyfsquiver.init.ContainerInit;
+import com.nyfaria.nyfsquiver.init.CreativeModeTabInit;
 import com.nyfaria.nyfsquiver.init.EnchantmentInit;
 import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.init.RecipeInit;
@@ -65,6 +66,7 @@ public class NyfsQuiver {
         ContainerInit.CONTAINERS.register(bus);
         RecipeInit.RECIPES.register(bus);
         EnchantmentInit.ENCHANTMENTS.register(bus);
+        CreativeModeTabInit.TABS.register(bus);
         QuiverModels.init();
         EVENT_BUS.register(QuiverStorageManager.class);
 

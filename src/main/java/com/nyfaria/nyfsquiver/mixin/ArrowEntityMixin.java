@@ -71,7 +71,7 @@ public abstract class ArrowEntityMixin extends Projectile {
     @Overwrite
     public void playerTouch(Player player) {
         if((Object)this instanceof ThrownTrident){
-            if (!this.level.isClientSide && (this.inGround || this.isNoPhysics()) && this.shakeTime <= 0) {
+            if (!this.level().isClientSide && (this.inGround || this.isNoPhysics()) && this.shakeTime <= 0) {
                 if (this.tryPickup(player)) {
                     player.take(this, 1);
                     this.discard();
@@ -80,7 +80,7 @@ public abstract class ArrowEntityMixin extends Projectile {
 
             }
         }
-        if (this.pickup == AbstractArrow.Pickup.ALLOWED && !level.isClientSide && (this.inGround || this.isNoPhysics()) && this.shakeTime <= 0) {
+        if (this.pickup == AbstractArrow.Pickup.ALLOWED && !level().isClientSide && (this.inGround || this.isNoPhysics()) && this.shakeTime <= 0) {
             boolean flag;
             ItemStack quiverStack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, player)
                     .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);

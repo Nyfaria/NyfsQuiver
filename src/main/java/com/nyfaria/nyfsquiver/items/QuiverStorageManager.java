@@ -165,7 +165,7 @@ public class QuiverStorageManager {
     }
 
     public static boolean openQuiver(Player playerIn) {
-        Level worldIn = playerIn.level;
+        Level worldIn = playerIn.level();
 
         ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item -> item.getItem() instanceof QuiverItem, playerIn)
                 .map(stringIntegerItemStackImmutableTriple -> stringIntegerItemStackImmutableTriple.right).orElse(ItemStack.EMPTY);

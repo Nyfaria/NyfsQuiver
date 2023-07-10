@@ -130,7 +130,7 @@ public class QuiverContainer extends AbstractContainerMenu {
             if (slot.mayPickup(player)) {
                 ItemStack stack = slot.getItem();
                 if (stack.getItem() instanceof QuiverItem) {
-                    if (!player.level.isClientSide) {
+                    if (!player.level().isClientSide) {
                         int bagSlot = slotId >= (this.rows + 3) * 9 ? slotId - (this.rows + 3) * 9 : slotId >= this.rows * 9 ? slotId - (this.rows - 1) * 9 : -1;
                         //QuiverInventory.openQuiverInventory(stack, player, bagSlot);
                     }

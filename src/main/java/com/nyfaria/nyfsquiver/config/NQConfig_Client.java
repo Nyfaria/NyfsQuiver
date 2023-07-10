@@ -50,8 +50,8 @@ public class NQConfig_Client {
             builder.push("QuiverHUD Settings");
             this.ANIMATE = builder.comment("Animate the HUD Quiver showing and hiding.").translation("hud_quiver.config.animate").define("ANIMATE", true);
             this.HIDE = builder.comment("Hide the HUD Quiver when not selecting a shootable item.").translation("hud_quiver.config.hide").define("HIDE", true);
-            this.HORIZONTAL_OFFSET = builder.comment("The margin on the left of the HUD Quiver.").translation("hud_quiver.config.horizontal_offset").defineInRange("HORIZONTAL_OFFSET", 0, -1000, 1000);
-            this.VERTICAL_OFFSET = builder.comment("The margin on the top of the HUD Quiver.").translation("hud_quiver.config.vertical_offset").defineInRange("VERTICAL_OFFSET", 0, -1000, 1000);
+            this.HORIZONTAL_OFFSET = builder.comment("The margin on the left of the HUD Quiver.").translation("hud_quiver.config.horizontal_offset").defineInRange("HORIZONTAL_OFFSET", 0,-5000,5000);
+            this.VERTICAL_OFFSET = builder.comment("The margin on the top of the HUD Quiver.").translation("hud_quiver.config.vertical_offset").defineInRange("VERTICAL_OFFSET", 0, -5000, 5000);
             this.GUI_SCALE = builder.comment("Scale of the GUI").translation("model_quiver.old_quiver").defineInRange("gui_scale", 1,0.1d,200d);
             this.ANCHOR = builder.comment("The anchor point of the HUD Quiver.").translation("hud_quiver.config.anchor").defineEnum("ANCHOR", Anchor.TOP_LEFT);
             builder.pop();

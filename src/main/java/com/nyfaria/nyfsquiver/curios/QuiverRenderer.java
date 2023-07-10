@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
@@ -36,7 +37,7 @@ public class QuiverRenderer implements ICurioRenderer {
         ItemStack arrowsE = QuiverStorageManager.getCurrentSlotStack(stack);
         BakedModel quiver = itemRenderer.getItemModelShaper().getModelManager().getModel(QuiverModels.getQuiverModel(stack, !arrowsE.isEmpty()));
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-        itemRenderer.render(stack, ItemTransforms.TransformType.HEAD, true, matrixStack, buffer, light, OverlayTexture.NO_OVERLAY, quiver);
+        itemRenderer.render(stack, ItemDisplayContext.HEAD, true, matrixStack, buffer, light, OverlayTexture.NO_OVERLAY, quiver);
         matrixStack.popPose();
 
     }
