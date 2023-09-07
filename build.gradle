@@ -5,9 +5,10 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
     id 'dev._100media.gradleutils' version '0.+'
+    id "me.modmuss50.mod-publish-plugin" version "0.3.3"
 }
 
-version = "${minecraft_version}-${mod_version}"
+version = "${minecraft_version}-forge-${mod_version}"
 group = mod_base_package // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = mod_id
 hundredMedia.mcVersion = minecraft_version
@@ -182,7 +183,7 @@ java {
 }
 
 jar {
-    archiveClassifier = 'slim'
+    archiveClassifier = ''
     manifest {
         attributes([
                 'Specification-Title'     : mod_id,
@@ -226,4 +227,32 @@ publishing {
             url "file://${project.projectDir}/mcmodsrepo"
         }
     }
+}
+publishMods {
+    file = jar.archiveFile
+    changelog = file("changelog.md").text
+    type = STABLE
+    modLoaders.add("forge")
+    displayName = "${mod_id}-${minecraft_version}-forge-${mod_version}"
+    if (curseforge_publishing_enabled.toBoolean()) {
+        curseforge {
+            projectId = curseforge_project_id
+            accessToken = curseforge_token
+            minecraftVersions.add(minecraft_version)
+            requires {
+                slug = "curios"
+            }
+        }
+    }
+    if(modrinth_publishing_enabled.toBoolean()){
+        modrinth {
+            accessToken = modrinth_token
+            projectId = modrinth_project_id
+            minecraftVersions.add(minecraft_version)
+            requires {
+                id = "vvuO3ImH"
+            }
+        }
+    }
+
 }
