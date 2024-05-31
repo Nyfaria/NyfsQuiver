@@ -89,7 +89,7 @@ public class QuiverItem extends Item implements ICurioItem {
 
     @Override
     public int getEnchantmentValue() {
-        return 1;
+        return 22;
     }
 
     @Override
