@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "order": 3,
+  "slots": [
+    "quiver_hip",
+    "quiver_back"
+  ],
+  "icon": "nyfsquiver:gui/basic_quiver"
+}

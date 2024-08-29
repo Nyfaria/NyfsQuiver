@@ -1,0 +1,25 @@
+{
+  "type": "nyfsquiver:smithing_quiver",
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "base": {
+    "arrowAction": "nyfsquiver:vanilla",
+    "columns": 9,
+    "durability": 4608,
+    "fireProof": false,
+    "name": "nyfsquiver:diamond",
+    "rows": 6
+  },
+  "result": {
+    "arrowAction": "nyfsquiver:vanilla",
+    "columns": 9,
+    "durability": 9216,
+    "fireProof": false,
+    "name": "nyfsquiver:netherite",
+    "rows": 7
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

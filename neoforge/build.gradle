@@ -1,0 +1,56 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev'
+    id "me.modmuss50.mod-publish-plugin" version "0.5.1"
+}
+
+
+neoForge {
+    version = neoforge_version
+    // Automatically enable neoforge AccessTransformers if the file exists
+    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.from(at.absolutePath)
+    }
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+    runs {
+        configureEach {
+            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+        }
+        client {
+            client()
+            jvmArguments = ["-XX:+AllowEnhancedClassRedefinition"]
+        }
+        data {
+            data()
+//            programArgument = ['--mod', mod_id '--all', '--output', project(":common").file('src/generated/resources/').getAbsolutePath(), '--existing', project(":common").file('src/main/resources/').getAbsolutePath()]
+            programArguments.addAll '--mod', project.mod_id, '--all',
+                    '--output', rootProject.project(":common").file('src/generated/resources/').getAbsolutePath(),
+                    '--existing', rootProject.project(":common").file('src/main/resources/').getAbsolutePath()
+        }
+        server {
+            server()
+            jvmArguments = ["-XX:+AllowEnhancedClassRedefinition"]
+        }
+    }
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+dependencies {
+    jarJar(implementation('mysticdrew:common-networking-neoforge')) {
+        version {
+            strictly "[${common_network_version},)"
+            prefer common_network_version
+        }
+    }
+    implementation("io.wispforest:accessories-neoforge:${project.accessories_version}")
+}
+sourceSets.main.resources { srcDir '../common/src/generated/resources' }

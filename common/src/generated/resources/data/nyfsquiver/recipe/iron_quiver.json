@@ -1,0 +1,36 @@
+{
+  "type": "nyfsquiver:shaped_quiver",
+  "category": "misc",
+  "input_type": {
+    "arrowAction": "nyfsquiver:vanilla",
+    "columns": 9,
+    "durability": 576,
+    "fireProof": false,
+    "name": "nyfsquiver:leather",
+    "rows": 3
+  },
+  "key": {
+    "F": {
+      "item": "minecraft:feather"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "L": {
+      "item": "nyfsquiver:quiver"
+    }
+  },
+  "pattern": [
+    "IIF",
+    "ILI",
+    "III"
+  ],
+  "result_type": {
+    "arrowAction": "nyfsquiver:vanilla",
+    "columns": 9,
+    "durability": 1152,
+    "fireProof": false,
+    "name": "nyfsquiver:iron",
+    "rows": 4
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "entities": [
+    "minecraft:player",
+    "minecraft:armor_stand",
+    "minecraft:skeleton"
+  ],
+  "slots": [
+    "quiver_hip",
+    "quiver_back"
+  ]
+}

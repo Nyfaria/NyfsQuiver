@@ -1,0 +1,36 @@
+{
+  "type": "nyfsquiver:shaped_quiver",
+  "category": "misc",
+  "input_type": {
+    "arrowAction": "nyfsquiver:vanilla",
+    "columns": 9,
+    "durability": 2304,
+    "fireProof": false,
+    "name": "nyfsquiver:gold",
+    "rows": 5
+  },
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "F": {
+      "item": "minecraft:feather"
+    },
+    "L": {
+      "item": "nyfsquiver:quiver"
+    }
+  },
+  "pattern": [
+    "DDF",
+    "DLD",
+    "DDD"
+  ],
+  "result_type": {
+    "arrowAction": "nyfsquiver:vanilla",
+    "columns": 9,
+    "durability": 4608,
+    "fireProof": false,
+    "name": "nyfsquiver:diamond",
+    "rows": 6
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.nyfaria.nyfsquiver.registration.fabric.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "RegistriesMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "regutils.refmap.json"
+}

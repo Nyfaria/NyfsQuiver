@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "amount": 1,
+  "operation": "set",
+  "order": 5,
+  "icon": "nyfsquiver:gui/basic_quiver",
+  "validators": [
+    "accessories:tag"
+  ]
+}
