@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.Blocks;
 public class ItemInit {
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registries.ITEM, Constants.MODID);
 
-    public static final RegistryObject<Item,Item> QUIVER = ITEMS.register("quiver", () -> new QuiverItem(getItemProperties().stacksTo(1)
+    public static final RegistryObject<Item,QuiverItem> QUIVER = ITEMS.register("quiver", () -> new QuiverItem(getItemProperties().stacksTo(1)
             .component(DataComponentInit.CURRENT_SLOT.get(),0)
             .component(DataComponents.CONTAINER, ItemContainerContents.fromItems(NonNullList.withSize(27,ItemStack.EMPTY)))
             .component(DataComponentInit.QUIVER_TYPE.get(), new QuiverType(Constants.modLoc("leather"),3,9,false,1, null))

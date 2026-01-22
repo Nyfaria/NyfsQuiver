@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.nyfaria.nyfsquiver.init.DataComponentInit;
 import com.nyfaria.nyfsquiver.init.ItemInit;
+import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
 import io.wispforest.accessories.api.AccessoriesCapability;
 import io.wispforest.accessories.api.slot.SlotEntryReference;
@@ -22,6 +23,8 @@ public class InventoryMixin {
 
     @WrapMethod(method = "add(Lnet/minecraft/world/item/ItemStack;)Z")
     public boolean addInventoryItem(ItemStack pStack, Operation<Boolean> original) {
+        if(!pStack.is(TagInit.QUIVER_ITEMS))
+            return original.call(pStack);
         if(pStack.isEmpty())
             return false;
         SlotEntryReference slotReference = AccessoriesCapability.get(player).getFirstEquipped(ItemInit.QUIVER.get());

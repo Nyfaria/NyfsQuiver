@@ -2,6 +2,7 @@ plugins {
     id 'multiloader-common'
 //    id 'net.neoforged.gradle.userdev' version '7.0.133'
     id 'net.neoforged.moddev'
+    id 'com.matyrobbrt.mc.registrationutils'
 }
 
 neoForge {

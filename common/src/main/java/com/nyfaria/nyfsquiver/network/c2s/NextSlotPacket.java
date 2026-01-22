@@ -38,7 +38,7 @@ public record NextSlotPacket(boolean decrease) {
         ItemStack itemStack = slotReference.stack();
         if (!itemStack.isEmpty()) {
             int currentSlot = itemStack.getOrDefault(DataComponentInit.CURRENT_SLOT.get(),0);
-            int inventorySize = (int) itemStack.get(DataComponents.CONTAINER).stream().count();
+            int inventorySize = (int) new QuiverContainer(itemStack).getContainerSize();
             currentSlot += context.message().decrease() ? -1 : 1;
             if (currentSlot < 0) {
                 currentSlot = inventorySize - 1;

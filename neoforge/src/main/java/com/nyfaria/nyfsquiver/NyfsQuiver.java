@@ -2,6 +2,7 @@ package com.nyfaria.nyfsquiver;
 
 
 import com.nyfaria.nyfsquiver.config.NQConfigClient;
+import net.minecraft.world.entity.player.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;

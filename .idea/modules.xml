@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/nyfsquiver.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/nyfsquiver.fabric.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/nyfsquiver.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/nyfsquiver.fabric.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/nyfsquiver.neoforge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/nyfsquiver.neoforge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/nyfsquiver.neoforge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/nyfsquiver.neoforge.test.iml" />
     </modules>
   </component>
 </project>

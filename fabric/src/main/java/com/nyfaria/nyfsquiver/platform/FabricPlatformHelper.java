@@ -1,6 +1,7 @@
 package com.nyfaria.nyfsquiver.platform;
 
 import com.nyfaria.nyfsquiver.codec.QuiverFabricCodec;
+import com.nyfaria.nyfsquiver.menu.QuiverContainer;
 import com.nyfaria.nyfsquiver.menu.QuiverMenu;
 import com.nyfaria.nyfsquiver.platform.services.IPlatformHelper;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -44,7 +45,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
             @Nullable
             @Override
             public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-                return new QuiverMenu(i, inventory);
+                return new QuiverMenu(i, inventory, new QuiverContainer(stack));
             }
 
             @Override
@@ -54,8 +55,9 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
             @Override
             public QuiverFabricCodec getScreenOpeningData(ServerPlayer player) {
-                return new QuiverFabricCodec((CompoundTag) ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack).getOrThrow());
+                return new QuiverFabricCodec(stack);
             }
+
         };
         player.openMenu(type);
     }

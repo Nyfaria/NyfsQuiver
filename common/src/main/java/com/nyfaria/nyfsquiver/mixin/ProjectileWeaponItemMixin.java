@@ -13,6 +13,7 @@ import io.wispforest.accessories.api.slot.SlotEntryReference;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +31,9 @@ import java.util.function.Predicate;
 public class ProjectileWeaponItemMixin {
     @WrapMethod(method = "getHeldProjectile")
     private static ItemStack getHeldProjectile(LivingEntity pShooter, Predicate<ItemStack> pIsAmmo, Operation<ItemStack> original) {
+        if(!(pShooter instanceof Player)){
+            return original.call(pShooter, pIsAmmo);
+        }
         SlotEntryReference slotReference = AccessoriesCapability.get(pShooter).getFirstEquipped(ItemInit.QUIVER.get());
         if(slotReference == null) {
             return original.call(pShooter, pIsAmmo);
@@ -43,7 +47,8 @@ public class ProjectileWeaponItemMixin {
         int currentSlot = itemStack.getOrDefault(DataComponentInit.CURRENT_SLOT.get(),0);
         ItemStack stack = quiverContainer.getItem(currentSlot);
         if(stack.isEmpty()){
-            if(stack.getEnchantments().getLevel(pShooter.level().registryAccess().lookup(Registries.ENCHANTMENT).get().getOrThrow(Constants.CYCLING)) >= 0){
+            int cyclingLevel = EnchantmentHelper.getItemEnchantmentLevel(pShooter.level().registryAccess().lookup(Registries.ENCHANTMENT).get().getOrThrow(Constants.CYCLING), itemStack);
+            if(cyclingLevel > 0){
                 int nextNonEmptySlot = quiverContainer.getNextNonEmptySlot(currentSlot);
                 if(nextNonEmptySlot != -1){
                     stack = quiverContainer.getItem(nextNonEmptySlot);
@@ -58,6 +63,9 @@ public class ProjectileWeaponItemMixin {
     }
     @Inject(method="useAmmo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;split(I)Lnet/minecraft/world/item/ItemStack;"), cancellable = true)
     private static void wrapOperation_useAmmo_removeItem(ItemStack pWeapon, ItemStack pAmmo, LivingEntity pShooter, boolean pIntangable, CallbackInfoReturnable<ItemStack> cir) {
+        if(!(pShooter instanceof Player)){
+            return;
+        }
         SlotEntryReference slotReference = AccessoriesCapability.get(pShooter).getFirstEquipped(ItemInit.QUIVER.get());
         if(slotReference == null) {
             return;
@@ -67,7 +75,9 @@ public class ProjectileWeaponItemMixin {
             QuiverContainer quiverContainer = new QuiverContainer(itemStack);
             int currentSlot = itemStack.getOrDefault(DataComponentInit.CURRENT_SLOT.get(),0);
             ItemStack stack = quiverContainer.getItem(currentSlot);
-
+            if(stack.isEmpty()){
+                return;
+            }
             ItemStack stack2 = stack.split(1);
             if (!stack.isEmpty() && stack.getCount() == 1) {
                 quiverContainer.setItem(currentSlot, ItemStack.EMPTY);

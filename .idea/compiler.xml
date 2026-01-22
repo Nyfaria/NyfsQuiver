@@ -12,4 +12,11 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="21" />
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="nyfsquiver.fabric" options="-AoutRefMapFile=D:\Modding\Minecraft\Public\NyfsQuiver\fabric\build\classes\java\main\nyfsquiver.refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=D:\Modding\Minecraft\Public\NyfsQuiver\fabric\build\loom-cache\mixin-map-loom.mappings.1_21_1.layered+hash.730628366-v2.main.tiny -AinMapFileNamedIntermediary=C:\Users\kinar\.gradle\caches\fabric-loom\1.21.1\loom.mappings.1_21_1.layered+hash.730628366-v2\mappings.tiny" />
+      <module name="nyfsquiver.fabric.main" options="-AoutRefMapFile=D:\Modding\Minecraft\Public\NyfsQuiver\fabric\build\classes\java\main\nyfsquiver.refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=D:\Modding\Minecraft\Public\NyfsQuiver\fabric\build\loom-cache\mixin-map-loom.mappings.1_21_1.layered+hash.730628366-v2.main.tiny -AinMapFileNamedIntermediary=C:\Users\kinar\.gradle\caches\fabric-loom\1.21.1\loom.mappings.1_21_1.layered+hash.730628366-v2\mappings.tiny" />
+      <module name="nyfsquiver.fabric.test" options="-AoutRefMapFile=D:\Modding\Minecraft\Public\NyfsQuiver\fabric\build\classes\java\test\test-nyfsquiver.refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=D:\Modding\Minecraft\Public\NyfsQuiver\fabric\build\loom-cache\mixin-map-loom.mappings.1_21_1.layered+hash.730628366-v2.test.tiny -AinMapFileNamedIntermediary=C:\Users\kinar\.gradle\caches\fabric-loom\1.21.1\loom.mappings.1_21_1.layered+hash.730628366-v2\mappings.tiny" />
+    </option>
+  </component>
 </project>

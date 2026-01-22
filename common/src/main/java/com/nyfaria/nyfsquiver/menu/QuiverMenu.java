@@ -5,6 +5,7 @@ import com.nyfaria.nyfsquiver.api.Point;
 import com.nyfaria.nyfsquiver.codec.QuiverFabricCodec;
 import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.init.MenuInit;
+import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.item.component.QuiverContainerContents;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -35,7 +36,7 @@ public class QuiverMenu extends AbstractContainerMenu {
     }
 
     public QuiverMenu(int i, Inventory inventory, QuiverFabricCodec quiverFabricCodec) {
-        this(i, inventory, new QuiverContainer(ItemStack.CODEC.decode(NbtOps.INSTANCE, quiverFabricCodec.stack()).getOrThrow().getFirst()));
+        this(i, inventory, new QuiverContainer(quiverFabricCodec.stack()));
     }
 
 
@@ -50,7 +51,7 @@ public class QuiverMenu extends AbstractContainerMenu {
                 this.addSlot(new Slot(inventory, index, getQuiverSlotPosition.x, getQuiverSlotPosition.y){
                     @Override
                     public boolean mayPlace(ItemStack pStack) {
-                        return pStack.is(ItemTags.ARROWS);
+                        return pStack.is(TagInit.QUIVER_ITEMS);
                     }
                 });
             }

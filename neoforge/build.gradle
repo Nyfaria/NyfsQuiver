@@ -52,5 +52,33 @@ dependencies {
         }
     }
     implementation("io.wispforest:accessories-neoforge:${project.accessories_version}")
+    implementation "curse.maven:forgified-fabric-api-889079:6370322"
 }
 sourceSets.main.resources { srcDir '../common/src/generated/resources' }
+
+publishMods {
+    if(publishForge.toBoolean()) {
+        file = jar.archiveFile
+        changelog = project(":common").file("changelog.md").text
+        type = STABLE
+        modLoaders.add("neoforge")
+        displayName = "${mod_name}-${minecraft_version}-[NeoForge]-${project.version}"
+        dryRun = dry_run.toBoolean()
+        if (curseforge_publishing_enabled.toBoolean()) {
+            curseforge {
+                projectId = curseforge_project_id
+                accessToken = curseforge_token
+                minecraftVersions.add(minecraft_version)
+                minecraftVersions.add("1.21")
+            }
+        }
+        if (modrinth_publishing_enabled.toBoolean()) {
+            modrinth {
+                accessToken = modrinth_token
+                projectId = modrinth_project_id
+                minecraftVersions.add(minecraft_version)
+                minecraftVersions.add("1.21")
+            }
+        }
+    }
+}

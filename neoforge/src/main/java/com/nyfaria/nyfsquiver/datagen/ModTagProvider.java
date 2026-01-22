@@ -31,7 +31,7 @@ public class ModTagProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider pProvider) {
-            populateTag(TagInit.QUIVER, ItemInit.QUIVER);
+            tag(TagInit.QUIVER).add(ItemInit.QUIVER.getResourceKey());
             tag(TagInit.QUIVER_ITEMS).addTag(ItemTags.ARROWS).add(Items.FIREWORK_ROCKET.builtInRegistryHolder().getKey());
         }
 

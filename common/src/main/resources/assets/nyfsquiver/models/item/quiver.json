@@ -16,7 +16,7 @@
         "nyfsquiver:equipped": 1,
         "nyfsquiver:arrows": 1
       },
-      "model": "nyfsquiver:back/basic_quiver_noarrows"
+      "model": "nyfsquiver:back/quiver_noarrows"
     }
   ]
 }

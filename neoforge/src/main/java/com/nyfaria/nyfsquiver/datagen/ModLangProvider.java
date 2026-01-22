@@ -41,13 +41,14 @@ public class ModLangProvider extends LanguageProvider {
         add("quiver." + Constants.MODID + ".gold", "Gold Quiver");
         add("quiver." + Constants.MODID + ".diamond", "Diamond Quiver");
         add("quiver." + Constants.MODID + ".netherite", "Netherite Quiver");
-        add("key.categories"+ Constants.MODID, Constants.MOD_NAME);
+        add("key.categories."+ Constants.MODID, Constants.MOD_NAME);
         add("key."+ Constants.MODID+".next_slot", "Next Slot");
-        add("key."+ Constants.MODID+".previous_slot", "Previous Slot");
+        add("key."+ Constants.MODID+".prev_slot", "Previous Slot");
         add("key."+ Constants.MODID+".open_quiver", "Open Equipped Quiver");
         add("tooltip.nyfsquiver", "Hold '%s' to view contents");
         add("tooltip.nyfsquiver.shift", "SHIFT");
         add("enchantment.nyfsquiver.cycling_enchant.desc", "Quivers Cycle to the next Slot if Current Slot is empty");
+        add("accessories.slot_group.nyfsquiver:quiver", "Quiver");
     }
 
     protected void itemLang(RegistryObject<Item, ?> entry) {
