@@ -10,6 +10,8 @@ import com.nyfaria.nyfsquiver.client.ClientUtil;
 import com.nyfaria.nyfsquiver.client.QuiverHud;
 import com.nyfaria.nyfsquiver.client.screen.QuiverScreen;
 import com.nyfaria.nyfsquiver.client.tooltip.ClientQuiverTooltip;
+import com.nyfaria.nyfsquiver.compat.curios.CuriosCompat;
+import com.nyfaria.nyfsquiver.compat.curios.client.CuriosClientCompat;
 import com.nyfaria.nyfsquiver.config.NQConfigClient;
 import com.nyfaria.nyfsquiver.init.DataComponentInit;
 import com.nyfaria.nyfsquiver.init.ItemInit;
@@ -19,8 +21,7 @@ import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.item.QuiverItem;
 import com.nyfaria.nyfsquiver.item.tooltip.QuiverTooltip;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.slot.SlotEntryReference;
+import com.nyfaria.nyfsquiver.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -72,6 +73,9 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         ClientUtil.renderRegistration();
+        if (Services.PLATFORM.isModLoaded(CuriosCompat.MOD_ID)) {
+            CuriosClientCompat.registerRenderers();
+        }
     }
 
     @SubscribeEvent

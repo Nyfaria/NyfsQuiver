@@ -1,5 +1,6 @@
 package com.nyfaria.nyfsquiver.platform;
 
+import com.nyfaria.nyfsquiver.compat.curios.CuriosCompat;
 import com.nyfaria.nyfsquiver.init.DataComponentInit;
 import com.nyfaria.nyfsquiver.menu.QuiverMenu;
 import com.nyfaria.nyfsquiver.platform.services.IPlatformHelper;
@@ -45,5 +46,17 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public MenuType<QuiverMenu> registerMenu() {
         return IMenuTypeExtension.create(QuiverMenu::new);
+    }
+
+    /**
+     * Curios is a soft dependency: the compat class (and with it every Curios class) is only
+     * touched when the mod is actually installed.
+     */
+    @Override
+    public ItemStack getCuriosEquippedQuiver(Player player) {
+        if (!isModLoaded(CuriosCompat.MOD_ID)) {
+            return ItemStack.EMPTY;
+        }
+        return CuriosCompat.getEquippedQuiver(player);
     }
 }

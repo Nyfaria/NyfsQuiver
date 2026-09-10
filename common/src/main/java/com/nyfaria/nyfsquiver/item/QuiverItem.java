@@ -1,7 +1,5 @@
 package com.nyfaria.nyfsquiver.item;
 
-import com.google.common.collect.HashMultimap;
-import com.nyfaria.nyfsquiver.Constants;
 import com.nyfaria.nyfsquiver.api.QuiverType;
 import com.nyfaria.nyfsquiver.client.ClientUtil;
 import com.nyfaria.nyfsquiver.init.DataComponentInit;
@@ -9,20 +7,17 @@ import com.nyfaria.nyfsquiver.item.tooltip.QuiverTooltip;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
 import com.nyfaria.nyfsquiver.menu.QuiverMenu;
 import com.nyfaria.nyfsquiver.platform.Services;
-import io.wispforest.accessories.api.AccessoryItem;
-import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -30,9 +25,15 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.Optional;
 
-public class QuiverItem extends AccessoryItem {
-
-    private static ResourceLocation ONE_QUIVER = Constants.modLoc("one_quiver");
+/**
+ * The quiver item.
+ * <p>
+ * Both accessory libraries are soft dependencies, so this item cannot extend the Accessories
+ * {@code AccessoryItem} base class anymore. Its accessory behavior is registered from
+ * {@link com.nyfaria.nyfsquiver.compat.AccessoriesCompat} instead, while Curios picks the item up
+ * through the {@code curios:quiver} item tag.
+ */
+public class QuiverItem extends Item {
 
     public QuiverItem(Properties pProperties) {
         super(pProperties);
@@ -88,21 +89,5 @@ public class QuiverItem extends AccessoryItem {
             return Optional.of(new QuiverTooltip(container,1,pStack.get(DataComponentInit.QUIVER_TYPE.get())));
         }
         return Optional.empty();
-    }
-
-    @Override
-    public void onEquip(ItemStack stack, SlotReference reference) {
-        var map = HashMultimap.<String, AttributeModifier>create();
-        String key = reference.slotName().equals("quiver_back") ? "quiver_hip" : "quiver_back";
-        map.put(key, new AttributeModifier(ONE_QUIVER, -1, AttributeModifier.Operation.ADD_VALUE));
-        reference.capability().addTransientSlotModifiers(map);
-    }
-
-    @Override
-    public void onUnequip(ItemStack stack, SlotReference reference) {
-        var map = HashMultimap.<String, AttributeModifier>create();
-        String key = reference.slotName().equals("quiver_back") ? "quiver_hip" : "quiver_back";
-        map.put(key, new AttributeModifier(ONE_QUIVER, -1, AttributeModifier.Operation.ADD_VALUE));
-        reference.capability().removeSlotModifiers(map);
     }
 }

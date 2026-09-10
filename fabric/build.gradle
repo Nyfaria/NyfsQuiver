@@ -54,14 +54,14 @@ publishMods {
         modLoaders.add("fabric")
         displayName = "${mod_name}-${minecraft_version}-[Fabric]-${project.property('version')}"
         dryRun = dry_run.toBoolean()
-        if (curseforge_publishing_enabled.toBoolean()) {
+        if (curseforge_publishing_enabled.toBoolean() && project.hasProperty('curseforge_token')) {
             curseforge {
                 projectId = curseforge_project_id
                 accessToken = curseforge_token
                 minecraftVersions.add(minecraft_version)
             }
         }
-        if (modrinth_publishing_enabled.toBoolean()) {
+        if (modrinth_publishing_enabled.toBoolean() && project.hasProperty('modrinth_token')) {
             modrinth {
                 accessToken = modrinth_token
                 projectId = modrinth_project_id
