@@ -20,10 +20,15 @@ neoForge {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
             ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+            // -XX:+AllowEnhancedClassRedefinition only exists on the JetBrains Runtime (used by
+            // IntelliJ), so passing it unconditionally makes the run tasks fail on any other JDK.
+            // Force it with -PenhancedClassRedefinition=true.
+            def supportsEnhancedRedefinition = System.getProperty('java.vm.vendor', '')
+                    .toLowerCase().contains('jetbrains') || project.hasProperty('enhancedClassRedefinition')
+            jvmArguments = supportsEnhancedRedefinition ? ["-XX:+AllowEnhancedClassRedefinition"] : []
         }
         client {
             client()
-            jvmArguments = ["-XX:+AllowEnhancedClassRedefinition"]
         }
         data {
             data()
@@ -34,7 +39,6 @@ neoForge {
         }
         server {
             server()
-            jvmArguments = ["-XX:+AllowEnhancedClassRedefinition"]
         }
     }
     mods {
@@ -51,7 +55,14 @@ dependencies {
             prefer common_network_version
         }
     }
-    implementation("io.wispforest:accessories-neoforge:${project.accessories_version}")
+    // Accessory libraries are soft dependencies on NeoForge: the quiver can be worn in a Curios
+    // slot, in an Accessories slot, or in neither if the player has no accessory mod installed.
+    // Both are compile-only from the player's point of view (nothing is bundled), and every
+    // Accessories API access is guarded by a mod-loaded check, so the mod also boots with just
+    // one of them. Swap the Accessories line for runtimeOnly/implementation to test its slots
+    // in a development run.
+    compileOnly("io.wispforest:accessories-neoforge:${project.accessories_version}")
+    implementation("top.theillusivec4.curios:curios-neoforge:${curios_version}")
     implementation "curse.maven:forgified-fabric-api-889079:6370322"
 }
 sourceSets.main.resources { srcDir '../common/src/generated/resources' }
@@ -64,7 +75,7 @@ publishMods {
         modLoaders.add("neoforge")
         displayName = "${mod_name}-${minecraft_version}-[NeoForge]-${project.version}"
         dryRun = dry_run.toBoolean()
-        if (curseforge_publishing_enabled.toBoolean()) {
+        if (curseforge_publishing_enabled.toBoolean() && project.hasProperty('curseforge_token')) {
             curseforge {
                 projectId = curseforge_project_id
                 accessToken = curseforge_token
@@ -72,7 +83,7 @@ publishMods {
                 minecraftVersions.add("1.21")
             }
         }
-        if (modrinth_publishing_enabled.toBoolean()) {
+        if (modrinth_publishing_enabled.toBoolean() && project.hasProperty('modrinth_token')) {
             modrinth {
                 accessToken = modrinth_token
                 projectId = modrinth_project_id

@@ -9,8 +9,7 @@ import com.nyfaria.nyfsquiver.init.DataComponentInit;
 import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.slot.SlotEntryReference;
+import com.nyfaria.nyfsquiver.util.QuiverEquipment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -42,14 +41,12 @@ public class QuiverHud implements LayeredDraw.Layer {
     public void render(GuiGraphics guiGraphics, @Nullable DeltaTracker deltaTracker) {
         if (Minecraft.getInstance().player.getMainHandItem().getItem() instanceof ProjectileWeaponItem) {
             @Nullable LocalPlayer player = Minecraft.getInstance().player;
-            SlotEntryReference slotReference = AccessoriesCapability.get(player).getFirstEquipped(ItemInit.QUIVER.get());
-            if(slotReference == null) {
+            ItemStack quiverStack = QuiverEquipment.getEquippedQuiver(player);
+            if (quiverStack.isEmpty()) {
                 return;
             }
             float scale = (float) NQConfigClient.getGUIScale();
             PoseStack poseStack = guiGraphics.pose();
-            ItemStack quiverStack = slotReference.stack();
-            if (quiverStack.isEmpty()) return;
             int slot = quiverStack.getOrDefault(DataComponentInit.CURRENT_SLOT.get(), 0);
             ItemStack playerHand;
             if (player.getMainHandItem().getItem() instanceof ProjectileWeaponItem && !quiverStack.isEmpty()) {

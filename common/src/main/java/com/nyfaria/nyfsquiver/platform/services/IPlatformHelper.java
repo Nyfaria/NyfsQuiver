@@ -41,4 +41,18 @@ public interface IPlatformHelper {
     }
     void openQuiverMenu(MenuProvider provider, Player player, ItemStack stack);
     MenuType<QuiverMenu> registerMenu();
+
+    /**
+     * Gets the quiver the player has equipped in a Curios slot.
+     * <p>
+     * Curios only exists for NeoForge on this Minecraft version, so the default implementation
+     * returns an empty stack; loaders without Curios support simply do not override it.
+     *
+     * @param player The player to look at.
+     * @return The equipped quiver stack, or {@link ItemStack#EMPTY} when there is none (or when
+     * Curios is not installed).
+     */
+    default ItemStack getCuriosEquippedQuiver(Player player) {
+        return ItemStack.EMPTY;
+    }
 }

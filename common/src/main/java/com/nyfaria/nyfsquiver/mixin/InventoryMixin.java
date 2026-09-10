@@ -6,8 +6,7 @@ import com.nyfaria.nyfsquiver.init.DataComponentInit;
 import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.slot.SlotEntryReference;
+import com.nyfaria.nyfsquiver.util.QuiverEquipment;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -27,11 +26,7 @@ public class InventoryMixin {
             return original.call(pStack);
         if(pStack.isEmpty())
             return false;
-        SlotEntryReference slotReference = AccessoriesCapability.get(player).getFirstEquipped(ItemInit.QUIVER.get());
-        if(slotReference == null) {
-            return original.call(pStack);
-        }
-        ItemStack itemStack = slotReference.stack();
+        ItemStack itemStack = QuiverEquipment.getEquippedQuiver(player);
         if (itemStack.isEmpty()) {
             return original.call(pStack);
         }

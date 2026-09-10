@@ -43,6 +43,10 @@ repositories {
     maven { url 'https://maven.wispforest.io/releases' }
     maven { url 'https://maven.shedaniel.me/' }
     maven { url 'https://maven.su5ed.dev/releases' }
+    maven {
+        name = 'Curios'
+        url = 'https://maven.theillusivec4.top/'
+    }
     repositories {
         exclusiveContent {
             forRepository {

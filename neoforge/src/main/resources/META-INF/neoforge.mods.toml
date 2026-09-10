@@ -14,6 +14,10 @@ authors = "${mod_author}" #optional
 description = '''${description}''' #mandatory (Supports multiline text)
 [[mixins]]
 config = "${mod_id}.mixins.json"
+# Optional compatibility patches; the config is not required so it stays silent when the mod it
+# patches (Architectury) is not installed.
+[[mixins]]
+config = "${mod_id}.neoforge.mixins.json"
 [[dependencies.${mod_id}]] #optional
 modId = "neoforge" #mandatory
 type="required" #mandatory (Can be one of "required", "optional", "incompatible" or "discouraged")
@@ -25,6 +29,20 @@ modId = "minecraft"
 type="required" #mandatory (Can be one of "required", "optional", "incompatible" or "discouraged")
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
+side = "BOTH"
+# Accessory libraries are soft dependencies: the quiver can be worn in a Curios slot, in an
+# Accessories slot, or in both, and the mod loads fine without either of them.
+[[dependencies.${mod_id}]]
+modId = "curios"
+type="optional"
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"
+[[dependencies.${mod_id}]]
+modId = "accessories"
+type="optional"
+versionRange = "*"
+ordering = "AFTER"
 side = "BOTH"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares

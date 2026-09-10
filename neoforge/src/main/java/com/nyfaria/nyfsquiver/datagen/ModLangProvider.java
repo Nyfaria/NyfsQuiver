@@ -49,6 +49,8 @@ public class ModLangProvider extends LanguageProvider {
         add("tooltip.nyfsquiver.shift", "SHIFT");
         add("enchantment.nyfsquiver.cycling_enchant.desc", "Quivers Cycle to the next Slot if Current Slot is empty");
         add("accessories.slot_group.nyfsquiver:quiver", "Quiver");
+        // Curios slot name (the mod's dedicated slot registers itself through a datapack file)
+        add("curios.identifier.quiver", "Quiver");
     }
 
     protected void itemLang(RegistryObject<Item, ?> entry) {

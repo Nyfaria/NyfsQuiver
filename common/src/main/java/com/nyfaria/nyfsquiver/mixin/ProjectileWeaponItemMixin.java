@@ -8,8 +8,7 @@ import com.nyfaria.nyfsquiver.init.ArrowActionInit;
 import com.nyfaria.nyfsquiver.init.DataComponentInit;
 import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.slot.SlotEntryReference;
+import com.nyfaria.nyfsquiver.util.QuiverEquipment;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,12 +33,7 @@ public class ProjectileWeaponItemMixin {
         if(!(pShooter instanceof Player)){
             return original.call(pShooter, pIsAmmo);
         }
-        SlotEntryReference slotReference = AccessoriesCapability.get(pShooter).getFirstEquipped(ItemInit.QUIVER.get());
-        if(slotReference == null) {
-            return original.call(pShooter, pIsAmmo);
-        }
-        ItemStack itemStack = slotReference.stack();
-
+        ItemStack itemStack = QuiverEquipment.getEquippedQuiver((Player) pShooter);
         if (itemStack.isEmpty()) {
             return original.call(pShooter, pIsAmmo);
         }
@@ -66,12 +60,11 @@ public class ProjectileWeaponItemMixin {
         if(!(pShooter instanceof Player)){
             return;
         }
-        SlotEntryReference slotReference = AccessoriesCapability.get(pShooter).getFirstEquipped(ItemInit.QUIVER.get());
-        if(slotReference == null) {
+        ItemStack itemStack = QuiverEquipment.getEquippedQuiver((Player) pShooter);
+        if (itemStack.isEmpty()) {
             return;
         }
-        ItemStack itemStack = slotReference.stack();
-        if (!itemStack.isEmpty()) {
+        {
             QuiverContainer quiverContainer = new QuiverContainer(itemStack);
             int currentSlot = itemStack.getOrDefault(DataComponentInit.CURRENT_SLOT.get(),0);
             ItemStack stack = quiverContainer.getItem(currentSlot);

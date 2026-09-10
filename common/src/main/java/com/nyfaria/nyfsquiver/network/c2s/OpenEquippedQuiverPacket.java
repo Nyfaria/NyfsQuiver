@@ -5,9 +5,8 @@ import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
 import com.nyfaria.nyfsquiver.menu.QuiverMenu;
 import com.nyfaria.nyfsquiver.platform.Services;
+import com.nyfaria.nyfsquiver.util.QuiverEquipment;
 import commonnetwork.networking.data.PacketContext;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.slot.SlotEntryReference;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,11 +29,7 @@ public record OpenEquippedQuiverPacket() {
     public static void handle(PacketContext<OpenEquippedQuiverPacket> context) {
         Player player = context.sender();
         if (player == null) return;
-        SlotEntryReference slotReference = AccessoriesCapability.get(player).getFirstEquipped(ItemInit.QUIVER.get());
-        if (slotReference == null) {
-            return;
-        }
-        ItemStack itemStack = slotReference.stack();
+        ItemStack itemStack = QuiverEquipment.getEquippedQuiver(player);
         if (itemStack.isEmpty()) {
             return;
         }

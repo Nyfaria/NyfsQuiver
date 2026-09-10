@@ -6,9 +6,8 @@ import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
 import com.nyfaria.nyfsquiver.menu.QuiverMenu;
 import com.nyfaria.nyfsquiver.platform.Services;
+import com.nyfaria.nyfsquiver.util.QuiverEquipment;
 import commonnetwork.networking.data.PacketContext;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.slot.SlotEntryReference;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -31,11 +30,7 @@ public record NextSlotPacket(boolean decrease) {
 
     public static void handle(PacketContext<NextSlotPacket> context) {
         Player player = context.sender();
-        SlotEntryReference slotReference = AccessoriesCapability.get(player).getFirstEquipped(ItemInit.QUIVER.get());
-        if(slotReference == null) {
-            return;
-        }
-        ItemStack itemStack = slotReference.stack();
+        ItemStack itemStack = QuiverEquipment.getEquippedQuiver(player);
         if (!itemStack.isEmpty()) {
             int currentSlot = itemStack.getOrDefault(DataComponentInit.CURRENT_SLOT.get(),0);
             int inventorySize = (int) new QuiverContainer(itemStack).getContainerSize();

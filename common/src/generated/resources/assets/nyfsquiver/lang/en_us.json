@@ -2,6 +2,7 @@
   "accessories.slot.quiver_back": "Quiver Back",
   "accessories.slot.quiver_hip": "Quiver Hip",
   "accessories.slot_group.nyfsquiver:quiver": "Quiver",
+  "curios.identifier.quiver": "Quiver",
   "enchantment.nyfsquiver.cycling": "Cycling",
   "enchantment.nyfsquiver.cycling_enchant.desc": "Quivers Cycle to the next Slot if Current Slot is empty",
   "item.nyfsquiver.quiver": "Quiver",
