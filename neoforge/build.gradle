@@ -1,47 +1,15 @@
 plugins {
     id 'multiloader-loader'
-    id 'net.neoforged.moddev'
-    id "me.modmuss50.mod-publish-plugin" version "0.5.1"
+    alias(nyfs.plugins.mdg.loader)
+    alias(nyfs.plugins.regutils.loader)
+    id 'multiloader-moddev'
+    id 'com.nyfaria.moddingtools.publishing'
 }
 
-
-neoForge {
-    version = neoforge_version
-    // Automatically enable neoforge AccessTransformers if the file exists
-    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) {
-        accessTransformers.from(at.absolutePath)
-    }
-    parchment {
-        minecraftVersion = parchment_minecraft
-        mappingsVersion = parchment_version
-    }
-    runs {
-        configureEach {
-            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
-            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
-        }
-        client {
-            client()
-            jvmArguments = ["-XX:+AllowEnhancedClassRedefinition"]
-        }
-        data {
-            data()
-//            programArgument = ['--mod', mod_id '--all', '--output', project(":common").file('src/generated/resources/').getAbsolutePath(), '--existing', project(":common").file('src/main/resources/').getAbsolutePath()]
-            programArguments.addAll '--mod', project.mod_id, '--all',
-                    '--output', rootProject.project(":common").file('src/generated/resources/').getAbsolutePath(),
-                    '--existing', rootProject.project(":common").file('src/main/resources/').getAbsolutePath()
-        }
-        server {
-            server()
-            jvmArguments = ["-XX:+AllowEnhancedClassRedefinition"]
-        }
-    }
-    mods {
-        "${mod_id}" {
-            sourceSet sourceSets.main
-        }
-    }
+repositories {
+    maven { url = 'https://maven.wispforest.io/releases' }
+    maven { url = 'https://jm.gserv.me/repository/maven-public/' }
+    maven { url = 'https://maven.su5ed.dev/releases' }
 }
 
 dependencies {
@@ -51,34 +19,6 @@ dependencies {
             prefer common_network_version
         }
     }
-    implementation("io.wispforest:accessories-neoforge:${project.accessories_version}")
+    implementation("io.wispforest:accessories-neoforge:${accessories_version}")
     implementation "curse.maven:forgified-fabric-api-889079:6370322"
-}
-sourceSets.main.resources { srcDir '../common/src/generated/resources' }
-
-publishMods {
-    if(publishForge.toBoolean()) {
-        file = jar.archiveFile
-        changelog = project(":common").file("changelog.md").text
-        type = STABLE
-        modLoaders.add("neoforge")
-        displayName = "${mod_name}-${minecraft_version}-[NeoForge]-${project.version}"
-        dryRun = dry_run.toBoolean()
-        if (curseforge_publishing_enabled.toBoolean()) {
-            curseforge {
-                projectId = curseforge_project_id
-                accessToken = curseforge_token
-                minecraftVersions.add(minecraft_version)
-                minecraftVersions.add("1.21")
-            }
-        }
-        if (modrinth_publishing_enabled.toBoolean()) {
-            modrinth {
-                accessToken = modrinth_token
-                projectId = modrinth_project_id
-                minecraftVersions.add(minecraft_version)
-                minecraftVersions.add("1.21")
-            }
-        }
-    }
 }

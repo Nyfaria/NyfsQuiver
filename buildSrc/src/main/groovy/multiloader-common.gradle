@@ -10,11 +10,10 @@ base {
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(java_version)
     withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
-    mavenCentral()
-    // https://docs.gradle.org/current/userguide/declaring_repositories.html#declaring_content_exclusively_found_in_one_repository
     exclusiveContent {
         forRepository {
             maven {
@@ -23,43 +22,16 @@ repositories {
             }
         }
         filter { includeGroupAndSubgroups("org.spongepowered") }
-
-    }
-    maven {
-        name = 'BlameJared'
-        url = 'https://maven.blamejared.com'
     }
     maven {
         name = "Fuzs Mod Resources"
         url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
     }
-    maven {
-        name = 'ParchmentMC'
-        url = 'https://maven.parchmentmc.org'
-    }
-    maven {
-        url = "https://jm.gserv.me/repository/maven-public/"
-    }
-    maven { url 'https://maven.wispforest.io/releases' }
-    maven { url 'https://maven.shedaniel.me/' }
-    maven { url 'https://maven.su5ed.dev/releases' }
-    repositories {
-        exclusiveContent {
-            forRepository {
-                maven {
-                    url "https://cursemaven.com"
-                }
-            }
-            filter {
-                includeGroup "curse.maven"
-            }
-        }
-    }
+    maven { url = 'https://maven.wispforest.io/releases' }
+    maven { url = 'https://jm.gserv.me/repository/maven-public/' }
 }
 
-// Declare capabilities on the outgoing configurations.
-// Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
-['apiElements', 'runtimeElements', 'sourcesElements'].each { variant ->
+['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
     configurations."$variant".outgoing {
         capability("$group:${base.archivesName.get()}:$version")
         capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
@@ -97,20 +69,20 @@ jar {
 processResources {
     def expandProps = [
             "version"                      : version,
-            "group"                        : project.group, //Else we target the task's group.
+            "group"                        : project.group,
             "minecraft_version"            : minecraft_version,
-            "minecraft_version_range"      : minecraft_version_range,
-            "fabric_version"               : fabric_version,
-            "fabric_loader_version"        : fabric_loader_version,
+            "minecraft_version_range"      : nyfs.versions.minecraftVersionRange.get(),
+            "fabric_version"               : nyfs.versions.fabric.api.get(),
+            "fabric_loader_version"        : nyfs.versions.fabric.loader.get(),
             "mod_name"                     : mod_name,
             "mod_author"                   : mod_author,
             "mod_id"                       : mod_id,
             "license"                      : license,
             "description"                  : project.description,
-            "neoforge_version"             : neoforge_version,
-            "neoforge_loader_version_range": neoforge_loader_version_range,
             "credits"                      : credits,
-            "java_version"                 : java_version
+            "java_version"                 : java_version,
+            "neoforge_version"             : nyfs.versions.neoforgeVersion.get(),
+            "neoforge_loader_version_range": nyfs.versions.neoforgeLoaderRange.get()
     ]
 
     filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {
@@ -127,8 +99,11 @@ publishing {
         }
     }
     repositories {
-        maven {
-            url System.getenv("local_maven_url")
+        def localMaven = System.getenv("local_maven_url")
+        if (localMaven) {
+            maven {
+                url localMaven
+            }
         }
     }
 }

@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    alias(nyfs.plugins.mdg.loader)
+    alias(nyfs.plugins.regutils.loader)
+    id 'multiloader-datagen'
+}
+
+dependencies {
+    compileOnly "mysticdrew:common-networking-neoforge:${common_network_version}"
+    compileOnly("io.wispforest:accessories-neoforge:${accessories_version}")
+}
+
+repositories {
+    maven { url = 'https://maven.wispforest.io/releases' }
+    maven { url = 'https://jm.gserv.me/repository/maven-public/' }
+    maven { url = 'https://maven.su5ed.dev/releases' }
+}

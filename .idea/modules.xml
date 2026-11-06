@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/nyfsquiver.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/nyfsquiver.common.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/nyfsquiver.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/nyfsquiver.fabric.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/nyfsquiver.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/nyfsquiver.fabric.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/nyfsquiver.neoforge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/nyfsquiver.neoforge.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/nyfsquiver.neoforge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/nyfsquiver.neoforge.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/NyfsQuiver.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/NyfsQuiver.common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/NyfsQuiver.common.registration.iml" filepath="$PROJECT_DIR$/.idea/modules/common/NyfsQuiver.common.registration.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/datagen/NyfsQuiver.datagen.main.iml" filepath="$PROJECT_DIR$/.idea/modules/datagen/NyfsQuiver.datagen.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/NyfsQuiver.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/NyfsQuiver.fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/NyfsQuiver.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/NyfsQuiver.fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/NyfsQuiver.neoforge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/NyfsQuiver.neoforge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/NyfsQuiver.neoforge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/NyfsQuiver.neoforge.test.iml" />
     </modules>
   </component>
 </project>

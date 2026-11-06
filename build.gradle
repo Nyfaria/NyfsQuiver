@@ -1,9 +1,12 @@
 plugins {
-    id 'com.matyrobbrt.mc.registrationutils' version "${regutils_version}"
-    id 'fabric-loom' version '1.7-SNAPSHOT' apply false
-    id 'net.neoforged.moddev' version '1.0.17' apply false
-    // The plugin is located at the Gradle plugin portal
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
+    alias(nyfs.plugins.loom) apply false
+    alias(nyfs.plugins.mdg) apply false
+    alias(nyfs.plugins.regutils)
 }
+
+def legacy = nyfs.versions.era.get() == "legacy"
+
 registrationUtils {
     group "com.nyfaria.${mod_id}.registration"
     projects {
@@ -11,7 +14,10 @@ registrationUtils {
             type 'fabric'
         }
         neoforge {
-            type 'neoforge'
+            type legacy ? 'forge' : 'neoforge'
+        }
+        datagen {
+            type legacy ? 'forge' : 'neoforge'
         }
         common {
             type 'common'
