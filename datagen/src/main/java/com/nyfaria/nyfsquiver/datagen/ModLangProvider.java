@@ -47,6 +47,8 @@ public class ModLangProvider extends LanguageProvider {
         add("tooltip.nyfsquiver", "Hold '%s' to view contents");
         add("tooltip.nyfsquiver.shift", "SHIFT");
         add("enchantment.nyfsquiver.cycling_enchant.desc", "Quivers Cycle to the next Slot if Current Slot is empty");
+        add("curios.identifier.quiver", "Quiver");
+        add("trinkets.slot.chest.quiver", "Quiver");
     }
 
     protected void itemLang(RegistryObject<Item, ?> entry) {

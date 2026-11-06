@@ -1,0 +1,5 @@
+{
+  "icon": "nyfsquiver:container/slots/quiver",
+  "order": -511,
+  "validator_predicates": ["trinkets:default"]
+}

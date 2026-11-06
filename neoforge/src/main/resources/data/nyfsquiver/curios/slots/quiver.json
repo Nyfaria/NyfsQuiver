@@ -1,0 +1,6 @@
+{
+  "order": 81,
+  "size": 1,
+  "icon": "nyfsquiver:slot/quiver",
+  "validators": ["curios:tag"]
+}

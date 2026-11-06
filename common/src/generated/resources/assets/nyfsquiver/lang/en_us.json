@@ -1,6 +1,7 @@
 {
   "accessories.slot.quiver_back": "Quiver Back",
   "accessories.slot.quiver_hip": "Quiver Hip",
+  "curios.identifier.quiver": "Quiver",
   "enchantment.nyfsquiver.cycling": "Cycling",
   "enchantment.nyfsquiver.cycling_enchant.desc": "Quivers Cycle to the next Slot if Current Slot is empty",
   "item.nyfsquiver.quiver": "Quiver",
@@ -15,5 +16,6 @@
   "quiver.nyfsquiver.leather": "Leather Quiver",
   "quiver.nyfsquiver.netherite": "Netherite Quiver",
   "tooltip.nyfsquiver": "Hold '%s' to view contents",
-  "tooltip.nyfsquiver.shift": "SHIFT"
+  "tooltip.nyfsquiver.shift": "SHIFT",
+  "trinkets.slot.chest.quiver": "Quiver"
 }
