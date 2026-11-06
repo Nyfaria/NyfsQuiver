@@ -1,0 +1,110 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "nyfsquiver:quiver_type",
+    "cases": [
+      {
+        "when": "nyfsquiver:copper",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "nyfsquiver:has_arrows",
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/copper"
+          },
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/copper_noarrows"
+          }
+        }
+      },
+      {
+        "when": "nyfsquiver:diamond",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "nyfsquiver:has_arrows",
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/diamond"
+          },
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/diamond_noarrows"
+          }
+        }
+      },
+      {
+        "when": "nyfsquiver:gold",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "nyfsquiver:has_arrows",
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/gold"
+          },
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/gold_noarrows"
+          }
+        }
+      },
+      {
+        "when": "nyfsquiver:iron",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "nyfsquiver:has_arrows",
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/iron"
+          },
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/iron_noarrows"
+          }
+        }
+      },
+      {
+        "when": "nyfsquiver:leather",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "nyfsquiver:has_arrows",
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/leather"
+          },
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/leather_noarrows"
+          }
+        }
+      },
+      {
+        "when": "nyfsquiver:netherite",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "nyfsquiver:has_arrows",
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/netherite"
+          },
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "nyfsquiver:quiver/hip/netherite_noarrows"
+          }
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:condition",
+      "property": "nyfsquiver:has_arrows",
+      "on_true": {
+        "type": "minecraft:model",
+        "model": "nyfsquiver:quiver/hip/leather"
+      },
+      "on_false": {
+        "type": "minecraft:model",
+        "model": "nyfsquiver:quiver/hip/leather_noarrows"
+      }
+    }
+  }
+}

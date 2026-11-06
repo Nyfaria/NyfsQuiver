@@ -1,56 +1,60 @@
 package com.nyfaria.nyfsquiver.datagen;
 
+import com.google.common.collect.Maps;
 import com.nyfaria.nyfsquiver.Constants;
 import com.nyfaria.nyfsquiver.api.QuiverType;
-import com.nyfaria.nyfsquiver.api.RegistryAccessAccess;
-import com.nyfaria.nyfsquiver.init.DataComponentInit;
 import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.init.QuiverInit;
 import com.nyfaria.nyfsquiver.recipe.SmithingQuiverRecipe;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRequirements;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
+import net.minecraft.data.recipes.RecipeUnlockAdvancementBuilder;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.world.item.crafting.SmithingTransformRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends RecipeProvider {
-    public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        super(output, provider);
+
+    protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+        super(registries, output);
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput consumer, HolderLookup.Provider holderLookup) {
-        ItemStack itemStack = new ItemStack(ItemInit.QUIVER.get());
-        QuiverType leather = holderLookup.lookup(QuiverInit.QUIVER_TYPES.key()).get().get(Constants.LEATHER_QUIVER).get().value();
-        QuiverType iron = holderLookup.lookup(QuiverInit.QUIVER_TYPES.key()).get().get(Constants.IRON_QUIVER).get().value();
-        QuiverType gold = holderLookup.lookup(QuiverInit.QUIVER_TYPES.key()).get().get(Constants.GOLD_QUIVER).get().value();
-        QuiverType diamond = holderLookup.lookup(QuiverInit.QUIVER_TYPES.key()).get().get(Constants.DIAMOND_QUIVER).get().value();
-        QuiverType netherite = holderLookup.lookup(QuiverInit.QUIVER_TYPES.key()).get().get(Constants.NETHERITE_QUIVER).get().value();
-        itemStack.set(DataComponentInit.QUIVER_TYPE.get(), leather);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, itemStack)
-                .define('L', Items.LEATHER)
-                .define('F', Items.FEATHER)
-                .pattern("  F")
-                .pattern(" L ")
-                .pattern("L  ")
-                .unlockedBy("has_item", has(Items.LEATHER))
-                .save(consumer);
-        QuiverRecipeBuilder.quiver(RecipeCategory.MISC, leather, iron)
+    protected void buildRecipes() {
+        HolderLookup.RegistryLookup<QuiverType> types = this.registries.lookupOrThrow(QuiverInit.QUIVER_TYPES.key());
+        QuiverType leather = types.getOrThrow(Constants.LEATHER_QUIVER).value();
+        QuiverType iron = types.getOrThrow(Constants.IRON_QUIVER).value();
+        QuiverType gold = types.getOrThrow(Constants.GOLD_QUIVER).value();
+        QuiverType diamond = types.getOrThrow(Constants.DIAMOND_QUIVER).value();
+        QuiverType netherite = types.getOrThrow(Constants.NETHERITE_QUIVER).value();
+
+        ResourceKey<Recipe<?>> leatherId = ResourceKey.create(Registries.RECIPE, Constants.modLoc("quiver"));
+        Map<Character, Ingredient> leatherKey = Maps.newLinkedHashMap();
+        leatherKey.put('L', Ingredient.of(Items.LEATHER));
+        leatherKey.put('F', Ingredient.of(Items.FEATHER));
+        RecipeUnlockAdvancementBuilder leatherUnlock = new RecipeUnlockAdvancementBuilder();
+        leatherUnlock.unlockedBy("has_item", has(Items.LEATHER));
+        this.output.accept(leatherId,
+                new ShapedRecipe(
+                        RecipeBuilder.createCraftingCommonInfo(true),
+                        RecipeBuilder.createCraftingBookInfo(RecipeCategory.MISC, null),
+                        ShapedRecipePattern.of(leatherKey, List.of("  F", " L ", "L  ")),
+                        leather.defaultTemplate()),
+                leatherUnlock.build(this.output, leatherId, RecipeCategory.MISC));
+
+        QuiverRecipeBuilder.quiver(this.items, RecipeCategory.MISC, leather, iron)
                 .define('I', Items.IRON_INGOT)
                 .define('L', ItemInit.QUIVER.get())
                 .define('F', Items.FEATHER)
@@ -58,8 +62,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("ILI")
                 .pattern("III")
                 .unlockedBy("has_item", has(Items.IRON_INGOT))
-                .save(consumer, Constants.modLoc("iron_quiver"));
-        QuiverRecipeBuilder.quiver(RecipeCategory.MISC, iron, gold)
+                .save(this.output, recipeKey("iron_quiver"));
+        QuiverRecipeBuilder.quiver(this.items, RecipeCategory.MISC, iron, gold)
                 .define('G', Items.GOLD_INGOT)
                 .define('L', ItemInit.QUIVER.get())
                 .define('F', Items.FEATHER)
@@ -67,8 +71,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("GLG")
                 .pattern("GGG")
                 .unlockedBy("has_item", has(Items.GOLD_INGOT))
-                .save(consumer, Constants.modLoc("gold_quiver"));
-        QuiverRecipeBuilder.quiver(RecipeCategory.MISC, gold, diamond)
+                .save(this.output, recipeKey("gold_quiver"));
+        QuiverRecipeBuilder.quiver(this.items, RecipeCategory.MISC, gold, diamond)
                 .define('D', Items.DIAMOND)
                 .define('L', ItemInit.QUIVER.get())
                 .define('F', Items.FEATHER)
@@ -76,18 +80,38 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("DLD")
                 .pattern("DDD")
                 .unlockedBy("has_item", has(Items.DIAMOND))
-                .save(consumer, Constants.modLoc("diamond_quiver"));
-        ResourceLocation pRecipeId = Constants.modLoc("netherite_quiver");
-        Advancement.Builder advancement$builder = consumer.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pRecipeId))
-                .rewards(AdvancementRewards.Builder.recipe(pRecipeId))
-                .requirements(AdvancementRequirements.Strategy.OR);
-        consumer.accept(pRecipeId,
+                .save(this.output, recipeKey("diamond_quiver"));
+
+        ResourceKey<Recipe<?>> netheriteId = recipeKey("netherite_quiver");
+        RecipeUnlockAdvancementBuilder netheriteUnlock = new RecipeUnlockAdvancementBuilder();
+        netheriteUnlock.unlockedBy("has_netherite_ingot", has(Items.NETHERITE_INGOT));
+        this.output.accept(netheriteId,
                 new SmithingQuiverRecipe(
+                        RecipeBuilder.createCraftingCommonInfo(true),
                         Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
                         diamond,
                         Ingredient.of(Items.NETHERITE_INGOT),
                         netherite),
-                        advancement$builder.build(pRecipeId.withPrefix("recipes/misc/")));
+                netheriteUnlock.build(this.output, netheriteId, RecipeCategory.MISC));
+    }
+
+    private static ResourceKey<Recipe<?>> recipeKey(String path) {
+        return ResourceKey.create(Registries.RECIPE, Constants.modLoc(path));
+    }
+
+    public static class Runner extends RecipeProvider.Runner {
+        public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+            super(output, registries);
+        }
+
+        @Override
+        protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+            return new ModRecipeProvider(registries, output);
+        }
+
+        @Override
+        public String getName() {
+            return "Nyf's Quivers Recipes";
+        }
     }
 }

@@ -1,7 +1,6 @@
 plugins {
     id 'multiloader-common'
     alias(nyfs.plugins.mdg.loader)
-    alias(nyfs.plugins.regutils.loader)
     id 'multiloader-vanilla'
 }
 
@@ -10,5 +9,4 @@ dependencies {
     annotationProcessor nyfs.mixin.extras.common.get()
     compileOnly nyfs.config.api.common.get()
     compileOnly "mysticdrew:common-networking-common:${common_network_version}"
-    compileOnly("io.wispforest:accessories-common:${accessories_version}-mojmap")
 }

@@ -7,68 +7,37 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.EnchantmentTagsProvider;
-import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 public class ModTagProvider {
 
-    public static class ModItemTags extends TagsProvider<Item>{
-
-        public ModItemTags(PackOutput p_256596_, CompletableFuture<HolderLookup.Provider> p_256513_, @Nullable ExistingFileHelper existingFileHelper) {
-            super(p_256596_, Registries.ITEM, p_256513_, Constants.MODID, existingFileHelper);
+    public static class ModItemTags extends KeyTagProvider<Item> {
+        public ModItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+            super(output, Registries.ITEM, lookupProvider, Constants.MODID);
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider pProvider) {
-            tag(TagInit.QUIVER).add(ItemInit.QUIVER.getResourceKey());
-            tag(TagInit.QUIVER_ITEMS).addTag(ItemTags.ARROWS).add(Items.FIREWORK_ROCKET.builtInRegistryHolder().getKey());
-        }
-
-        public void populateTag(TagKey<Item> tag, Supplier<Item>... items){
-            for (Supplier<Item> item : items) {
-                tag(tag).add(BuiltInRegistries.ITEM.getResourceKey(item.get()).get());
-            }
+        protected void addTags(HolderLookup.Provider provider) {
+            tag(TagInit.QUIVER).add(BuiltInRegistries.ITEM.getResourceKey(ItemInit.QUIVER.get()).orElseThrow());
+            tag(TagInit.QUIVER_ITEMS).addTag(ItemTags.ARROWS).add(BuiltInRegistries.ITEM.getResourceKey(Items.FIREWORK_ROCKET).orElseThrow());
         }
     }
 
-    public static class ModEnchantTags extends EnchantmentTagsProvider {
-
-
-        public ModEnchantTags(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pLookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-            super(pOutput, pLookupProvider, Constants.MODID, existingFileHelper);
+    public static class ModEnchantTags extends KeyTagProvider<Enchantment> {
+        public ModEnchantTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+            super(output, Registries.ENCHANTMENT, lookupProvider, Constants.MODID);
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider pProvider) {
+        protected void addTags(HolderLookup.Provider provider) {
             tag(EnchantmentTags.NON_TREASURE).add(Constants.CYCLING);
-        }
-    }
-
-    public static class ModBlockTags extends TagsProvider<Block>{
-
-        public ModBlockTags(PackOutput pGenerator, CompletableFuture<HolderLookup.Provider> p_256513_, @Nullable ExistingFileHelper existingFileHelper) {
-            super(pGenerator, Registries.BLOCK, p_256513_, Constants.MODID, existingFileHelper);
-        }
-
-        @Override
-        protected void addTags(HolderLookup.Provider pProvider) {
-
-        }
-        public  <T extends Block>void populateTag(TagKey<Block> tag, Supplier<?>... items){
-            for (Supplier<?> item : items) {
-                tag(tag).add(BuiltInRegistries.BLOCK.getResourceKey((Block)item.get()).get());
-            }
         }
     }
 }

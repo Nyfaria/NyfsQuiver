@@ -10,8 +10,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class RecipeSerializerInit {
     public static RegistrationProvider<RecipeSerializer<?>> RECIPE_SERIALIZERS = RegistrationProvider.get(Registries.RECIPE_SERIALIZER, Constants.MODID);
-    public static RegistryObject<RecipeSerializer<?>, RecipeSerializer<QuiverUpgradeRecipe>> QUIVER = RECIPE_SERIALIZERS.register("shaped_quiver", QuiverUpgradeRecipe.Serializer::new);
-    public static RegistryObject<RecipeSerializer<?>, RecipeSerializer<SmithingQuiverRecipe>> SMITHING_QUIVER = RECIPE_SERIALIZERS.register("smithing_quiver", SmithingQuiverRecipe.Serializer::new);
+    public static RegistryObject<RecipeSerializer<?>, RecipeSerializer<QuiverUpgradeRecipe>> QUIVER = RECIPE_SERIALIZERS.register("shaped_quiver", () -> QuiverUpgradeRecipe.SERIALIZER);
+    public static RegistryObject<RecipeSerializer<?>, RecipeSerializer<SmithingQuiverRecipe>> SMITHING_QUIVER = RECIPE_SERIALIZERS.register("smithing_quiver", () -> SmithingQuiverRecipe.SERIALIZER);
 
     public static void loadClass() {
     }

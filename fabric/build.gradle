@@ -1,14 +1,17 @@
 plugins {
     id 'multiloader-loader'
     alias(nyfs.plugins.loom.loader)
-    alias(nyfs.plugins.regutils.loader)
     id 'multiloader-fabric'
     id 'com.nyfaria.moddingtools.publishing'
 }
 
 dependencies {
-    modApi nyfs.config.api.fabric
+    api nyfs.config.api.fabric
     include nyfs.config.api.fabric
-    modImplementation include("mysticdrew:common-networking-fabric:${common_network_version}")
-    modImplementation("io.wispforest:accessories-fabric:${accessories_version}")
+    implementation include("mysticdrew:common-networking-fabric:${common_network_version}")
+    implementation "maven.modrinth:trinkets-updated:${trinkets_version}"
+}
+
+modPublishing {
+    file = tasks.named('jar').flatMap { it.archiveFile }
 }

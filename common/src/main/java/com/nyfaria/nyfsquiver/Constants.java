@@ -4,7 +4,7 @@ import com.nyfaria.nyfsquiver.api.QuiverType;
 import com.nyfaria.nyfsquiver.init.QuiverInit;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,19 +22,19 @@ public class Constants {
     public static final ResourceKey<Enchantment> CYCLING = ResourceKey.create(Registries.ENCHANTMENT, modLoc("cycling"));
 
 
-    public static ResourceLocation modLoc(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    public static Identifier modLoc(String path) {
+        return Identifier.fromNamespaceAndPath(MODID, path);
     }
 
-    public static ResourceLocation mcLoc(String path) {
-        return ResourceLocation.withDefaultNamespace(path);
+    public static Identifier mcLoc(String path) {
+        return Identifier.withDefaultNamespace(path);
     }
 
-    public static ResourceLocation loc(String path) {
-        return ResourceLocation.parse(path);
+    public static Identifier loc(String path) {
+        return Identifier.parse(path);
     }
 
-    public static ResourceLocation loc(String namespace, String path) {
-        return ResourceLocation.fromNamespaceAndPath(namespace, path);
+    public static Identifier loc(String namespace, String path) {
+        return Identifier.fromNamespaceAndPath(namespace, path);
     }
 }

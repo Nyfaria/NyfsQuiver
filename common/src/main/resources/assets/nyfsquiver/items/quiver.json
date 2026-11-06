@@ -1,0 +1,54 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "nyfsquiver:quiver_type",
+    "cases": [
+      {
+        "when": "nyfsquiver:copper",
+        "model": {
+          "type": "minecraft:model",
+          "model": "nyfsquiver:item/quiver/copper"
+        }
+      },
+      {
+        "when": "nyfsquiver:diamond",
+        "model": {
+          "type": "minecraft:model",
+          "model": "nyfsquiver:item/quiver/diamond"
+        }
+      },
+      {
+        "when": "nyfsquiver:gold",
+        "model": {
+          "type": "minecraft:model",
+          "model": "nyfsquiver:item/quiver/gold"
+        }
+      },
+      {
+        "when": "nyfsquiver:iron",
+        "model": {
+          "type": "minecraft:model",
+          "model": "nyfsquiver:item/quiver/iron"
+        }
+      },
+      {
+        "when": "nyfsquiver:leather",
+        "model": {
+          "type": "minecraft:model",
+          "model": "nyfsquiver:item/quiver/leather"
+        }
+      },
+      {
+        "when": "nyfsquiver:netherite",
+        "model": {
+          "type": "minecraft:model",
+          "model": "nyfsquiver:item/quiver/netherite"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "nyfsquiver:item/quiver"
+    }
+  }
+}

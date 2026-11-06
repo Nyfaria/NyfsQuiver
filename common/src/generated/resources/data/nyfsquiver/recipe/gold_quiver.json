@@ -10,15 +10,9 @@
     "rows": 4
   },
   "key": {
-    "F": {
-      "item": "minecraft:feather"
-    },
-    "G": {
-      "item": "minecraft:gold_ingot"
-    },
-    "L": {
-      "item": "nyfsquiver:quiver"
-    }
+    "F": "minecraft:feather",
+    "G": "minecraft:gold_ingot",
+    "L": "nyfsquiver:quiver"
   },
   "pattern": [
     "GGF",

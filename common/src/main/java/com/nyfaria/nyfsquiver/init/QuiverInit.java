@@ -7,7 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class QuiverInit {
     public static DatapackRegistry<QuiverType> QUIVER_TYPES = DatapackRegistry.<QuiverType>builder(Constants.modLoc( "quiver_type"))
@@ -27,7 +27,7 @@ public class QuiverInit {
     public static Registry<QuiverType> getRegistry(RegistryAccess registryAccess) {
         return QUIVER_TYPES.get(registryAccess);
     }
-    public static ResourceKey<QuiverType> createKey(ResourceLocation name) {
+    public static ResourceKey<QuiverType> createKey(Identifier name) {
         return ResourceKey.create(QUIVER_TYPES.key(), name);
     }
 

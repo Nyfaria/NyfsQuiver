@@ -41,4 +41,6 @@ public interface IPlatformHelper {
     }
     void openQuiverMenu(MenuProvider provider, Player player, ItemStack stack);
     MenuType<QuiverMenu> registerMenu();
+
+    ItemStack getEquippedQuiver(Player player);
 }

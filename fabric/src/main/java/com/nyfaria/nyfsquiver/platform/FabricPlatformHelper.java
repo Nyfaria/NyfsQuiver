@@ -1,11 +1,14 @@
 package com.nyfaria.nyfsquiver.platform;
 
 import com.nyfaria.nyfsquiver.codec.QuiverFabricCodec;
+import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
 import com.nyfaria.nyfsquiver.menu.QuiverMenu;
 import com.nyfaria.nyfsquiver.platform.services.IPlatformHelper;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+import eu.pb4.trinkets.api.TrinketSlotAccess;
+import eu.pb4.trinkets.api.TrinketsApi;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -40,7 +43,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
     public void openQuiverMenu(MenuProvider provider, Player player, ItemStack stack) {
-        ExtendedScreenHandlerFactory<QuiverFabricCodec> type = new ExtendedScreenHandlerFactory<>(){
+        ExtendedMenuProvider<QuiverFabricCodec> type = new ExtendedMenuProvider<>(){
 
             @Nullable
             @Override
@@ -64,7 +67,15 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
     public MenuType<QuiverMenu> registerMenu() {
-        return new ExtendedScreenHandlerType<>(QuiverMenu::new, QuiverFabricCodec.CODEC);
+        return new ExtendedMenuType<>(QuiverMenu::new, QuiverFabricCodec.CODEC);
     }
 
+
+    @Override
+    public ItemStack getEquippedQuiver(Player player) {
+        return TrinketsApi.getAttachment(player)
+                .findFirst(ItemInit.QUIVER.get())
+                .map(TrinketSlotAccess::get)
+                .orElse(ItemStack.EMPTY);
+    }
 }

@@ -10,15 +10,9 @@
     "rows": 3
   },
   "key": {
-    "F": {
-      "item": "minecraft:feather"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "L": {
-      "item": "nyfsquiver:quiver"
-    }
+    "F": "minecraft:feather",
+    "I": "minecraft:iron_ingot",
+    "L": "nyfsquiver:quiver"
   },
   "pattern": [
     "IIF",

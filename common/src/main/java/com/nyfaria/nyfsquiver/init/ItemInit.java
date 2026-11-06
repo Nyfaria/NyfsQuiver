@@ -15,12 +15,10 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.RegistryLayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -31,7 +29,7 @@ import net.minecraft.world.level.block.Blocks;
 public class ItemInit {
     public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registries.ITEM, Constants.MODID);
 
-    public static final RegistryObject<Item,QuiverItem> QUIVER = ITEMS.register("quiver", () -> new QuiverItem(getItemProperties().stacksTo(1)
+    public static final RegistryObject<Item,QuiverItem> QUIVER = ITEMS.register("quiver", () -> new QuiverItem(getItemProperties().setId(ResourceKey.create(Registries.ITEM, Constants.modLoc("quiver"))).stacksTo(1).enchantable(32)
             .component(DataComponentInit.CURRENT_SLOT.get(),0)
             .component(DataComponents.CONTAINER, ItemContainerContents.fromItems(NonNullList.withSize(27,ItemStack.EMPTY)))
             .component(DataComponentInit.QUIVER_TYPE.get(), new QuiverType(Constants.modLoc("leather"),3,9,false,1, null))

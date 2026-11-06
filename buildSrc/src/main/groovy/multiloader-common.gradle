@@ -27,8 +27,17 @@ repositories {
         name = "Fuzs Mod Resources"
         url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
     }
-    maven { url = 'https://maven.wispforest.io/releases' }
     maven { url = 'https://jm.gserv.me/repository/maven-public/' }
+    maven { url = 'https://maven.theillusivec4.top/' }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
+        }
+        filter { includeGroup("maven.modrinth") }
+    }
 }
 
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
@@ -67,6 +76,8 @@ jar {
 }
 
 processResources {
+    def legacy = nyfs.versions.era.get() == "legacy"
+
     def expandProps = [
             "version"                      : version,
             "group"                        : project.group,
@@ -80,10 +91,16 @@ processResources {
             "license"                      : license,
             "description"                  : project.description,
             "credits"                      : credits,
-            "java_version"                 : java_version,
-            "neoforge_version"             : nyfs.versions.neoforgeVersion.get(),
-            "neoforge_loader_version_range": nyfs.versions.neoforgeLoaderRange.get()
+            "java_version"                 : java_version
     ]
+
+    if (legacy) {
+        expandProps["forge_version"] = nyfs.versions.forgeVersion.get()
+        expandProps["forge_loader_version_range"] = nyfs.versions.forgeLoaderRange.get()
+    } else {
+        expandProps["neoforge_version"] = nyfs.versions.neoforgeVersion.get()
+        expandProps["neoforge_loader_version_range"] = nyfs.versions.neoforgeLoaderRange.get()
+    }
 
     filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {
         expand expandProps

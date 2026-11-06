@@ -9,9 +9,6 @@ import com.nyfaria.nyfsquiver.init.QuiverInit;
 import com.nyfaria.nyfsquiver.init.RecipeSerializerInit;
 import com.nyfaria.nyfsquiver.init.TagInit;
 import com.nyfaria.nyfsquiver.network.PacketInit;
-import io.wispforest.accessories.api.AccessoriesAPI;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.pond.AccessoriesAPIAccess;
 
 public class CommonClass {
 

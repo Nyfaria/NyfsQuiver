@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "F": {
-      "item": "minecraft:feather"
-    },
-    "L": {
-      "item": "minecraft:leather"
-    }
+    "F": "minecraft:feather",
+    "L": "minecraft:leather"
   },
   "pattern": [
     "  F",
@@ -15,7 +11,16 @@
     "L  "
   ],
   "result": {
-    "count": 1,
+    "components": {
+      "nyfsquiver:quiver_type": {
+        "arrowAction": "nyfsquiver:vanilla",
+        "columns": 9,
+        "durability": 576,
+        "fireProof": false,
+        "name": "nyfsquiver:leather",
+        "rows": 3
+      }
+    },
     "id": "nyfsquiver:quiver"
   }
 }

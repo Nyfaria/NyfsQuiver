@@ -1,15 +1,8 @@
 plugins {
     id 'multiloader-loader'
     alias(nyfs.plugins.mdg.loader)
-    alias(nyfs.plugins.regutils.loader)
     id 'multiloader-moddev'
     id 'com.nyfaria.moddingtools.publishing'
-}
-
-repositories {
-    maven { url = 'https://maven.wispforest.io/releases' }
-    maven { url = 'https://jm.gserv.me/repository/maven-public/' }
-    maven { url = 'https://maven.su5ed.dev/releases' }
 }
 
 dependencies {
@@ -19,6 +12,6 @@ dependencies {
             prefer common_network_version
         }
     }
-    implementation("io.wispforest:accessories-neoforge:${accessories_version}")
-    implementation "curse.maven:forgified-fabric-api-889079:6370322"
+    implementation nyfs.config.api.neoforge
+    implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 }

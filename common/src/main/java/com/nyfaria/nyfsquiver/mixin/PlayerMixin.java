@@ -5,7 +5,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.nyfaria.nyfsquiver.init.DataComponentInit;
 import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.menu.QuiverContainer;
-import io.wispforest.accessories.api.AccessoriesCapability;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;

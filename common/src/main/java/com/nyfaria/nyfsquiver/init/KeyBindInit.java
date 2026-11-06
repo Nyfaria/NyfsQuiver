@@ -6,13 +6,15 @@ import com.nyfaria.nyfsquiver.network.c2s.NextSlotPacket;
 import com.nyfaria.nyfsquiver.network.c2s.OpenEquippedQuiverPacket;
 import commonnetwork.api.Network;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyBindInit {
-    public static KeyMapping OPEN_SCREEN = new KeyMapping("key." + Constants.MODID + ".open_quiver", InputConstants.KEY_V, "key.categories." + Constants.MODID);
-    public static KeyMapping NEXT_SLOT = new KeyMapping("key." + Constants.MODID + ".next_slot", InputConstants.KEY_RBRACKET, "key.categories." + Constants.MODID);
-    public static KeyMapping PREV_SLOT = new KeyMapping("key." + Constants.MODID + ".prev_slot", InputConstants.KEY_LBRACKET, "key.categories." + Constants.MODID);
+    public static final KeyMapping.Category CATEGORY = new KeyMapping.Category(Constants.modLoc(Constants.MODID));
+    public static KeyMapping OPEN_SCREEN = new KeyMapping("key." + Constants.MODID + ".open_quiver", InputConstants.KEY_V, CATEGORY);
+    public static KeyMapping NEXT_SLOT = new KeyMapping("key." + Constants.MODID + ".next_slot", InputConstants.KEY_RBRACKET, CATEGORY);
+    public static KeyMapping PREV_SLOT = new KeyMapping("key." + Constants.MODID + ".prev_slot", InputConstants.KEY_LBRACKET, CATEGORY);
 
     public static void onKeyInput(int key, int scanCode, int action, int modifiers) {
         Minecraft mc = Minecraft.getInstance();
@@ -39,6 +41,6 @@ public class KeyBindInit {
     }
 
     private static boolean isKey(int key, int scanCode, KeyMapping keyBinding) {
-        return keyBinding.matches(key, scanCode);
+        return keyBinding.matches(new KeyEvent(key, scanCode, 0));
     }
 }

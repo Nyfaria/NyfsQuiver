@@ -7,14 +7,17 @@ import com.nyfaria.nyfsquiver.init.ArrowActionInit;
 import com.nyfaria.nyfsquiver.init.DataComponentInit;
 import com.nyfaria.nyfsquiver.init.ItemInit;
 import com.nyfaria.nyfsquiver.init.QuiverInit;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
-public record QuiverType(ResourceLocation name, int rows, int columns, boolean fireProof, int durability, ArrowAction arrowAction) {
+public record QuiverType(Identifier name, int rows, int columns, boolean fireProof, int durability, ArrowAction arrowAction) {
     public static Codec<QuiverType> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("name").forGetter(QuiverType::name),
+            Identifier.CODEC.fieldOf("name").forGetter(QuiverType::name),
             Codec.INT.fieldOf("rows").forGetter(QuiverType::rows),
             Codec.INT.fieldOf("columns").forGetter(QuiverType::columns),
             Codec.BOOL.fieldOf("fireProof").forGetter(QuiverType::fireProof),
@@ -22,18 +25,14 @@ public record QuiverType(ResourceLocation name, int rows, int columns, boolean f
             Codec.lazyInitialized(()->ArrowActionInit.ARROW_ACTIONS.getRegistry().byNameCodec()).fieldOf("arrowAction").forGetter(QuiverType::arrowAction)
     ).apply(instance, QuiverType::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, QuiverType> STREAM_CODEC = new StreamCodec<>() {
-        public QuiverType decode(RegistryFriendlyByteBuf rfbb) {
-            return rfbb.readJsonWithCodec(CODEC);
-        }
+    public static final StreamCodec<RegistryFriendlyByteBuf, QuiverType> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
-        public void encode(RegistryFriendlyByteBuf registryFriendlyByteBuf, QuiverType quiverType) {
-            registryFriendlyByteBuf.writeJsonWithCodec(CODEC, quiverType);
-        }
-    };
+    public static QuiverType byLoc(Identifier name) {
+        return QuiverInit.getRegistry(RegistryAccessAccess.ACCESS).getValue(name);
+    }
 
-    public static QuiverType byLoc(ResourceLocation name) {
-        return QuiverInit.getRegistry(RegistryAccessAccess.ACCESS).get(name);
+    public ItemStackTemplate defaultTemplate() {
+        return new ItemStackTemplate(ItemInit.QUIVER.get(), DataComponentPatch.builder().set(DataComponentInit.QUIVER_TYPE.get(), this).build());
     }
 
     public ItemStack defaultStack(){

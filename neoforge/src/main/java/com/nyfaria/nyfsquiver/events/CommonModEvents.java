@@ -11,7 +11,7 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
-@EventBusSubscriber(bus=EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Constants.MODID)
 public class CommonModEvents {
 
     @SubscribeEvent

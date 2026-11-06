@@ -46,26 +46,22 @@ if (legacy) {
             }
         }
         runs {
-            if (splitDataRuns) {
-                clientData {
+            data {
+                if (splitDataRuns) {
                     clientData()
-                    programArguments.addAll dataArguments
-                }
-                serverData {
-                    serverData()
-                    programArguments.addAll dataArguments
-                }
-            } else {
-                data {
+                } else {
                     data()
-                    programArguments.addAll dataArguments
                 }
+                programArguments.addAll dataArguments
             }
         }
     }
 }
 
+evaluationDependsOn(":common")
+
 dependencies {
+    compileOnly(files(rootProject.project(":common").sourceSets.main.output))
     compileOnly(project(":neoforge")) {
         capabilities {
             requireCapability "$group:$mod_id"

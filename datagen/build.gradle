@@ -1,17 +1,20 @@
 plugins {
     id 'java'
     alias(nyfs.plugins.mdg.loader)
-    alias(nyfs.plugins.regutils.loader)
     id 'multiloader-datagen'
 }
 
-dependencies {
-    compileOnly "mysticdrew:common-networking-neoforge:${common_network_version}"
-    compileOnly("io.wispforest:accessories-neoforge:${accessories_version}")
+repositories {
+    maven {
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
+    maven { url = 'https://jm.gserv.me/repository/maven-public/' }
+    maven { url = 'https://maven.theillusivec4.top/' }
 }
 
-repositories {
-    maven { url = 'https://maven.wispforest.io/releases' }
-    maven { url = 'https://jm.gserv.me/repository/maven-public/' }
-    maven { url = 'https://maven.su5ed.dev/releases' }
+dependencies {
+    implementation "mysticdrew:common-networking-neoforge:${common_network_version}"
+    implementation nyfs.config.api.neoforge
+    implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 }
